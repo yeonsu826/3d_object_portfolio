@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>정연수 3D 포트폴리오</title>
+    <title>연수의 3D 포트폴리오</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -100,6 +100,43 @@
         .card-info { padding: 20px; }
         .card-title { margin: 0 0 8px 0; font-size: 1.25rem; color: #fff; }
         .card-desc { margin: 0; font-size: 0.95rem; color: #aaa; line-height: 1.5; }
+
+        /* 카드 하단 버튼 컨테이너 */
+        .card-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        /* 개별 버튼 공통 스타일 */
+        .btn {
+            flex: 1; /* 두 버튼이 정확히 반반씩 공간을 차지하게 함 */
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        /* 3D 뷰어 메인 버튼 색상 */
+        .btn-viewer {
+            background-color: #4a90e2;
+            color: white;
+        }
+        .btn-viewer:hover {
+            background-color: #357abd;
+        }
+
+        /* 작업 과정 서브 버튼 색상 */
+        .btn-process {
+            background-color: #333;
+            color: #ddd;
+        }
+        .btn-process:hover {
+            background-color: #444;
+        }
     </style>
     
     <script type="importmap">
@@ -116,7 +153,7 @@
     <canvas id="bg-canvas"></canvas>
 
     <header>
-        <h1>정연수 3D 포트폴리오</h1>
+        <h1>정연수 3D Portfoilo</h1>
         <p class="subtitle">개발과 3D 아트웍 결합한 인터렉티브 프로그램 만들기</p>
     </header>
 
@@ -144,7 +181,20 @@
                 </div>
             </a>
         </div>
-    </main>
+        <div style="height: 60px;"></div> <!-- 메인과 푸터 사이 여백 -->
+
+
+        <div class="grid-container">
+            <a href="./object_pages/object.html?model=glasses_4" class="card">
+                <div class="card-img" style="background-image: url('./images/glasses_4.png');"></div>
+                <div class="card-info">
+                    <h3 class="card-title" >안경 제작 과정</h3>
+                    <p class="card-desc">제작 과정 설명 페이지</p>
+                </div>
+            </a>
+        </div>
+
+        </main>
 
     <script type="module">
         import * as THREE from 'three';
