@@ -15,11 +15,11 @@ document.body.appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 2);
+const ambientLight = new THREE.AmbientLight(0xffffff, 2.5);
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-directionalLight.position.set(5, 5, 5);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 4);
+directionalLight.position.set(5, 5, 2);
 scene.add(directionalLight);
 
 const loader = new GLTFLoader();
@@ -41,12 +41,37 @@ loader.load(
     modelPath,
     function (gltf) {
         const model = gltf.scene;
+        
+        // --- 모델 내부 순회하며 재질 세팅 ---
         model.traverse(function (child) {
-        if (child.isMesh && child.material) {
-            child.material.transparent = false;
-            child.material.depthWrite = true;
-        }
-    });
+            if (child.isMesh && child.material) {
+                
+                console.log('부품 이름 확인:', child.name);
+
+                // 1. 기본 투명도 오류 방지 (기존 코드)
+                child.material.transparent = false;
+                child.material.depthWrite = true;
+
+                    // 2. 이름에 'glass'가 포함된 경우 유리 물리 재질로 교체 (병합된 코드)
+                    // 블렌더에서 이름을 소문자로 적었는지 대문자(Glass)로 적었는지 확인 필요
+                    if (child.material.name.includes('glass') || child.material.name.includes('Glass')) {
+                    const oldMat = child.material;
+                
+                    child.material = new THREE.MeshPhysicalMaterial({
+                        color: oldMat.color,
+                        metalness: 0.1,
+                        roughness: 0.05,
+                        transmission: 1.0,      
+                        opacity: 1.0,           
+                        transparent: true,
+                        ior: 1.2,               
+                        thickness: 0.3,         
+                        side: THREE.DoubleSide
+                    });
+                }
+            }
+        });
+
         scene.add(model);
         
         // --- 모델 자동 크기 조절 및 중앙 정렬 코드 ---
@@ -63,7 +88,7 @@ loader.load(
         model.position.y -= center.y;
         model.position.z -= center.z;
 
-        console.log(modelPath + ' 로드 및 자동 스케일 조절 완료!');
+        console.log(modelPath + ' 로드 및 재질 세팅 완료!');
     },
     undefined,
     function (error) {
