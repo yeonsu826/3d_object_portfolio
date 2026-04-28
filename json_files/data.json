@@ -1,0 +1,95 @@
+[
+    {
+        "groupName": "안경 프로젝트",
+        "items": [
+            {
+                "title": "안경",
+                "desc": "기본 안경 모델링",
+                "thumb": "./images/glasses_1.png",
+                "link": "./object_pages/object.html?model=glasses_1"
+            },
+            {
+                "title": "K-style 안경",
+                "desc": "K-style 안경 모델",
+                "thumb": "./images/glasses_2.png",
+                "link": "./object_pages/object.html?model=glasses_2"
+            },
+            {
+                "title": "VR 안경",
+                "desc": "VR Glasses 모델링",
+                "thumb": "./images/glasses_3.png",
+                "link": "./object_pages/object.html?model=glasses_3"
+            }
+        ]
+    },
+    {
+        "groupName": "제작 과정",
+        "items": [
+            {
+                "title": "안경 제작 과정",
+                "desc": "제작 과정 설명 페이지",
+                "thumb": "./images/glass_project_process.png",
+                "link": "./work_process/glasses_project/glasses_project.html"
+            }
+        ]
+    },
+    {
+        "groupName": "카페 프로젝트",
+        "items": [
+            {
+                "title": "카페 공간",
+                "desc": "카페 전체 공간 모델링",
+                "thumb": "./images/cafe.jpeg",
+                "link": "./object_pages/object.html?model=cafe"
+            },
+            {
+                "title": "Coffee Machine 모델링",
+                "desc": "커피머신 모델링",
+                "thumb": "./images/coffeemachine.png",
+                "link": "./object_pages/object.html?model=coffeemachine"
+            },
+            {
+                "title": "Coffee Grinder 모델링",
+                "desc": "스타일라이즈드 컨셉 커피 그라인더 모델링",
+                "thumb": "./images/coffeegrinder.png",
+                "link": "./object_pages/object.html?model=coffeegrinder"
+            },
+            {
+                "title": "Coffee Pot 모델링",
+                "desc": "스타일라이즈드 컨셉 커피 포트 모델링",
+                "thumb": "./images/coffeepot.png",
+                "link": "./object_pages/object.html?model=coffeepot"
+            },
+            {
+                "title": "Coffee Bag 모델링",
+                "desc": "스타일라이즈드 컨셉 커피 백 모델링",
+                "thumb": "./images/bag.png",
+                "link": "./object_pages/object.html?model=bag"
+            },
+            {
+                "title": "Kettle 모델링",
+                "desc": "스타일라이즈드 컨셉 주전자 모델링",
+                "thumb": "./images/kettle.png",
+                "link": "./object_pages/object.html?model=kettle"
+            },
+            {
+                "title": "Handdrip Coffee 모델링",
+                "desc": "스타일라이즈드 컨셉 핸드드립 커피 모델링",
+                "thumb": "./images/handdrip.png",
+                "link": "./object_pages/object.html?model=handdrip"
+            },
+            {
+                "title": "일회용 컵 모델링",
+                "desc": "스타일라이즈드 컨셉 일회용 컵 모델링",
+                "thumb": "./images/disposablecup.png",
+                "link": "./object_pages/object.html?model=disposablecup"
+            },
+            {
+                "title": "의자, 테이블 모델링",
+                "desc": "스타일라이즈드 컨셉 의자, 테이블 모델링",
+                "thumb": "./images/chair_table.png",
+                "link": "./object_pages/object.html?model=chair_table"
+            }
+        ]
+    }
+]

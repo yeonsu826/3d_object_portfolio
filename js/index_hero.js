@@ -95,4 +95,49 @@ window.addEventListener('resize', () => {
 });
 
 
-        
+// 카드가 들어갈 메인 영역 찾기
+const mainContainer = document.getElementById('portfolio-main');
+
+// data.json 불러오기
+fetch('./json_files/data.json')
+    .then(response => response.json())
+    .then(data => {
+        data.forEach((group, index) => {
+            // 1. 그리드 컨테이너(상자) 생성
+            const grid = document.createElement('div');
+            grid.className = 'grid-container';
+
+            // 2. 그룹 안의 아이템(카드) 생성
+            group.items.forEach(item => {
+                const card = document.createElement('a');
+                card.href = item.link;
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-img" style="background-image: url('${item.thumb}');"></div>
+                    <div class="card-info">
+                        <h3 class="card-title">${item.title}</h3>
+                        <p class="card-desc">${item.desc}</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // 3. 메인 영역에 완성된 그리드 붙이기
+            mainContainer.appendChild(grid);
+
+            // 4. 그룹 사이에 여백 및 구분선 넣기
+            if (index < data.length - 1) {
+                mainContainer.insertAdjacentHTML('beforeend', '<div style="height: 60px;"></div>');
+                
+                // 두 번째 그룹(제작 과정)이 끝난 뒤에는 픽셀 구분선 추가
+                if (index === 1) {
+                    mainContainer.insertAdjacentHTML('beforeend', '<hr class="pixel-line">');
+                    mainContainer.insertAdjacentHTML('beforeend', '<div style="height: 60px;"></div>');
+                }
+            } else {
+                // 맨 마지막 그룹 뒤의 여백
+                mainContainer.insertAdjacentHTML('beforeend', '<div style="height: 60px;"></div>');
+            }
+        });
+    })
+    .catch(error => console.error('포트폴리오 데이터를 불러오는 데 실패함:', error));
