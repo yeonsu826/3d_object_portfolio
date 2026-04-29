@@ -3,191 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>카페 공간: 스타일라이즈드 3D 환경 포트폴리오</title>
+    <title>카페 공간: 스타일라이즈드 3D 환경 Presentation</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../css/cafe_project_style.css">
     
-    <style>
-        :root {
-            --primary-bg: #0a0a0c;
-            --accent-blue: #00f2ff;
-            --accent-orange: #f39c12;
-            --text-main: #e0e0e0;
-            --text-sub: #a0a0a0;
-            --border-color: rgba(0, 242, 255, 0.2);
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --error-red: #ff4757;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body {
-            background-color: #1a1a1d;
-            font-family: 'Noto Sans KR', sans-serif;
-            overflow: hidden;
-            width: 100%;
-            height: 100vh;
-        }
-
-        #presentation-area {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .slide-container {
-            align-items: center;
-            background-color: var(--primary-bg);
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
-            display: flex;
-            flex-direction: column;
-            height: 720px;
-            justify-content: center;
-            overflow: hidden;
-            padding: 60px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 1280px;
-            border: 1px solid #333;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s;
-            transform-origin: center center;
-            z-index: 1;
-        }
-
-        .slide-container.active {
-            opacity: 1;
-            visibility: visible;
-            z-index: 10;
-        }
-
-        .slide-container::before {
-            content: '';
-            position: absolute;
-            top: -30%; left: -30%;
-            width: 160%; height: 160%;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.04) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .slide-container > * { position: relative; z-index: 1; }
-
-        h1, h2, h3, h4 { font-family: 'Orbitron', 'Noto Sans KR', sans-serif; color: var(--text-main); }
-        
-        h1 { 
-            font-size: 72px; 
-            text-transform: uppercase; 
-            background: linear-gradient(90deg, #fff, var(--accent-blue)); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            margin-bottom: 10px;
-        }
-
-        .slide-title { 
-            font-size: 34px; 
-            margin-bottom: 30px; 
-            text-align: left; 
-            width: 100%; 
-            color: var(--accent-blue); 
-            border-left: 6px solid var(--accent-blue); 
-            padding-left: 20px; 
-            letter-spacing: 2px; 
-            text-transform: uppercase;
-        }
-
-        h3 { font-size: 26px; color: var(--accent-blue); margin-bottom: 15px; }
-        p { font-size: 17px; line-height: 1.6; color: var(--text-sub); margin-bottom: 15px; }
-
-        .subtitle { font-size: 20px; letter-spacing: 6px; margin-bottom: 10px; color: var(--text-sub); text-transform: uppercase; }
-
-        .content-area { 
-            display: flex; 
-            flex-direction: column; 
-            flex-grow: 1; 
-            justify-content: center; 
-            width: 100%; 
-            height: 100%;
-        }
-
-        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; height: 100%; align-items: center; }
-
-        .image-wrapper { 
-            border-radius: 10px; 
-            overflow: hidden; 
-            width: 100%; 
-            height: 100%;
-            border: 1px solid var(--border-color); 
-            background-color: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        .image-wrapper img { height: 100%; width: 100%; object-fit: cover; transition: transform 0.3s ease; cursor: zoom-in; }
-        .image-wrapper img:hover { transform: scale(1.04); }
-        .image-wrapper.contain img { object-fit: contain; }
-
-        .index-list { width: 100%; max-width: 1000px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-        .index-item {
-            display: flex;
-            align-items: center;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 4px solid var(--accent-blue);
-            transition: all 0.3s;
-        }
-        .index-item:hover { background: rgba(0, 242, 255, 0.05); transform: translateX(10px); }
-        .toc-num { color: var(--accent-blue); font-size: 32px; margin-right: 25px; font-weight: 700; font-family: 'Orbitron'; }
-        .toc-desc h4 { font-size: 20px; margin-bottom: 5px; color: #fff; }
-        .toc-desc p { font-size: 14px; color: var(--text-sub); margin-bottom: 0; }
-
-        .text-box ul { list-style: none; padding: 0; }
-        .text-box li { position: relative; padding-left: 28px; margin-bottom: 18px; font-size: 18px; color: var(--text-main); line-height: 1.5; }
-        .text-box li::before { content: '◈'; position: absolute; left: 0; color: var(--accent-blue); font-size: 14px; top: 2px; }
-
-        .trouble-box {
-            background: rgba(255, 71, 87, 0.05);
-            border: 1px solid rgba(255, 71, 87, 0.2);
-            border-left: 6px solid var(--error-red);
-            padding: 35px;
-            border-radius: 12px;
-            backdrop-filter: blur(5px);
-        }
-        .trouble-box h4 { color: var(--error-red); margin-bottom: 15px; font-size: 24px; text-transform: uppercase; }
-        .trouble-box strong { color: var(--error-red); }
-
-        .controls { position: fixed; bottom: 30px; right: 40px; display: flex; gap: 12px; z-index: 100; }
-        .controls button {
-            background-color: rgba(10, 10, 12, 0.9);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 10px 18px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s;
-            backdrop-filter: blur(10px);
-        }
-        .controls button:hover { background-color: var(--accent-blue); color: #000; border-color: var(--accent-blue); }
-        
-        .slide-counter { position: fixed; bottom: 30px; left: 40px; color: var(--accent-blue); font-family: 'Orbitron'; font-size: 16px; font-weight: 700; z-index: 100; letter-spacing: 2px; }
-
-        .image-modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; cursor: zoom-out; }
-        .image-modal.show { display: flex; }
-        .image-modal-content { max-width: 90%; max-height: 90%; border: 2px solid var(--accent-blue); border-radius: 8px; box-shadow: 0 0 30px rgba(0, 242, 255, 0.3); }
-    </style>
 </head>
 
 <body>
@@ -198,11 +21,71 @@
             <p class="subtitle">3D Environment Artist Portfolio</p>
             <h1>CAFE SPACE</h1>
             <p style="letter-spacing: 3px; color: var(--accent-blue); font-family: 'Orbitron'; font-weight: 700; margin-top: 15px;">STYLIZED 3D ENVIRONMENT DEVELOPMENT</p>
-            <div style="margin-top: 60px; height: 2px; width: 150px; background: var(--accent-blue); margin-left: auto; margin-right: auto;"></div>
-            <p style="margin-top: 20px; font-size: 20px; color: #fff; font-weight: 300;">Artist : 정연수</p>
+            
         </div>
     </div>
 
+    
+    <!-- Slide 2: Table of Contents -->
+    <div class="slide-container" id="slide2">
+        <h2 class="slide-title">CONTENTS</h2>
+        <div class="content-area">
+            <div class="index-list">
+                <div class="index-item">
+                    <h3>01</h3>
+                    <div class="toc-thumbnail">
+                        <img src="1_1.jpg" alt="01 안경 기본형 미리보기" onerror="this.src='result_files\\1_1.png'">
+                    </div>
+                    <div class="desc">
+                        <h4>3D 모델링</h4>
+                        <p>블렌더를 활용한 스타일라이즈드 3D 공간 구축</p>
+                    </div>
+                </div>
+                <div class="index-item">
+                    <h3>02</h3>
+                    <div class="toc-thumbnail">
+                        <img src="2_1.jpg" alt="02 VR 선글라스 미리보기" onerror="this.src='result_files\\1_2.png'">
+                    </div>
+                    <div class="desc">
+                        <h4>텍스처링</h4>
+                        <p>Substance Painter를 활용한애니메이션 풍 텍스</p>
+                    </div>
+                </div>
+                <div class="index-item">
+                    <h3>03</h3>
+                    <div class="toc-thumbnail">
+                        <img src="3_1.jpg" alt="03 고글 기본형 미리보기" onerror="this.src='result_files\\1_3.png'">
+                    </div>
+                    <div class="desc">
+                        <h4>언리얼 엔진</h4>
+                        <p>Unreal Engine 5 임포트</p>
+                    </div>
+                </div>
+                <div class="index-item">
+                    <h3>04</h3>
+                    <div class="toc-thumbnail">
+                        <img src="4_1.jpg" alt="04 고글 기본형 미리보기" onerror="this.src='result_files\\1_4.png'">
+                    </div>
+                    <div class="desc">
+                        <h4>결과물</h4>
+                        <p>카페 스타일라이즈드 공간 구현결과물</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 
+    <div class="slide-container" id="slide2">
+        <h2 class="slide-title">CONTENTS</h2>
+        <div class="content-area">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 
     <div class="slide-container" id="slide2">
         <h2 class="slide-title">CONTENTS</h2>
         <div class="content-area">
@@ -251,7 +134,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="slide-container" id="slide3">
         <h2 class="slide-title">01. 공간 컨셉 및 기획</h2>
