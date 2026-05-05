@@ -1,14 +1,15 @@
-
 :root {
-    --primary-bg: #0a0a0c;
-    --accent-blue: #00f2ff;
-    --accent-orange: #f39c12;
-    --text-main: #e0e0e0;
-    --text-sub: #a0a0a0;
-    --border-color: rgba(0, 242, 255, 0.2);
-    --card-bg: rgba(255, 255, 255, 0.03);
-    --error-red: #ff4757;
+    /* 따뜻한 카페 무드의 컬러 팔레트 */
+    --primary-bg: #FAF6F0; 
+    --slide-bg: #FCF9F2;     /* 1. 슬라이드 배경: 순백색 -> 따뜻하고 눈이 편안한 바닐라/크림색 */
+    --accent-color: #D37A3D; 
+    --text-main: #3E3227; 
+    --text-sub: #756658;     /* 2. 서브 텍스트: 배경이 어두워진 만큼 가독성을 위해 조금 더 짙게 */
+    --border-color: #E8DFD5; 
+    --card-bg: #F4EBE1;      /* 3. 박스 배경: 슬라이드 배경과 구분되도록 아주 살짝 더 톤다운 */
+    --error-red: #CD5C5C;
 }
+
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -135,7 +136,14 @@ p { font-size: 17px; line-height: 1.6; color: var(--text-sub); margin-bottom: 15
     border-left: 4px solid var(--accent-blue);
     transition: all 0.3s;
 }
-.index-item:hover { background: rgba(0, 242, 255, 0.05); transform: translateX(10px); }
+
+.index-item:hover { 
+    background: var(--slide-bg); /* 하얀색 대신 슬라이드 배경과 동일한 부드러운 색 적용 */
+    border-color: var(--accent-color);
+    box-shadow: 0 10px 20px rgba(211, 122, 61, 0.15);
+    transform: translateY(-5px); 
+}
+
 .toc-num { color: var(--accent-blue); font-size: 32px; margin-right: 25px; font-weight: 700; font-family: 'Orbitron'; }
 .toc-desc h4 { font-size: 20px; margin-bottom: 5px; color: #fff; }
 .toc-desc p { font-size: 14px; color: var(--text-sub); margin-bottom: 0; }
