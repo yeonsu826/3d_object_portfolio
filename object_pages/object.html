@@ -3,26 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>3D 오브젝트 뷰어</title>
-    <style>
-        body { margin: 0; overflow: hidden; background-color: #f0f0f0; }
-        
-        /* 메인으로 돌아가는 버튼 스타일 */
-        .back-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 10px 20px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            text-decoration: none;
-            font-family: sans-serif;
-            font-weight: bold;
-            border-radius: 8px;
-            z-index: 100; /* 3D 캔버스 위로 올라오게 설정 */
-            transition: background-color 0.2s;
-        }
-        .back-btn:hover { background-color: rgba(0, 0, 0, 1); }
-    </style>
+
     <script type="importmap">
         {
             "imports": {
@@ -31,10 +12,13 @@
             }
         }
     </script>
+    
+    <link rel="stylesheet" href="./object.css">
+
 </head>
 <body>
     <a href="../index.html" class="back-btn">← 메인으로 돌아가기</a>
     
-    <script type="module" src="../js/app.js"></script>   
+    <script type="module" src="./app.js"></script>   
 </body>
 </html>
