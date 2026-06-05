@@ -89,7 +89,14 @@
                 "desc": "스타일라이즈드 컨셉 의자, 테이블 모델링",
                 "thumb": "./images/chair_table.png",
                 "link": "./object_pages/object.html?model=chair_table"
+            },
+            {
+                "title": "Cafe 공간 모델링 제작 과정",
+                "desc": "스타일라이즈드 컨셉 공간 제작 설명 페이지",
+                "thumb": "./images/cafe_project_process.png",
+                "link": "./work_process/cafe_project/cafe_project.html"
             }
+            
         ]
     }
 ]

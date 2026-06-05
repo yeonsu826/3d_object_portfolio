@@ -242,6 +242,31 @@ p, li { color: var(--text-sub); font-size: 16px; line-height: 1.6; }
     backdrop-filter: blur(4px);
 }
 
+.home-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 30px auto 0;
+    padding: 14px 28px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 242, 255, 0.35);
+    background: rgba(0, 242, 255, 0.12);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.home-button i {
+    margin-right: 10px;
+}
+
+.home-button:hover {
+    background: rgba(0, 242, 255, 0.2);
+    transform: translateY(-2px);
+}
+
 .controls button:hover {
     background-color: var(--accent-blue);
     color: #000;
