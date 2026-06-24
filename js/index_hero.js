@@ -24,9 +24,23 @@ let mainModel;
 const loader = new GLTFLoader();
 
 // 대표 모델 불러오기 (원하는 모델 파일명으로 변경하세요)
+// 로딩 텍스트 요소 생성
+const headerEl = document.querySelector('header') || document.body;
+const loadingEl = document.createElement('div');
+loadingEl.id = 'glb-loading';
+loadingEl.textContent = 'Loading...';
+headerEl.appendChild(loadingEl);
+
+function hideLoading() {
+    if (!loadingEl) return;
+    loadingEl.style.transition = 'opacity 0.25s ease';
+    loadingEl.style.opacity = '0';
+    setTimeout(() => loadingEl.remove(), 300);
+}
+
 loader.load('./glb_files/glasses_1.glb', function (gltf) {
     mainModel = gltf.scene;
-    
+
     // 크기 맞추기
     const box = new THREE.Box3().setFromObject(mainModel);
     const size = box.getSize(new THREE.Vector3());
@@ -49,7 +63,24 @@ loader.load('./glb_files/glasses_1.glb', function (gltf) {
     });
 
     scene.add(mainModel);
-});
+    hideLoading();
+},
+// 로딩 진행 콜백
+function (xhr) {
+    if (xhr && xhr.loaded != null && xhr.total > 0) {
+        const percent = Math.min(100, Math.max(0, Math.round((xhr.loaded / xhr.total) * 100)));
+        loadingEl.textContent = `Loading... ${percent}%`;
+    } else {
+        loadingEl.textContent = 'Loading...';
+    }
+},
+// 에러 콜백
+function (error) {
+    console.error('GLB 로드 중 오류:', error);
+    if (loadingEl) loadingEl.textContent = 'Failed to load model';
+    setTimeout(() => loadingEl && loadingEl.remove(), 2000);
+}
+);
 
 // 마우스 위치 추적 변수
 let mouseX = 0;
@@ -95,4 +126,49 @@ window.addEventListener('resize', () => {
 });
 
 
-        
+// 카드가 들어갈 메인 영역 찾기
+const mainContainer = document.getElementById('portfolio-main');
+
+// data.json 불러오기
+fetch('./json_files/data.json')
+    .then(response => response.json())
+    .then(data => {
+        data.forEach((group, index) => {
+            // 1. 그리드 컨테이너(상자) 생성
+            const grid = document.createElement('div');
+            grid.className = 'grid-container';
+
+            // 2. 그룹 안의 아이템(카드) 생성
+            group.items.forEach(item => {
+                const card = document.createElement('a');
+                card.href = item.link;
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-img" style="background-image: url('${item.thumb}');"></div>
+                    <div class="card-info">
+                        <h3 class="card-title">${item.title}</h3>
+                        <p class="card-desc">${item.desc}</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // 3. 메인 영역에 완성된 그리드 붙이기
+            mainContainer.appendChild(grid);
+
+            // 4. 그룹 사이에 여백 및 구분선 넣기
+            if (index < data.length - 1) {
+                mainContainer.insertAdjacentHTML('beforeend', '<div style="height: 60px;"></div>');
+                
+                // 두 번째 그룹(제작 과정)이 끝난 뒤에는 픽셀 구분선 추가
+                if (index === 1) {
+                    mainContainer.insertAdjacentHTML('beforeend', '<hr class="pixel-line">');
+                    mainContainer.insertAdjacentHTML('beforeend', '<div style="height: 60px;"></div>');
+                }
+            } else {
+                // 맨 마지막 그룹 뒤의 여백
+                mainContainer.insertAdjacentHTML('beforeend', '<div style="height: 60px;"></div>');
+            }
+        });
+    })
+    .catch(error => console.error('포트폴리오 데이터를 불러오는 데 실패함:', error));
