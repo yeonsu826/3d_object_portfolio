@@ -24,9 +24,23 @@ let mainModel;
 const loader = new GLTFLoader();
 
 // 대표 모델 불러오기 (원하는 모델 파일명으로 변경하세요)
+// 로딩 텍스트 요소 생성
+const headerEl = document.querySelector('header') || document.body;
+const loadingEl = document.createElement('div');
+loadingEl.id = 'glb-loading';
+loadingEl.textContent = 'Loading...';
+headerEl.appendChild(loadingEl);
+
+function hideLoading() {
+    if (!loadingEl) return;
+    loadingEl.style.transition = 'opacity 0.25s ease';
+    loadingEl.style.opacity = '0';
+    setTimeout(() => loadingEl.remove(), 300);
+}
+
 loader.load('./glb_files/glasses_1.glb', function (gltf) {
     mainModel = gltf.scene;
-    
+
     // 크기 맞추기
     const box = new THREE.Box3().setFromObject(mainModel);
     const size = box.getSize(new THREE.Vector3());
@@ -49,7 +63,24 @@ loader.load('./glb_files/glasses_1.glb', function (gltf) {
     });
 
     scene.add(mainModel);
-});
+    hideLoading();
+},
+// 로딩 진행 콜백
+function (xhr) {
+    if (xhr && xhr.loaded && xhr.total) {
+        const percent = Math.round((xhr.loaded / xhr.total) * 100);
+        loadingEl.textContent = `Loading... ${percent}%`;
+    } else {
+        loadingEl.textContent = 'Loading...';
+    }
+},
+// 에러 콜백
+function (error) {
+    console.error('GLB 로드 중 오류:', error);
+    if (loadingEl) loadingEl.textContent = 'Failed to load model';
+    setTimeout(() => loadingEl && loadingEl.remove(), 2000);
+}
+);
 
 // 마우스 위치 추적 변수
 let mouseX = 0;

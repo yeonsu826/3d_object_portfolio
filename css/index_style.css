@@ -27,10 +27,26 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
     /* 배경을 투명하게 해서 뒤의 3D 캔버스가 보이게 함 */
     background: radial-gradient(circle, rgba(30,30,30,0.3) 0%, rgba(18,18,18,1) 100%);
     border-bottom: 1px solid #333;
     padding: 0 20px;
+}
+
+/* GLB 로딩 표시 (헤더 중앙에 겹쳐서 보임) */
+#glb-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    backdrop-filter: blur(4px);
 }
 
 h1 {

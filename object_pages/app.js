@@ -24,6 +24,22 @@ scene.add(directionalLight);
 
 const loader = new GLTFLoader();
 
+// 로딩 오버레이 생성
+const loadingOverlay = document.createElement('div');
+loadingOverlay.id = 'glb-loading-overlay';
+const loadingLabel = document.createElement('div');
+loadingLabel.className = 'label';
+loadingLabel.textContent = 'Loading...';
+loadingOverlay.appendChild(loadingLabel);
+document.body.appendChild(loadingOverlay);
+
+function hideLoadingOverlay() {
+    if (!loadingOverlay) return;
+    loadingOverlay.style.transition = 'opacity 0.25s ease';
+    loadingOverlay.style.opacity = '0';
+    setTimeout(() => loadingOverlay.remove(), 300);
+}
+
 // --- 1. URL 파라미터 읽어오기 ---
 const urlParams = new URLSearchParams(window.location.search);
 const targetModel = urlParams.get('model');
@@ -89,10 +105,19 @@ loader.load(
         model.position.z -= center.z;
 
         console.log(modelPath + ' 로드 및 재질 세팅 완료!');
+        hideLoadingOverlay();
     },
-    undefined,
+    // 진행 콜백
+    function (xhr) {
+        if (xhr && xhr.loaded && xhr.total) {
+            const percent = Math.round((xhr.loaded / xhr.total) * 100);
+            loadingLabel.textContent = `Loading... ${percent}%`;
+        }
+    },
     function (error) {
         console.error('모델 로드 실패. 파일 이름을 다시 확인하세요:', error);
+        loadingLabel.textContent = 'Failed to load model';
+        setTimeout(() => loadingOverlay && loadingOverlay.remove(), 2000);
     }
 );
 
