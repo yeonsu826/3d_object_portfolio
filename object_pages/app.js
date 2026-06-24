@@ -109,8 +109,8 @@ loader.load(
     },
     // 진행 콜백
     function (xhr) {
-        if (xhr && xhr.loaded && xhr.total) {
-            const percent = Math.round((xhr.loaded / xhr.total) * 100);
+        if (xhr && xhr.loaded != null && xhr.total > 0) {
+            const percent = Math.min(100, Math.max(0, Math.round((xhr.loaded / xhr.total) * 100)));
             loadingLabel.textContent = `Loading... ${percent}%`;
         }
     },
