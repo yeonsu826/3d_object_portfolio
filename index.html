@@ -1,34 +1,22 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>연수의 3D 작업물 리스트</title>
-    
-    <link rel="stylesheet" href="./css/index_style.css">
 
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-            }
-        }
-    </script>
-</head>
-<body>
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>연수의 3D 작업물 포트폴리오</title>
+      <meta name="description" content="Create and showcase professional 3D design portfolios to highlight your skills and attract potential clients or employers effectively." />
+      <meta name="robots" content="noindex, nofollow" />
+      <style>html, body { height: 100%; margin: 0; } #root { height: 100%; }</style>
+      
+    </head>
 
-    <canvas id="bg-canvas"></canvas>
-
-    <header>
-        <h1>정연수 3D 작업물 리스트</h1>
-        <p class="subtitle">개발과 3D 아트웍 결합한 인터렉티브 프로그램 만들기</p>
-    </header>
-
-    <main id="portfolio-main">
-    </main>
-
-    <script type="module" src="./js/index_hero.js"></script>
-    
-</body>
-</html>
+    <body>
+      
+      <div id="root"></div>
+      <script type="module" src="/src/main.tsx"></script>
+      
+    </body>
+  </html>
+  
