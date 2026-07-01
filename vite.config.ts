@@ -5,6 +5,8 @@ import { promises as fs } from 'fs'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 
+
+
 function figmaAssetResolver() {
   return {
     name: 'figma-asset-resolver',
@@ -47,6 +49,7 @@ function serveGlbFilesPlugin() {
 }
 
 export default defineConfig({
+  base: '/3d_object_portfolio/', 
   plugins: [
     figmaAssetResolver(),
     serveGlbFilesPlugin(),
