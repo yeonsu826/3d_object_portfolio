@@ -49,18 +49,14 @@ function serveGlbFilesPlugin() {
 }
 
 export default defineConfig({
-  base: '/3d_object_portfolio/', 
+  base: '/3d_object_portfolio_v2/', 
   plugins: [
-    figmaAssetResolver(),
-    serveGlbFilesPlugin(),
-    // The React and Tailwind plugins are both required for Make, even if
-    // Tailwind is not being actively used – do not remove them
+    // figmaAssetResolver(), // 필요시 유지
     react(),
     tailwindcss(),
   ],
   resolve: {
     alias: {
-      // Alias @ to the src directory
       '@': path.resolve(__dirname, './src'),
     },
   },

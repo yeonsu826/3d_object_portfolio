@@ -4,29 +4,39 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-const STATIC_GLB_MAP: Record<string, string> = {
-  glasses_1: new URL('../../glb_files/glasses_1.glb', import.meta.url).href,
-  glasses_2: new URL('../../glb_files/glasses_2.glb', import.meta.url).href,
-  glasses_3: new URL('../../glb_files/glasses_3.glb', import.meta.url).href,
-  cafe: new URL('../../glb_files/cafe.glb', import.meta.url).href,
-  coffeemachine: new URL('../../glb_files/coffeemachine.glb', import.meta.url).href,
-  coffeegrinder: new URL('../../glb_files/coffeegrinder.glb', import.meta.url).href,
-  coffeepot: new URL('../../glb_files/coffeepot.glb', import.meta.url).href,
-  bag: new URL('../../glb_files/bag.glb', import.meta.url).href,
-  kettle: new URL('../../glb_files/kettle.glb', import.meta.url).href,
-  handdrip: new URL('../../glb_files/handdrip.glb', import.meta.url).href,
-  disposablecup: new URL('../../glb_files/disposablecup.glb', import.meta.url).href,
-  chair_table: new URL('../../glb_files/chair_table.glb', import.meta.url).href,
-  gaming_room: new URL('../../glb_files/glasses_1.glb', import.meta.url).href,
-  gaming_setup: new URL('../../glb_files/glasses_1.glb', import.meta.url).href,
-  gaming_chair: new URL('../../glb_files/glasses_1.glb', import.meta.url).href,
-  stage_set: new URL('../../glb_files/glasses_1.glb', import.meta.url).href,
-  stage_lighting: new URL('../../glb_files/glasses_1.glb', import.meta.url).href,
-  stage_props: new URL('../../glb_files/glasses_1.glb', import.meta.url).href,
-  video_edit: new URL('../../glb_files/glasses_1.glb', import.meta.url).href,
-  motion_graphics: new URL('../../glb_files/glasses_1.glb', import.meta.url).href,
-  video_story: new URL('../../glb_files/glasses_1.glb', import.meta.url).href,
+// 1. 파일 이름 리스트 관리 (여기를 수정하면 됩니다)
+const GLB_FILES: Record<string, string> = {
+  glasses_1: 'glasses_1.glb',
+  glasses_2: 'glasses_2.glb',
+  glasses_3: 'glasses_3.glb',
+  cafe: 'cafe.glb',
+  coffeemachine: 'coffeemachine.glb',
+  coffeegrinder: 'coffeegrinder.glb',
+  coffeepot: 'coffeepot.glb',
+  bag: 'bag.glb',
+  kettle: 'kettle.glb',
+  handdrip: 'handdrip.glb',
+  disposablecup: 'disposablecup.glb',
+  chair_table: 'chair_table.glb',
+  // gaming_room: 'glasses_1.glb',      // TODO: 실제 파일명으로 수정 필요
+  // gaming_setup: 'glasses_1.glb',     // TODO: 실제 파일명으로 수정 필요
+  // gaming_chair: 'glasses_1.glb',     // TODO: 실제 파일명으로 수정 필요
+  // stage_set: 'glasses_1.glb',        // TODO: 실제 파일명으로 수정 필요
+  // stage_lighting: 'glasses_1.glb',   // TODO: 실제 파일명으로 수정 필요
+  // stage_props: 'glasses_1.glb',      // TODO: 실제 파일명으로 수정 필요
+  // video_edit: 'glasses_1.glb',       // TODO: 실제 파일명으로 수정 필요
+  // motion_graphics: 'glasses_1.glb',  // TODO: 실제 파일명으로 수정 필요
+  // video_story: 'glasses_1.glb',      // TODO: 실제 파일명으로 수정 필요
 };
+
+// 2. 실제 코드에서 사용할 경로 맵 자동 생성
+export const STATIC_GLB_MAP = Object.fromEntries(
+  Object.entries(GLB_FILES).map(([key, filename]) => [
+    key, 
+    `${import.meta.env.BASE_URL}glb_files/${filename}`
+  ])
+);
+
 const STATIC_GLB_IDS = new Set(Object.keys(STATIC_GLB_MAP));
 
 // ─── IndexedDB ────────────────────────────────────────────────────────────────
@@ -158,97 +168,97 @@ interface PortfolioGroup {
   emoji: string;
   items: PortfolioItem[];
 }
-
 const PORTFOLIO: PortfolioGroup[] = [
   {
     groupName: "안경 프로젝트",
     emoji: "👓",
     items: [
-      { id: "glasses_1", title: "안경", desc: "기본 안경 모델링", thumb: "./images/glasses_1.png" },
-      { id: "glasses_2", title: "K-style 안경", desc: "K-style 안경 모델", thumb: "./images/glasses_2.png" },
-      { id: "glasses_3", title: "VR 안경", desc: "VR Glasses 모델링", thumb: "./images/glasses_3.png" },
-      { id: "glass_project_process", title: "안경 제작 과정", desc: "제작 과정 설명 페이지", thumb: "./images/glass_project_process.png", isProcess: true, link: "./work_process/glasses_project/glasses_project.html" },
-      { id: "glasses_result_gallery", title: "안경 결과 렌더링", desc: "안경 프로젝트 결과 이미지와 영상", thumb: "./images/glasses/1.png", mediaType: "gallery", galleryImages: [
-        "./images/glasses/1.png",
-        "./images/glasses/2.png",
-        "./images/glasses/3.png",
-        "./images/glasses/4.png",
-        "./images/glasses/5.png",
-        "./images/glasses/6.png",
-        "./images/glasses/7.png",
-        "./images/glasses/8.png",
-        "./images/glasses/9.png",
-        "./images/glasses/10.png",
-        "./images/glasses/11.png",
-        "./images/glasses/12.png",
-        "./images/glasses/13.png",
-        "./images/glasses/14.png",
-        "./images/glasses/15.png",
-        "./images/glasses/16.png",
-        "./images/glasses/17.png",
-        "./images/glasses/18.png",
-        "./images/glasses/19.png",
-        "./images/glasses/20.png",
-        "./images/glasses/21.png",
-        "./images/glasses/22.png",
-        "./images/glasses/23.png",
-        "./images/glasses/24.png",
-        "./images/glasses/25.png",
-        "./images/glasses/26.png",
-        "./images/glasses/27.png",
-        "./images/glasses/28.png",
-        "./images/glasses/29.png",
+      { id: "glasses_result_gallery", title: "안경 결과 렌더링", desc: "안경 프로젝트 결과 이미지와 영상", thumb: `${import.meta.env.BASE_URL}images/glasses/1.png`, mediaType: "gallery", galleryImages: [
+        `${import.meta.env.BASE_URL}images/glasses/1.png`,
+        `${import.meta.env.BASE_URL}images/glasses/2.png`,
+        `${import.meta.env.BASE_URL}images/glasses/4.png`,
+        `${import.meta.env.BASE_URL}images/glasses/5.png`,
+        `${import.meta.env.BASE_URL}images/glasses/6.png`,
+        `${import.meta.env.BASE_URL}images/glasses/3.png`,
+        `${import.meta.env.BASE_URL}images/glasses/7.png`,
+        `${import.meta.env.BASE_URL}images/glasses/8.png`,
+        `${import.meta.env.BASE_URL}images/glasses/9.png`,
+        `${import.meta.env.BASE_URL}images/glasses/10.png`,
+        `${import.meta.env.BASE_URL}images/glasses/11.png`,
+        `${import.meta.env.BASE_URL}images/glasses/12.png`,
+        `${import.meta.env.BASE_URL}images/glasses/13.png`,
+        `${import.meta.env.BASE_URL}images/glasses/14.png`,
+        `${import.meta.env.BASE_URL}images/glasses/15.png`,
+        `${import.meta.env.BASE_URL}images/glasses/16.png`,
+        `${import.meta.env.BASE_URL}images/glasses/17.png`,
+        `${import.meta.env.BASE_URL}images/glasses/18.png`,
+        `${import.meta.env.BASE_URL}images/glasses/19.png`,
+        `${import.meta.env.BASE_URL}images/glasses/20.png`,
+        `${import.meta.env.BASE_URL}images/glasses/21.png`,
+        `${import.meta.env.BASE_URL}images/glasses/22.png`,
+        `${import.meta.env.BASE_URL}images/glasses/23.png`,
+        `${import.meta.env.BASE_URL}images/glasses/24.png`,
+        `${import.meta.env.BASE_URL}images/glasses/25.png`,
+        `${import.meta.env.BASE_URL}images/glasses/26.png`,
+        `${import.meta.env.BASE_URL}images/glasses/27.png`,
+        `${import.meta.env.BASE_URL}images/glasses/28.png`,
+        `${import.meta.env.BASE_URL}images/glasses/29.png`,
       ], videoLinks: [
         "https://drive.google.com/file/d/1dTS_g03Vwdw9BfpnFqk0ZQC4ey5lu9zM/view?usp=drive_link",
         "https://drive.google.com/file/d/1XkE5SO1fS3AC-Kcrp3KGZinesodA1TJI/view?usp=drive_link",
       ] },
+      { id: "glasses_1", title: "안경", desc: "기본 안경 모델링", thumb: `${import.meta.env.BASE_URL}images/glasses_1.png` },
+      { id: "glasses_2", title: "K-style 안경", desc: "K-style 안경 모델", thumb: `${import.meta.env.BASE_URL}images/glasses_2.png` },
+      { id: "glasses_3", title: "VR 안경", desc: "VR Glasses 모델링", thumb: `${import.meta.env.BASE_URL}images/glasses_3.png` },
+      { id: "glass_project_process", title: "안경 제작 과정", desc: "제작 과정 설명 페이지", thumb: `${import.meta.env.BASE_URL}images/glass_project_process.png`, isProcess: true, link: `${import.meta.env.BASE_URL}glasses_project/index.html` },
     ],
   },
   {
     groupName: "카페 프로젝트",
     emoji: "☕",
     items: [
-      { id: "cafe", title: "카페 공간", desc: "카페 전체 공간 모델링", thumb: "./images/cafe.jpeg" },
-      { id: "coffeemachine", title: "Coffee Machine", desc: "커피머신 모델링", thumb: "./images/coffeemachine.png" },
-      { id: "coffeegrinder", title: "Coffee Grinder", desc: "스타일라이즈드 컨셉 커피 그라인더 모델링", thumb: "./images/coffeegrinder.png" },
-      { id: "coffeepot", title: "Coffee Pot", desc: "스타일라이즈드 컨셉 커피 포트 모델링", thumb: "./images/coffeepot.png" },
-      { id: "bag", title: "Coffee Bag", desc: "스타일라이즈드 컨셉 커피 백 모델링", thumb: "./images/bag.png" },
-      { id: "kettle", title: "Kettle", desc: "스타일라이즈드 컨셉 주전자 모델링", thumb: "./images/kettle.png" },
-      { id: "handdrip", title: "Handdrip Coffee", desc: "스타일라이즈드 컨셉 핸드드립 커피 모델링", thumb: "./images/handdrip.png" },
-      { id: "disposablecup", title: "일회용 컵", desc: "스타일라이즈드 컨셉 일회용 컵 모델링", thumb: "./images/disposablecup.png" },
-      { id: "chair_table", title: "의자 · 테이블", desc: "스타일라이즈드 컨셉 의자, 테이블 모델링", thumb: "./images/chair_table.png" },
-      { id: "cafe_project_process", title: "카페 공간 제작 과정", desc: "스타일라이즈드 컨셉 공간 제작 설명 페이지", thumb: "./images/cafe_project_process.png", isProcess: true, link: "./work_process/cafe_project/cafe_project.html" },
-      { id: "cafe_result_gallery", title: "카페 결과 렌더링", desc: "카페 프로젝트 결과 이미지와 영상", thumb: "./images/cafe/0.jpeg", mediaType: "gallery", galleryImages: [
-        "./images/cafe/0.jpeg",
-        "./images/cafe/1.jpeg",
-        "./images/cafe/2.jpeg",
-        "./images/cafe/3.jpeg",
-        "./images/cafe/4.jpeg",
-        "./images/cafe/5.jpeg",
-        "./images/cafe/6.jpeg",
+      { id: "cafe_result_gallery", title: "카페 결과 렌더링", desc: "카페 프로젝트 결과 이미지와 영상", thumb: `${import.meta.env.BASE_URL}images/cafe/0.jpeg`, mediaType: "gallery", galleryImages: [
+        `${import.meta.env.BASE_URL}images/cafe/0.jpeg`,
+        `${import.meta.env.BASE_URL}images/cafe/1.jpeg`,
+        `${import.meta.env.BASE_URL}images/cafe/2.jpeg`,
+        `${import.meta.env.BASE_URL}images/cafe/3.jpeg`,
+        `${import.meta.env.BASE_URL}images/cafe/4.jpeg`,
+        `${import.meta.env.BASE_URL}images/cafe/5.jpeg`,
+        `${import.meta.env.BASE_URL}images/cafe/6.jpeg`,
       ], videoLinks: [
         "https://drive.google.com/file/d/1Gcl7gPJSkSSYWH6YBFoNTYB_78xN2WFp/view?usp=drive_link",
         "https://drive.google.com/file/d/1buT0a9OPEFYPeK3YSYEcteHSf8nRteZb/view?usp=sharing",
       ] },
+      { id: "cafe", title: "카페 공간", desc: "카페 전체 공간 모델링", thumb: `${import.meta.env.BASE_URL}images/cafe.jpeg` },
+      { id: "coffeemachine", title: "Coffee Machine", desc: "커피머신 모델링", thumb: `${import.meta.env.BASE_URL}images/coffeemachine.png` },
+      { id: "coffeegrinder", title: "Coffee Grinder", desc: "스타일라이즈드 컨셉 커피 그라인더 모델링", thumb: `${import.meta.env.BASE_URL}images/coffeegrinder.png` },
+      { id: "coffeepot", title: "Coffee Pot", desc: "스타일라이즈드 컨셉 커피 포트 모델링", thumb: `${import.meta.env.BASE_URL}images/coffeepot.png` },
+      { id: "bag", title: "Coffee Bag", desc: "스타일라이즈드 컨셉 커피 백 모델링", thumb: `${import.meta.env.BASE_URL}images/bag.png` },
+      { id: "kettle", title: "Kettle", desc: "스타일라이즈드 컨셉 주전자 모델링", thumb: `${import.meta.env.BASE_URL}images/kettle.png` },
+      { id: "handdrip", title: "Handdrip Coffee", desc: "스타일라이즈드 컨셉 핸드드립 커피 모델링", thumb: `${import.meta.env.BASE_URL}images/handdrip.png` },
+      { id: "disposablecup", title: "일회용 컵", desc: "스타일라이즈드 컨셉 일회용 컵 모델링", thumb: `${import.meta.env.BASE_URL}images/disposablecup.png` },
+      { id: "chair_table", title: "의자 · 테이블", desc: "스타일라이즈드 컨셉 의자, 테이블 모델링", thumb: `${import.meta.env.BASE_URL}images/chair_table.png` },
+      { id: "cafe_project_process", title: "카페 공간 제작 과정", desc: "스타일라이즈드 컨셉 공간 제작 설명 페이지", thumb: `${import.meta.env.BASE_URL}images/cafe_project_process.png`, isProcess: true, link: `${import.meta.env.BASE_URL}cafe_project/index.html` },
+      
     ],
   },
   {
     groupName: "게이밍룸 프로젝트",
     emoji: "🎮",
     items: [
-      { id: "gamingroom_result_gallery", title: "게이밍룸 결과 렌더링", desc: "게이밍룸 프로젝트 이미지 갤러리", thumb: "./images/gamingroom/1.jpeg", mediaType: "gallery", galleryImages: [
-        "./images/gamingroom/1.jpeg",
-        "./images/gamingroom/2.jpeg",
-        "./images/gamingroom/3.jpeg",
-        "./images/gamingroom/4.jpeg",
-        "./images/gamingroom/5.jpeg",
-        "./images/gamingroom/6.jpeg",
-        "./images/gamingroom/7.jpeg",
-        "./images/gamingroom/8.jpeg",
-        "./images/gamingroom/9.jpeg",
-        "./images/gamingroom/10.jpeg",
-        "./images/gamingroom/11.jpeg",
-        "./images/gamingroom/12.jpeg",
+      { id: "gamingroom_result_gallery", title: "게이밍룸 결과 렌더링", desc: "게이밍룸 프로젝트 이미지 갤러리", thumb: `${import.meta.env.BASE_URL}images/gamingroom/1.jpeg`, mediaType: "gallery", galleryImages: [
+        `${import.meta.env.BASE_URL}images/gamingroom/1.jpeg`,
+        `${import.meta.env.BASE_URL}images/gamingroom/2.jpeg`,
+        `${import.meta.env.BASE_URL}images/gamingroom/3.jpeg`,
+        `${import.meta.env.BASE_URL}images/gamingroom/4.jpeg`,
+        `${import.meta.env.BASE_URL}images/gamingroom/5.jpeg`,
+        `${import.meta.env.BASE_URL}images/gamingroom/6.jpeg`,
+        `${import.meta.env.BASE_URL}images/gamingroom/7.jpeg`,
+        `${import.meta.env.BASE_URL}images/gamingroom/8.jpeg`,
+        `${import.meta.env.BASE_URL}images/gamingroom/9.jpeg`,
+        `${import.meta.env.BASE_URL}images/gamingroom/10.jpeg`,
+        `${import.meta.env.BASE_URL}images/gamingroom/11.jpeg`,
+        `${import.meta.env.BASE_URL}images/gamingroom/12.jpeg`,
       ] },
     ],
   },
@@ -256,12 +266,12 @@ const PORTFOLIO: PortfolioGroup[] = [
     groupName: "무대 디자인 프로젝트",
     emoji: "🎭",
     items: [
-      { id: "stage_result_gallery", title: "무대 결과 렌더링", desc: "무대 디자인 프로젝트 이미지 갤러리", thumb: "./images/stage/1.jpeg", mediaType: "gallery", galleryImages: [
-        "./images/stage/1.jpeg",
-        "./images/stage/2.jpeg",
-        "./images/stage/B.jpeg",
-        "./images/stage/H.jpeg",
-        "./images/stage/J.jpeg",
+      { id: "stage_result_gallery", title: "무대 결과 렌더링", desc: "무대 디자인 프로젝트 이미지 갤러리", thumb: `${import.meta.env.BASE_URL}images/stage/1.jpeg`, mediaType: "gallery", galleryImages: [
+        `${import.meta.env.BASE_URL}images/stage/1.jpeg`,
+        `${import.meta.env.BASE_URL}images/stage/2.jpeg`,
+        `${import.meta.env.BASE_URL}images/stage/B.jpeg`,
+        `${import.meta.env.BASE_URL}images/stage/H.jpeg`,
+        `${import.meta.env.BASE_URL}images/stage/J.jpeg`,
       ] },
     ],
   },
@@ -273,22 +283,13 @@ const PORTFOLIO: PortfolioGroup[] = [
         id: "dev_archive",
         title: "개발 프로젝트 아카이브",
         desc: "About Me에서 이동한 개발 프로젝트 아카이브 링크입니다.",
-        thumb: "./images/dev.jpg",
+        thumb: `${import.meta.env.BASE_URL}images/dev.jpg`,
         link: "https://kaput-muskox-1f4.notion.site/2a3a13adf6c48050b9b5cfe097165b8c",
       },
     ],
   },
-  // 숨김 처리: 영상 프로젝트 (나중에 사용 예정)
-  // {
-  //   groupName: "영상",
-  //   emoji: "🎬",
-  //   items: [
-  //     { id: "video_edit", title: "영상 편집", desc: "시네마틱 영상 편집 콘셉트", thumb: "./images/glasses_1.png" },
-  //     { id: "motion_graphics", title: "모션 그래픽", desc: "브랜딩 모션 그래픽 디자인", thumb: "./images/glasses_2.png" },
-  //     { id: "video_story", title: "비디오 스토리텔링", desc: "스토리 기반 영상 연출", thumb: "./images/glasses_3.png" },
-  //   ],
-  // },
 ];
+
 
 const TOOLS = [
   { name: "Blender" },
@@ -527,12 +528,13 @@ function WorkModal({ item, glbData, videoData, meta, editMode, onClose, onSaveMe
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center text-center h-full gap-3 p-4 text-muted-foreground">
-                    <p className="font-['Fraunces'] text-base">영상 링크가 없습니다.</p>
-                    <p className="text-xs">Google Drive 링크를 item.videoLinks에 설정해주세요.</p>
+                    <p className="font-['Fraunces'] text-base">작업 중 입니다.</p>
                   </div>
                 )
               ) : glbData ? (
-                <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">3D 모델을 회전시키려면 왼쪽을 확인하세요.</div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <img src={item.thumb} alt={item.title} className="w-full h-full object-contain p-4 transition-transform duration-500 hover:scale-105"/>
+                </div>
               ) : videoData ? (
                 <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">비디오가 이미 왼쪽에 표시됩니다.</div>
               ) : (
