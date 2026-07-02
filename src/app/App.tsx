@@ -770,8 +770,8 @@ function Nav({ editMode, onLogoClick }: { editMode: boolean; onLogoClick: () => 
 const imageModules = import.meta.glob('../../images/*/*.{png,jpg,jpeg}', { eager: true, query: '?url', import: 'default' });
 const BACKGROUND_IMAGES = Object.values(imageModules) as string[];
 // 통계를 위한 변수
-const glbCountStatic = Object.keys(import.meta.glob('../../glb_files/*.{glb,gltf}', { eager: true, as: 'url' })).length;
-const renderImageCountStatic = Object.keys(import.meta.glob('../../images/{cafe,glasses,gamingroom,stage}/*.{png,jpg,jpeg}', { eager: true, as: 'url' })).length;
+const glbCountStatic = Object.keys(import.meta.glob('../../glb_files/*.{glb,gltf}', { eager: true, query: '?url', import: 'default' })).length;
+const renderImageCountStatic = Object.keys(import.meta.glob('../../images/{cafe,glasses,gamingroom,stage}/*.{png,jpg,jpeg}', { eager: true, query: '?url', import: 'default' })).length;
 const videoCountStatic = 4;
 
 
