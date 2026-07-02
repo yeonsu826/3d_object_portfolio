@@ -670,61 +670,191 @@ function Nav({ editMode, onLogoClick }: { editMode: boolean; onLogoClick: () => 
     </header>
   );
 }
+
+// // ─── 1. Hero ─────────────────────────────────────────────────────────────────────
+
+// const glbCountStatic = Object.keys(import.meta.glob('../../glb_files/*.{glb,gltf}', { eager: true, as: 'url' })).length;
+// const renderImageCountStatic = Object.keys(import.meta.glob('../../images/{cafe,glasses,gamingroom,stage}/*.{png,jpg,jpeg}', { eager: true, as: 'url' })).length;
+// const videoCountStatic = 4;
+
+// // 상단 롤링할 배경 이미지 주소
+// const BACKGROUND_IMAGES = [
+//   `${import.meta.env.BASE_URL}images/gamingroom/1.jpeg`,
+//   `${import.meta.env.BASE_URL}images/cafe/0.jpeg`,
+//   `${import.meta.env.BASE_URL}images/stage/1.jpeg`,
+// ];
+
+// function Hero() {
+//   const totalItems = PORTFOLIO.reduce((acc, g) => acc + g.items.filter(i => !i.isProcess).length, 0);
+  
+//   //  현재 보여줄 이미지의 인덱스를 관리하는 State
+//   const [currentBgIndex, setCurrentBgIndex] = useState(0);
+
+//   // 5초(5000ms)마다 배경 이미지를 다음으로 넘기는 로직
+//   useEffect(() => {
+//     const timer = setInterval(() => {
+//       setCurrentBgIndex((prevIndex) => (prevIndex + 1) % BACKGROUND_IMAGES.length);
+//     }, 5000); // 5000 = 5초. 원하는 시간으로 조절 가능합니다!
+
+//     return () => clearInterval(timer);
+//   }, []);
+
+//   return (
+//     <section id="hero" className="relative min-h-screen overflow-hidden bg-[#050508] flex flex-col justify-center items-center text-center">
+      
+//       {/* 배경 이미지 렌더링 영역 (크로스페이드 효과 적용) */}
+//       <div className="absolute inset-0 bg-[#050508]">
+//         {BACKGROUND_IMAGES.map((src, index) => (
+//           <img
+//             key={src}
+//             src={src}
+//             alt={`Background ${index}`}
+//             // opacity-0에서 opacity-50으로 서서히(duration-[2000ms]) 바뀌면서 부드럽게 전환됩니다.
+//             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out ${
+//               index === currentBgIndex ? "opacity-50" : "opacity-0"
+//             }`}
+//           />
+//         ))}
+//         {/* 이미지 위에 깔리는 어두운 그라데이션 필터 */}
+//         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+//       </div>
+      
+//       <div className="relative z-10 max-w-[1400px] mx-auto px-8 mt-20 flex flex-col items-center w-full">
+//         {/* 미니멀한 뱃지 */}
+//         <span className="font-['JetBrains_Mono'] text-[10px] text-white/70 tracking-[0.3em] uppercase mb-5 border border-white/10 px-5 py-2 rounded-full bg-white/5 backdrop-blur-md shadow-lg">
+//           3D Environment Modeler
+//         </span>
+        
+//         {/* 메인 타이틀 */}
+//         <h1 className="font-['Fraunces'] font-light text-white mb-10 tracking-wide drop-shadow-2xl" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
+//           Virtual Spaces, <em className="italic text-white/60">Real Emotions.</em>
+//         </h1>
+        
+//         {/* 네비게이션 버튼들 */}
+//         <div className="flex flex-col sm:flex-row items-center gap-4">
+//           <a href="#works" className="group flex items-center gap-3 font-['Figtree'] text-sm font-medium bg-white text-black px-8 py-4 rounded-full hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
+//             작업물 보기 <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+//           </a>
+//           <a href="#about" className="flex items-center gap-2 font-['Figtree'] text-sm font-medium bg-white/5 text-white border border-white/10 px-8 py-4 rounded-full hover:bg-white/15 backdrop-blur-md transition-all duration-300">
+//             About Me
+//           </a>
+//         </div>
+
+//         {/* 통계 지표 */}
+//         <div className="flex flex-wrap justify-center gap-10 md:gap-20 mt-24 pt-10 border-t border-white/10 w-full max-w-4xl">
+//           {[
+//             { value: String(PORTFOLIO.length), label: "Projects" },
+//             { value: String(glbCountStatic), label: "3D Models" },
+//             { value: String(renderImageCountStatic), label: "Renders" },
+//             { value: String(videoCountStatic), label: "Videos" },
+//           ].map((s) => (
+//             <div key={s.label} className="flex flex-col gap-2">
+//               <span className="font-['Fraunces'] font-semibold text-3xl text-white/90 drop-shadow-lg">{s.value}</span>
+//               <span className="font-['JetBrains_Mono'] text-[10px] text-white/40 tracking-widest uppercase">{s.label}</span>
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
+
+
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
+// 1. images 폴더 내의 모든 png, jpg, jpeg 파일을 자동으로 가져옵니다.
+// Vite의 import.meta.glob을 사용하여 폴더 내 파일을 배열로 변환합니다.
+
+
+// 배경 이미지를 위한 변수
+const imageModules = import.meta.glob('../../images/*/*.{png,jpg,jpeg}', { eager: true, query: '?url', import: 'default' });
+const BACKGROUND_IMAGES = Object.values(imageModules) as string[];
+// 통계를 위한 변수
 const glbCountStatic = Object.keys(import.meta.glob('../../glb_files/*.{glb,gltf}', { eager: true, as: 'url' })).length;
 const renderImageCountStatic = Object.keys(import.meta.glob('../../images/{cafe,glasses,gamingroom,stage}/*.{png,jpg,jpeg}', { eager: true, as: 'url' })).length;
 const videoCountStatic = 4;
 
+
 function Hero() {
-  const totalItems = PORTFOLIO.reduce((acc, g) => acc + g.items.filter(i => !i.isProcess).length, 0);
+  const [currentBgIndex, setCurrentBgIndex] = useState(0);
+
+  // 2. 컴포넌트가 처음 렌더링될 때 배경 이미지 순서를 랜덤하게 섞습니다.
+  useEffect(() => {
+    // 섞는 로직 (Fisher-Yates shuffle)
+    for (let i = BACKGROUND_IMAGES.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [BACKGROUND_IMAGES[i], BACKGROUND_IMAGES[j]] = [BACKGROUND_IMAGES[j], BACKGROUND_IMAGES[i]];
+    }
+  }, []);
+
+  // 3. 5초마다 인덱스를 증가시켜 다음 이미지로 전환
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentBgIndex((prev) => (prev + 1) % BACKGROUND_IMAGES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <section id="hero" className="relative min-h-screen overflow-hidden bg-[#050508] flex flex-col justify-center items-center text-center">
-      <div className="absolute inset-0">
-        {/* 💡 배경 이미지: 3D 아티스트 느낌의 다크톤 이미지로 변경했습니다. 나중에 연수님의 멋진 렌더링 결과물 주소(예: ./images/stage/1.jpeg)로 바꾸시면 완벽합니다! */}
-        <img src={`${import.meta.env.BASE_URL}images/gamingroom/1.jpeg`} alt="Background" className="w-full h-full object-cover opacity-50 transition-transform duration-[20s] hover:scale-110" />
+      
+      <div className="absolute inset-0 bg-[#050508]">
+        {BACKGROUND_IMAGES.map((src, index) => (
+          <img
+            key={src}
+            src={src}
+            alt={`Background ${index}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out ${
+              index === currentBgIndex ? "opacity-50" : "opacity-0"
+            }`}
+          />
+        ))}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
       </div>
-      
       <div className="relative z-10 max-w-[1400px] mx-auto px-8 mt-20 flex flex-col items-center w-full">
-        {/* 거대한 텍스트 대신 깔끔하고 미니멀한 뱃지와 타이틀로 변경 */}
-        <span className="font-['JetBrains_Mono'] text-[10px] text-white/70 tracking-[0.3em] uppercase mb-5 border border-white/10 px-5 py-2 rounded-full bg-white/5 backdrop-blur-md">
-          3D Environment Modeler
-        </span>
-        
-        <h1 className="font-['Fraunces'] font-light text-white mb-10 tracking-wide" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
-          Virtual Spaces, <em className="italic text-white/60">Real Emotions.</em>
+         {/* 미니멀한 뱃지 */}
+         <span className="font-['JetBrains_Mono'] text-[10px] text-white/70 tracking-[0.3em] uppercase mb-5 border border-white/10 px-5 py-2 rounded-full bg-white/5 backdrop-blur-md shadow-lg">
+           3D Modeler, Developer, Artest
+         </span> 
+                    
+         {/* 메인 타이틀 */}
+        <h1 className="font-['Fraunces'] text-white tracking-wide mb-8 md:mb-16" style={{ fontSize: "clamp(2rem, 6vw, 5rem)" }}>
+          Feel Spaces, 
+          <span className="font-['Fraunces'] text-white/70 text-xl md:text-2xl">
+          &nbsp;&nbsp; Through Technology.
+          </span>
         </h1>
         
-        {/* 메인 버튼들을 둥글고 예쁜 애니메이션 버튼으로 변경 */}
-        <div className="flex flex-col sm:flex-row items-center gap-4">
-          <a href="#works" className="group flex items-center gap-3 font-['Figtree'] text-sm font-medium bg-white text-black px-8 py-4 rounded-full hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
-            작업물 보기 <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-          </a>
-          <a href="#about" className="flex items-center gap-2 font-['Figtree'] text-sm font-medium bg-white/5 text-white border border-white/10 px-8 py-4 rounded-full hover:bg-white/15 backdrop-blur-md transition-all duration-300">
-            About Me
-          </a>
-        </div>
+         {/* 네비게이션 버튼들 */}
+         <div className="flex flex-col sm:flex-row items-center gap-4">
+           <a href="#works" className="group flex items-center gap-3 font-['Figtree'] text-sm font-medium bg-white text-black px-8 py-4 rounded-full hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
+             작업물 보기 <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+           </a>
+           <a href="#about" className="flex items-center gap-2 font-['Figtree'] text-sm font-medium bg-white/5 text-white border border-white/10 px-8 py-4 rounded-full hover:bg-white/15 backdrop-blur-md transition-all duration-300">
+             About Me
+           </a>
+         </div>
 
-        {/* 하단 통계 부분도 중앙 정렬 및 심플하게 다듬기 */}
-        <div className="flex flex-wrap justify-center gap-10 md:gap-20 mt-24 pt-10 border-t border-white/10 w-full max-w-4xl">
-          {[
-            { value: String(PORTFOLIO.length), label: "Projects" },
-            { value: String(glbCountStatic), label: "3D Models" },
-            { value: String(renderImageCountStatic), label: "Renders" },
-            { value: String(videoCountStatic), label: "Videos" },
-          ].map((s) => (
-            <div key={s.label} className="flex flex-col gap-2">
-              <span className="font-['Fraunces'] font-semibold text-3xl text-white/90">{s.value}</span>
-              <span className="font-['JetBrains_Mono'] text-[10px] text-white/40 tracking-widest uppercase">{s.label}</span>
-            </div>
-          ))}
-        </div>
+         {/* 통계 지표 */}
+         <div className="flex flex-wrap justify-center gap-10 md:gap-20 mt-24 pt-10 border-t border-white/10 w-full max-w-4xl">
+           {[
+             { value: String(PORTFOLIO.length), label: "Projects" },
+             { value: String(glbCountStatic), label: "3D Models" },
+             { value: String(renderImageCountStatic), label: "Renders" },
+             { value: String(videoCountStatic), label: "Videos" },
+           ].map((s) => (
+             <div key={s.label} className="flex flex-col gap-2">
+               <span className="font-['Fraunces'] font-semibold text-3xl text-white/90 drop-shadow-lg">{s.value}</span>
+               <span className="font-['JetBrains_Mono'] text-[10px] text-white/40 tracking-widest uppercase">{s.label}</span>
+             </div>
+           ))}
+         </div>
       </div>
     </section>
   );
 }
+
+
 // ─── Item Card (누락되었던 컴포넌트 추가) ──────────────────────────────────────────
 
 function ItemCard({
@@ -881,7 +1011,6 @@ function Works({ editMode }: { editMode: boolean }) {
               </h2>
             </div>
             
-            {/* 💡 네비게이션 필터 버튼 디자인 변경 */}
             <div className="flex flex-wrap gap-2 md:gap-3">
               <button onClick={() => setActiveGroup("all")}
                 className={`font-['JetBrains_Mono'] text-xs tracking-widest uppercase px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${activeGroup === "all" ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105 font-semibold" : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/20 hover:text-white"}`}>

@@ -49,7 +49,7 @@ function serveGlbFilesPlugin() {
 }
 
 export default defineConfig({
-  base: '/3d_object_portfolio_v2/', 
+  base: '/3d_object_portfolio/', 
   plugins: [
     // figmaAssetResolver(), // 필요시 유지
     react(),
