@@ -32,7 +32,8 @@ const GLB_FILES: Record<string, string> = {
 export const STATIC_GLB_MAP = Object.fromEntries(
   Object.entries(GLB_FILES).map(([key, filename]) => [
     key, 
-    `${import.meta.env.BASE_URL}glb_files/${filename}`
+    // `${import.meta.env.BASE_URL}glb_files/${filename}`
+    `/3d_object_portfolio/glb_files/${filename}`
   ])
 );
 
@@ -281,7 +282,7 @@ const PORTFOLIO: PortfolioGroup[] = [
       {
         id: "dev_archive",
         title: "개발 프로젝트 아카이브",
-        desc: "About Me에서 이동한 개발 프로젝트 아카이브 링크입니다.",
+        desc: "진행 해왔던 유니티 개발 프로젝트들을 볼 수 있습니다. (외부 링크)",
         thumb: `${import.meta.env.BASE_URL}images/dev.jpg`,
         link: "https://kaput-muskox-1f4.notion.site/2a3a13adf6c48050b9b5cfe097165b8c",
       },
