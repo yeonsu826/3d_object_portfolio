@@ -909,9 +909,27 @@ function Footer() {
   return (
     <footer className="bg-card border-t border-border px-8 py-8">
       <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        <span className="font-['Fraunces'] text-lg font-light text-foreground">JEONG YEON SU<span className="text-primary">.</span></span>
-        <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest">© 2025 — All rights reserved</p>
-        <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase">Seoul, KR</p>
+        
+        {/* 1. 좌측: 이름 */}
+        <span className="font-['Fraunces'] text-lg font-light text-foreground">
+          JEONG YEON SU<span className="text-primary">.</span>
+        </span>
+
+        {/* 2. 우측: 지역과 J.J를 묶어서 맨 오른쪽으로 밀어버림 */}
+        <div className="flex items-center gap-8 sm:gap-12">
+          <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase">
+            Seoul, KR
+          </p>
+          
+          {/* 보일 듯 말 듯한 J.J (우측 끝) */}
+          <span 
+            className="font-['JetBrains_Mono'] text-[10px] text-muted-foreground/20 hover:text-muted-foreground/60 transition-colors cursor-default"
+            title="Jesu Juva"
+          >
+            J.J
+          </span>
+        </div>
+
       </div>
     </footer>
   );
