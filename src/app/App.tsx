@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { ArrowUpRight, Menu, X, Upload, RotateCcw, Pencil, Check, Trash2, Box, ExternalLink, Instagram, Linkedin, ChevronLeft, ChevronRight } from "lucide-react";import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { ArrowUpRight, Menu, X, Box, ExternalLink, Instagram, Linkedin, ChevronLeft, ChevronRight } from "lucide-react";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-// 1. 파일 이름 리스트 관리 (여기를 수정하면 됩니다)
+// 1. 파일 이름 리스트 관리
 const GLB_FILES: Record<string, string> = {
   glasses_1: 'glasses_1.glb',
   glasses_2: 'glasses_2.glb',
@@ -17,22 +18,12 @@ const GLB_FILES: Record<string, string> = {
   handdrip: 'handdrip.glb',
   disposablecup: 'disposablecup.glb',
   chair_table: 'chair_table.glb',
-  // gaming_room: 'glasses_1.glb',      // TODO: 실제 파일명으로 수정 필요
-  // gaming_setup: 'glasses_1.glb',     // TODO: 실제 파일명으로 수정 필요
-  // gaming_chair: 'glasses_1.glb',     // TODO: 실제 파일명으로 수정 필요
-  // stage_set: 'glasses_1.glb',        // TODO: 실제 파일명으로 수정 필요
-  // stage_lighting: 'glasses_1.glb',   // TODO: 실제 파일명으로 수정 필요
-  // stage_props: 'glasses_1.glb',      // TODO: 실제 파일명으로 수정 필요
-  // video_edit: 'glasses_1.glb',       // TODO: 실제 파일명으로 수정 필요
-  // motion_graphics: 'glasses_1.glb',  // TODO: 실제 파일명으로 수정 필요
-  // video_story: 'glasses_1.glb',      // TODO: 실제 파일명으로 수정 필요
 };
 
 // 2. 실제 코드에서 사용할 경로 맵 자동 생성
 export const STATIC_GLB_MAP = Object.fromEntries(
   Object.entries(GLB_FILES).map(([key, filename]) => [
     key, 
-    // `${import.meta.env.BASE_URL}glb_files/${filename}`
     `/3d_object_portfolio/glb_files/${filename}`
   ])
 );
@@ -55,16 +46,6 @@ function openDB(): Promise<IDBDatabase> {
     };
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
-  });
-}
-async function saveGlb(id: string, file: File) {
-  const db = await openDB();
-  const buf = await file.arrayBuffer();
-  return new Promise<void>((res, rej) => {
-    const tx = db.transaction(STORE, "readwrite");
-    tx.objectStore(STORE).put({ buf, name: file.name }, id);
-    tx.oncomplete = () => res();
-    tx.onerror = () => rej(tx.error);
   });
 }
 async function loadGlb(id: string): Promise<{ url: string; name: string } | null> {
@@ -108,34 +89,13 @@ function loadMetadata(id: string): Meta {
     return JSON.parse(s) as Meta;
   } catch (e) { return {}; }
 }
-function saveMetadata(id: string, meta: Meta) {
-  localStorage.setItem(`meta_${id}`, JSON.stringify(meta));
-}
-async function deleteGlb(id: string) {
-  const db = await openDB();
-  return new Promise<void>((res) => {
-    const tx = db.transaction(STORE, "readwrite");
-    tx.objectStore(STORE).delete(id);
-    tx.oncomplete = () => res();
-  });
-}
+
 async function listGlbIds(): Promise<string[]> {
   const db = await openDB();
   return new Promise((res) => {
     const req = db.transaction(STORE, "readonly").objectStore(STORE).getAllKeys();
     req.onsuccess = () => res(req.result as string[]);
     req.onerror = () => res([]);
-  });
-}
-
-async function saveVideo(id: string, file: File) {
-  const db = await openDB();
-  const buf = await file.arrayBuffer();
-  return new Promise<void>((res, rej) => {
-    const tx = db.transaction(VIDEOS_STORE, "readwrite");
-    tx.objectStore(VIDEOS_STORE).put({ buf, name: file.name }, id);
-    tx.oncomplete = () => res();
-    tx.onerror = () => rej(tx.error);
   });
 }
 
@@ -291,13 +251,13 @@ const PORTFOLIO: PortfolioGroup[] = [
 ];
 
 
+
 const TOOLS = [
+  { name: "Unity" },  
+  { name: "Unreal" },
   { name: "Blender" },
+  { name: "Substance Painter" },
   { name: "Three.js" },
-  { name: "Figma" },
-  { name: "Photoshop" },
-  { name: "After Effects" },
-  { name: "Premiere Pro" },
 ];
 
 function ThreeCanvas({ glbUrl, autoRotate }: { glbUrl: string; autoRotate: boolean }) {
@@ -401,8 +361,9 @@ function ThreeCanvas({ glbUrl, autoRotate }: { glbUrl: string; autoRotate: boole
       },
       undefined,
       (error) => {
-        console.error('GLTFLoader 에러', error);
-        setLoadError('3D 모델을 불러오지 못했습니다.');
+        console.error('GLTFLoader 상세 에러:', error);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        setLoadError(`3D 모델 로드 실패: ${errorMessage}`);
       }
     );
   }, [glbUrl]);
@@ -418,19 +379,17 @@ function ThreeCanvas({ glbUrl, autoRotate }: { glbUrl: string; autoRotate: boole
     </div>
   );
 }
+
 // ─── Work Modal ───────────────────────────────────────────────────────────────
 
-function WorkModal({ item, glbData, videoData, meta, editMode, onClose, onSaveMeta }: {
+function WorkModal({ item, glbData, videoData, meta, onClose }: {
   item: PortfolioItem;
   glbData: { url: string; name?: string } | null;
   videoData?: { url: string; name: string } | null;
   meta?: Meta;
-  editMode: boolean;
   onClose: () => void;
-  onSaveMeta: (m: Meta) => void;
 }) {
   const [autoRotate, setAutoRotate] = useState(false);
-  const [editingMeta, setEditingMeta] = useState<Meta>(meta || {});
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [lightbox, setLightbox] = useState<{ type: 'image' | 'video'; src: string; index?: number } | null>(null);
 
@@ -450,16 +409,14 @@ function WorkModal({ item, glbData, videoData, meta, editMode, onClose, onSaveMe
   }, [onClose, lightbox]);
 
   useEffect(() => {
-    setEditingMeta(meta || {});
     setGalleryIndex(0);
     setLightbox(null);
-  }, [meta, item.id]);
+  }, [item.id]);
 
   return (
     <div className="fixed inset-0 z-[100] bg-background/80 backdrop-blur-lg flex items-center justify-center p-4 md:p-8 transition-opacity"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       
-      {/* 둥근 모서리와 은은한 테두리로 프리미엄 느낌 강조 */}
       <div className="relative w-full max-w-5xl bg-[#0a0a10]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
         
         {/* Header */}
@@ -478,7 +435,6 @@ function WorkModal({ item, glbData, videoData, meta, editMode, onClose, onSaveMe
             )}
           </div>
           <div className="flex items-center gap-3">
-            {/* 호버 시 부드러운 배경이 깔리는 닫기 버튼 */}
             <button onClick={onClose} className="p-2 text-muted-foreground hover:text-white hover:bg-white/10 rounded-full transition-all">
               <X size={20} />
             </button>
@@ -526,74 +482,52 @@ function WorkModal({ item, glbData, videoData, meta, editMode, onClose, onSaveMe
               )}
             </div>
 
-            {/* Right: Info / Edit Area */}
+            {/* Right: Info Area */}
             <div className="col-span-1 bg-[#0f0f14] border border-white/5 rounded-xl p-6 flex flex-col h-fit">
               <h3 className="font-['Fraunces'] text-2xl font-semibold mb-3">{item.title}</h3>
               <p className="font-['Figtree'] text-sm text-muted-foreground leading-relaxed mb-6">{item.desc}</p>
               
-              {editMode ? (
-                <div className="flex flex-col gap-4">
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-muted-foreground/70 uppercase tracking-wider">Tools (쉼표 구분)</label>
-                    <input value={(editingMeta.tools || []).join(', ')} onChange={(e) => setEditingMeta({ ...editingMeta, tools: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })} className="bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary/50 transition-colors" />
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-muted-foreground/70 uppercase tracking-wider">제작 기간</label>
-                    <input value={editingMeta.productionTime || ''} onChange={(e) => setEditingMeta({ ...editingMeta, productionTime: e.target.value })} className="bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary/50 transition-colors" />
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-muted-foreground/70 uppercase tracking-wider">상세 설명</label>
-                    <textarea rows={6} value={editingMeta.longDesc || ''} onChange={(e) => setEditingMeta({ ...editingMeta, longDesc: e.target.value })} className="bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary/50 transition-colors resize-none" />
-                  </div>
-                  <div className="flex gap-3 mt-2">
-                    <button onClick={() => { /* save 로직 */ onSaveMeta(editingMeta); }} className="flex-1 bg-white text-black font-semibold rounded-lg px-4 py-3 hover:bg-gray-200 transition-colors shadow-md">저장하기</button>
-                    <button onClick={() => setEditingMeta(meta || {})} className="flex-1 bg-transparent border border-white/20 text-white font-medium rounded-lg px-4 py-3 hover:bg-white/5 transition-colors">취소</button>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex flex-col gap-6">
-                  {editingMeta.tools && editingMeta.tools.length > 0 && (
-                    <div>
-                      <div className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-2">Tools</div>
-                      <div className="flex flex-wrap gap-2">
-                        {editingMeta.tools.map(tool => (
-                          <span key={tool} className="bg-white/5 border border-white/10 rounded-md px-2.5 py-1 font-['JetBrains_Mono'] text-xs text-white/90">{tool}</span>
-                        ))}
-                      </div>
+              <div className="flex flex-col gap-6">
+                {meta?.tools && meta.tools.length > 0 && (
+                  <div>
+                    <div className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-2">Tools</div>
+                    <div className="flex flex-wrap gap-2">
+                      {meta.tools.map(tool => (
+                        <span key={tool} className="bg-white/5 border border-white/10 rounded-md px-2.5 py-1 font-['JetBrains_Mono'] text-xs text-white/90">{tool}</span>
+                      ))}
                     </div>
-                  )}
-                  {editingMeta.productionTime && (
-                    <div>
-                      <div className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-1.5">Production Time</div>
-                      <div className="font-['JetBrains_Mono'] text-sm text-white/90">{editingMeta.productionTime}</div>
-                    </div>
-                  )}
-                  {editingMeta.longDesc && (
-                    <div>
-                      <div className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-2">Description</div>
-                      <div className="font-['Figtree'] text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">{editingMeta.longDesc}</div>
-                    </div>
-                  )}
-                  
-                  {/* 영상 버튼들을 좀 더 고급스럽게 */}
-                  {item.mediaType === "gallery" && item.videoLinks && item.videoLinks.length > 0 && (
-                     <div className="flex flex-col gap-3 mt-4 pt-4 border-t border-white/5">
-                        {item.videoLinks.map((link, index) => (
-                          <a key={link} href={link} target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between rounded-xl bg-white/5 border border-white/10 px-5 py-4 hover:bg-white/15 transition-all">
-                            <span className="text-sm font-medium text-white/90 group-hover:text-white">프로젝트 영상 {index + 1} 보기</span>
-                            <ExternalLink size={16} className="text-muted-foreground group-hover:text-white transition-colors" />
-                          </a>
-                        ))}
-                     </div>
-                  )}
-                </div>
-              )}
+                  </div>
+                )}
+                {meta?.productionTime && (
+                  <div>
+                    <div className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-1.5">Production Time</div>
+                    <div className="font-['JetBrains_Mono'] text-sm text-white/90">{meta.productionTime}</div>
+                  </div>
+                )}
+                {meta?.longDesc && (
+                  <div>
+                    <div className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-widest mb-2">Description</div>
+                    <div className="font-['Figtree'] text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">{meta.longDesc}</div>
+                  </div>
+                )}
+                
+                {item.mediaType === "gallery" && item.videoLinks && item.videoLinks.length > 0 && (
+                  <div className="flex flex-col gap-3 mt-4 pt-4 border-t border-white/5">
+                    {item.videoLinks.map((link, index) => (
+                      <a key={link} href={link} target="_blank" rel="noopener noreferrer" className="group flex items-center justify-between rounded-xl bg-white/5 border border-white/10 px-5 py-4 hover:bg-white/15 transition-all">
+                        <span className="text-sm font-medium text-white/90 group-hover:text-white">프로젝트 영상 {index + 1} 보기</span>
+                        <ExternalLink size={16} className="text-muted-foreground group-hover:text-white transition-colors" />
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Lightbox - 투명도와 블러를 활용한 뷰어 */}
+      {/* Lightbox 유지 */}
       {lightbox && (
         <div className="fixed inset-0 z-[110] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-8 transition-opacity" onClick={() => setLightbox(null)}>
           <div className="relative w-full max-w-[95vw] h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
@@ -632,9 +566,10 @@ function WorkModal({ item, glbData, videoData, meta, editMode, onClose, onSaveMe
 
 // ─── Nav ─────────────────────────────────────────────────────────────────────
 
-function Nav({ editMode, onLogoClick }: { editMode: boolean; onLogoClick: () => void }) {
+function Nav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", fn);
@@ -644,14 +579,9 @@ function Nav({ editMode, onLogoClick }: { editMode: boolean; onLogoClick: () => 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/90 backdrop-blur-md border-b border-border" : ""}`}>
       <nav className="max-w-[1400px] mx-auto px-8 py-5 flex items-center justify-between">
-        <button onClick={onLogoClick} className="font-['Fraunces'] text-xl font-light tracking-tight text-foreground select-none" style={{ background: "none", border: "none", cursor: "default" }}>
+        <button className="font-['Fraunces'] text-xl font-light tracking-tight text-foreground select-none" style={{ background: "none", border: "none", cursor: "default" }}>
           JEONG YEON SU<span className="text-primary">.</span>
         </button>
-        {editMode && (
-          <span className="flex items-center gap-2 font-['JetBrains_Mono'] text-xs text-primary tracking-widest uppercase border border-primary/50 px-3 py-1 animate-pulse">
-            <Pencil size={10} /> Edit Mode
-          </span>
-        )}
         <ul className="hidden md:flex items-center gap-10">
           {["Works", "About"].map((l) => (
             <li key={l}><a href={`#${l.toLowerCase()}`} className="font-['Figtree'] text-sm text-muted-foreground hover:text-foreground transition-colors tracking-widest uppercase">{l}</a></li>
@@ -672,123 +602,24 @@ function Nav({ editMode, onLogoClick }: { editMode: boolean; onLogoClick: () => 
   );
 }
 
-// // ─── 1. Hero ─────────────────────────────────────────────────────────────────────
-
-// const glbCountStatic = Object.keys(import.meta.glob('../../glb_files/*.{glb,gltf}', { eager: true, as: 'url' })).length;
-// const renderImageCountStatic = Object.keys(import.meta.glob('../../images/{cafe,glasses,gamingroom,stage}/*.{png,jpg,jpeg}', { eager: true, as: 'url' })).length;
-// const videoCountStatic = 4;
-
-// // 상단 롤링할 배경 이미지 주소
-// const BACKGROUND_IMAGES = [
-//   `${import.meta.env.BASE_URL}images/gamingroom/1.jpeg`,
-//   `${import.meta.env.BASE_URL}images/cafe/0.jpeg`,
-//   `${import.meta.env.BASE_URL}images/stage/1.jpeg`,
-// ];
-
-// function Hero() {
-//   const totalItems = PORTFOLIO.reduce((acc, g) => acc + g.items.filter(i => !i.isProcess).length, 0);
-  
-//   //  현재 보여줄 이미지의 인덱스를 관리하는 State
-//   const [currentBgIndex, setCurrentBgIndex] = useState(0);
-
-//   // 5초(5000ms)마다 배경 이미지를 다음으로 넘기는 로직
-//   useEffect(() => {
-//     const timer = setInterval(() => {
-//       setCurrentBgIndex((prevIndex) => (prevIndex + 1) % BACKGROUND_IMAGES.length);
-//     }, 5000); // 5000 = 5초. 원하는 시간으로 조절 가능합니다!
-
-//     return () => clearInterval(timer);
-//   }, []);
-
-//   return (
-//     <section id="hero" className="relative min-h-screen overflow-hidden bg-[#050508] flex flex-col justify-center items-center text-center">
-      
-//       {/* 배경 이미지 렌더링 영역 (크로스페이드 효과 적용) */}
-//       <div className="absolute inset-0 bg-[#050508]">
-//         {BACKGROUND_IMAGES.map((src, index) => (
-//           <img
-//             key={src}
-//             src={src}
-//             alt={`Background ${index}`}
-//             // opacity-0에서 opacity-50으로 서서히(duration-[2000ms]) 바뀌면서 부드럽게 전환됩니다.
-//             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out ${
-//               index === currentBgIndex ? "opacity-50" : "opacity-0"
-//             }`}
-//           />
-//         ))}
-//         {/* 이미지 위에 깔리는 어두운 그라데이션 필터 */}
-//         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-//       </div>
-      
-//       <div className="relative z-10 max-w-[1400px] mx-auto px-8 mt-20 flex flex-col items-center w-full">
-//         {/* 미니멀한 뱃지 */}
-//         <span className="font-['JetBrains_Mono'] text-[10px] text-white/70 tracking-[0.3em] uppercase mb-5 border border-white/10 px-5 py-2 rounded-full bg-white/5 backdrop-blur-md shadow-lg">
-//           3D Environment Modeler
-//         </span>
-        
-//         {/* 메인 타이틀 */}
-//         <h1 className="font-['Fraunces'] font-light text-white mb-10 tracking-wide drop-shadow-2xl" style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}>
-//           Virtual Spaces, <em className="italic text-white/60">Real Emotions.</em>
-//         </h1>
-        
-//         {/* 네비게이션 버튼들 */}
-//         <div className="flex flex-col sm:flex-row items-center gap-4">
-//           <a href="#works" className="group flex items-center gap-3 font-['Figtree'] text-sm font-medium bg-white text-black px-8 py-4 rounded-full hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
-//             작업물 보기 <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-//           </a>
-//           <a href="#about" className="flex items-center gap-2 font-['Figtree'] text-sm font-medium bg-white/5 text-white border border-white/10 px-8 py-4 rounded-full hover:bg-white/15 backdrop-blur-md transition-all duration-300">
-//             About Me
-//           </a>
-//         </div>
-
-//         {/* 통계 지표 */}
-//         <div className="flex flex-wrap justify-center gap-10 md:gap-20 mt-24 pt-10 border-t border-white/10 w-full max-w-4xl">
-//           {[
-//             { value: String(PORTFOLIO.length), label: "Projects" },
-//             { value: String(glbCountStatic), label: "3D Models" },
-//             { value: String(renderImageCountStatic), label: "Renders" },
-//             { value: String(videoCountStatic), label: "Videos" },
-//           ].map((s) => (
-//             <div key={s.label} className="flex flex-col gap-2">
-//               <span className="font-['Fraunces'] font-semibold text-3xl text-white/90 drop-shadow-lg">{s.value}</span>
-//               <span className="font-['JetBrains_Mono'] text-[10px] text-white/40 tracking-widest uppercase">{s.label}</span>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
-
-
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
-// 1. images 폴더 내의 모든 png, jpg, jpeg 파일을 자동으로 가져옵니다.
-// Vite의 import.meta.glob을 사용하여 폴더 내 파일을 배열로 변환합니다.
-
-
-// 배경 이미지를 위한 변수
 const imageModules = import.meta.glob('../../images/*/*.{png,jpg,jpeg}', { eager: true, query: '?url', import: 'default' });
 const BACKGROUND_IMAGES = Object.values(imageModules) as string[];
-// 통계를 위한 변수
 const glbCountStatic = Object.keys(import.meta.glob('../../glb_files/*.{glb,gltf}', { eager: true, query: '?url', import: 'default' })).length;
 const renderImageCountStatic = Object.keys(import.meta.glob('../../images/{cafe,glasses,gamingroom,stage}/*.{png,jpg,jpeg}', { eager: true, query: '?url', import: 'default' })).length;
 const videoCountStatic = 4;
 
-
 function Hero() {
   const [currentBgIndex, setCurrentBgIndex] = useState(0);
 
-  // 2. 컴포넌트가 처음 렌더링될 때 배경 이미지 순서를 랜덤하게 섞습니다.
   useEffect(() => {
-    // 섞는 로직 (Fisher-Yates shuffle)
     for (let i = BACKGROUND_IMAGES.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [BACKGROUND_IMAGES[i], BACKGROUND_IMAGES[j]] = [BACKGROUND_IMAGES[j], BACKGROUND_IMAGES[i]];
     }
   }, []);
 
-  // 3. 5초마다 인덱스를 증가시켜 다음 이미지로 전환
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentBgIndex((prev) => (prev + 1) % BACKGROUND_IMAGES.length);
@@ -798,7 +629,6 @@ function Hero() {
 
   return (
     <section id="hero" className="relative min-h-screen overflow-hidden bg-[#050508] flex flex-col justify-center items-center text-center">
-      
       <div className="absolute inset-0 bg-[#050508]">
         {BACKGROUND_IMAGES.map((src, index) => (
           <img
@@ -813,12 +643,10 @@ function Hero() {
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
       </div>
       <div className="relative z-10 max-w-[1400px] mx-auto px-8 mt-20 flex flex-col items-center w-full">
-         {/* 미니멀한 뱃지 */}
          <span className="font-['JetBrains_Mono'] text-[10px] text-white/70 tracking-[0.3em] uppercase mb-5 border border-white/10 px-5 py-2 rounded-full bg-white/5 backdrop-blur-md shadow-lg">
            3D Modeler, Developer, Artest
          </span> 
                     
-         {/* 메인 타이틀 */}
         <h1 className="font-['Fraunces'] text-white tracking-wide mb-8 md:mb-16" style={{ fontSize: "clamp(2rem, 6vw, 5rem)" }}>
           Feel Spaces, 
           <span className="font-['Fraunces'] text-white/70 text-xl md:text-2xl">
@@ -826,7 +654,6 @@ function Hero() {
           </span>
         </h1>
         
-         {/* 네비게이션 버튼들 */}
          <div className="flex flex-col sm:flex-row items-center gap-4">
            <a href="#works" className="group flex items-center gap-3 font-['Figtree'] text-sm font-medium bg-white text-black px-8 py-4 rounded-full hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
              작업물 보기 <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -836,7 +663,6 @@ function Hero() {
            </a>
          </div>
 
-         {/* 통계 지표 */}
          <div className="flex flex-wrap justify-center gap-10 md:gap-20 mt-24 pt-10 border-t border-white/10 w-full max-w-4xl">
            {[
              { value: String(PORTFOLIO.length), label: "Projects" },
@@ -856,45 +682,14 @@ function Hero() {
 }
 
 
-// ─── Item Card (누락되었던 컴포넌트 추가) ──────────────────────────────────────────
+// ─── Item Card ──────────────────────────────────────────
 
-function ItemCard({
-  item,
-  has3d,
-  hasDbGlb,
-  hasVideo,
-  editMode,
-  onRefresh,
-  onClick
-}: {
+function ItemCard({ item, has3d, hasVideo, onClick }: {
   item: PortfolioItem;
   has3d: boolean;
-  hasDbGlb: boolean;
   hasVideo: boolean;
-  editMode: boolean;
-  onRefresh: () => void;
   onClick: () => void;
 }) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const videoInputRef = useRef<HTMLInputElement>(null);
-
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'glb' | 'video') => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (type === 'glb') {
-      await saveGlb(item.id, file);
-    } else {
-      await saveVideo(item.id, file);
-    }
-    onRefresh();
-  };
-
-  const handleDeleteGlb = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    await deleteGlb(item.id);
-    onRefresh();
-  };
-
   return (
     <div className="group relative flex flex-col gap-3 cursor-pointer" onClick={onClick}>
       {/* Thumbnail 이미지 영역 */}
@@ -920,14 +715,12 @@ function ItemCard({
           )}
         </div>
 
-        {/* 일반 모드일 때 마우스 올리면 나오는 오버레이 */}
-        {!editMode && (
-          <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100">
-            <span className="bg-white/90 text-black font-medium text-sm px-5 py-2.5 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
-              {item.link || item.isProcess ? "보러가기" : "자세히 보기"}
-            </span>
-          </div>
-        )}
+        {/* 오버레이 텍스트: 외부링크 대응 */}
+        <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100">
+          <span className="bg-white/90 text-black font-medium text-sm px-5 py-2.5 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
+            {item.link ? "외부 링크로 이동" : (item.isProcess ? "보러가기" : "자세히 보기")}
+          </span>
+        </div>
       </div>
 
       {/* 텍스트 영역 */}
@@ -935,31 +728,13 @@ function ItemCard({
         <h4 className="font-['Fraunces'] font-medium text-lg text-foreground group-hover:text-primary transition-colors">{item.title}</h4>
         <p className="font-['Figtree'] text-sm text-muted-foreground mt-1 line-clamp-2">{item.desc}</p>
       </div>
-
-      {/* 편집 모드 (에디터 전용 컨트롤) */}
-      {editMode && (
-        <div className="mt-2 flex flex-col gap-2 p-3 bg-white/5 border border-white/10 rounded-lg" onClick={(e) => e.stopPropagation()}>
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] text-white/60 uppercase tracking-widest">3D (.glb)</span>
-            {hasDbGlb ? (
-              <button onClick={handleDeleteGlb} className="text-red-400 hover:text-red-300 p-1"><Trash2 size={14} /></button>
-            ) : (
-              <button onClick={() => fileInputRef.current?.click()} className="text-white hover:text-gray-300 p-1"><Upload size={14} /></button>
-            )}
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] text-white/60 uppercase tracking-widest">Video (.mp4)</span>
-            <button onClick={() => videoInputRef.current?.click()} className="text-white hover:text-gray-300 p-1"><Upload size={14} /></button>
-          </div>
-          <input type="file" accept=".glb" className="hidden" ref={fileInputRef} onChange={(e) => handleUpload(e, 'glb')} />
-          <input type="file" accept="video/mp4" className="hidden" ref={videoInputRef} onChange={(e) => handleUpload(e, 'video')} />
-        </div>
-      )}
     </div>
   );
-}// ─── Works ────────────────────────────────────────────────────────────────────
+}
 
-function Works({ editMode }: { editMode: boolean }) {
+// ─── Works ────────────────────────────────────────────────────────────────────
+
+function Works() {
   const [dbGlbIds, setDbGlbIds] = useState<Set<string>>(new Set());
   const [videoIds, setVideoIds] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<PortfolioItem | null>(null);
@@ -1027,20 +802,10 @@ function Works({ editMode }: { editMode: boolean }) {
           </div>
         </div>
 
-        {editMode && (
-          <div className="mb-8 px-4 py-3 border border-primary/30 bg-primary/5 rounded-lg flex items-center gap-3">
-            <Pencil size={13} className="text-primary shrink-0" />
-            <p className="font-['JetBrains_Mono'] text-xs text-primary tracking-wide">
-              편집 모드 활성화 — 각 카드 하단의 "업로드" 버튼으로 미디어를 등록하세요.
-            </p>
-          </div>
-        )}
-
         {/* Groups */}
         <div className="flex flex-col gap-20">
           {groups.map((group) => (
             <div key={group.groupName}>
-              {/* Group header */}
               <div className="flex items-center gap-4 mb-8 pb-4 border-b border-white/10">
                 <span className="text-2xl">{group.emoji}</span>
                 <h3 className="font-['Fraunces'] font-medium text-foreground text-2xl">{group.groupName}</h3>
@@ -1050,18 +815,20 @@ function Works({ editMode }: { editMode: boolean }) {
                 </span>
               </div>
 
-              {/* Items grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {group.items.map((item) => (
                   <ItemCard
                     key={item.id}
                     item={item}
                     has3d={STATIC_GLB_IDS.has(item.id) || dbGlbIds.has(item.id)}
-                    hasDbGlb={dbGlbIds.has(item.id)}
                     hasVideo={videoIds.has(item.id)}
-                    editMode={editMode && !item.isProcess}
-                    onRefresh={refresh}
-                    onClick={() => !item.isProcess && openItem(item)}
+                    onClick={() => {
+                      if (item.link) {
+                        window.open(item.link, "_blank", "noopener,noreferrer");
+                      } else if (!item.isProcess) {
+                        openItem(item);
+                      }
+                    }}
                   />
                 ))}
               </div>
@@ -1076,8 +843,6 @@ function Works({ editMode }: { editMode: boolean }) {
           glbData={selectedGlb}
           videoData={modalExtra?.videoData || null}
           meta={modalExtra?.meta}
-          editMode={editMode}
-          onSaveMeta={(m) => { if (modalExtra) setModalExtra({ ...modalExtra, meta: m }); }}
           onClose={() => { setSelected(null); setSelectedGlb(null); setModalExtra(null); }}
         />
       )}
@@ -1156,23 +921,11 @@ function Footer() {
 // ─── App ──────────────────────────────────────────────────────────────────────
 
 export default function App() {
-  const [editMode, setEditMode] = useState(false);
-  const [clicks, setClicks] = useState(0);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleLogoClick = () => {
-    const n = clicks + 1;
-    setClicks(n);
-    if (timer.current) clearTimeout(timer.current);
-    if (n >= 5) { setEditMode((m) => !m); setClicks(0); }
-    else { timer.current = setTimeout(() => setClicks(0), 1500); }
-  };
-
   return (
     <div className="bg-background min-h-screen overflow-x-hidden" style={{ fontFamily: "'Figtree', sans-serif" }}>
-      <Nav editMode={editMode} onLogoClick={handleLogoClick} />
+      <Nav />
       <Hero />
-      <Works editMode={editMode} />
+      <Works />
       <About />
       <Footer />
     </div>
