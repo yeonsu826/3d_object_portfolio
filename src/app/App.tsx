@@ -9,7 +9,6 @@ const GLB_FILES: Record<string, string> = {
   glasses_1: 'glasses_1.glb',
   glasses_2: 'glasses_2.glb',
   glasses_3: 'glasses_3.glb',
-  cafe: 'cafe.glb',
   coffeemachine: 'coffeemachine.glb',
   coffeegrinder: 'coffeegrinder.glb',
   coffeepot: 'coffeepot.glb',
@@ -24,10 +23,9 @@ const GLB_FILES: Record<string, string> = {
 export const STATIC_GLB_MAP = Object.fromEntries(
   Object.entries(GLB_FILES).map(([key, filename]) => [
     key, 
-    `/3d_object_portfolio/glb_files/${filename}`
+    `${import.meta.env.BASE_URL}glb_files/${filename}`
   ])
 );
-
 const STATIC_GLB_IDS = new Set(Object.keys(STATIC_GLB_MAP));
 
 // ─── IndexedDB ────────────────────────────────────────────────────────────────
@@ -189,7 +187,6 @@ const PORTFOLIO: PortfolioGroup[] = [
         "https://drive.google.com/file/d/1Gcl7gPJSkSSYWH6YBFoNTYB_78xN2WFp/view?usp=drive_link",
         "https://drive.google.com/file/d/1buT0a9OPEFYPeK3YSYEcteHSf8nRteZb/view?usp=sharing",
       ] },
-      { id: "cafe", title: "카페 공간", desc: "카페 전체 공간 모델링", thumb: `${import.meta.env.BASE_URL}images/cafe.jpeg` },
       { id: "coffeemachine", title: "Coffee Machine", desc: "커피머신 모델링", thumb: `${import.meta.env.BASE_URL}images/coffeemachine.png` },
       { id: "coffeegrinder", title: "Coffee Grinder", desc: "스타일라이즈드 컨셉 커피 그라인더 모델링", thumb: `${import.meta.env.BASE_URL}images/coffeegrinder.png` },
       { id: "coffeepot", title: "Coffee Pot", desc: "스타일라이즈드 컨셉 커피 포트 모델링", thumb: `${import.meta.env.BASE_URL}images/coffeepot.png` },
@@ -603,11 +600,12 @@ function Nav() {
 }
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
-
-const imageModules = import.meta.glob('../../images/*/*.{png,jpg,jpeg}', { eager: true, query: '?url', import: 'default' });
+// 1. '/public/...' 절대 경로를 사용하여 public 폴더 안의 파일들을 가져옵니다.
+const imageModules = import.meta.glob('/public/images/*/*.{png,jpg,jpeg}', { eager: true, query: '?url', import: 'default' });
 const BACKGROUND_IMAGES = Object.values(imageModules) as string[];
-const glbCountStatic = Object.keys(import.meta.glob('../../glb_files/*.{glb,gltf}', { eager: true, query: '?url', import: 'default' })).length;
-const renderImageCountStatic = Object.keys(import.meta.glob('../../images/{cafe,glasses,gamingroom,stage}/*.{png,jpg,jpeg}', { eager: true, query: '?url', import: 'default' })).length;
+// 2. 통계 개수를 세기 위한 glob 경로도 public으로 맞춰줍니다.
+const glbCountStatic = Object.keys(import.meta.glob('/public/glb_files/*.{glb,gltf}', { eager: true })).length;
+const renderImageCountStatic = Object.keys(import.meta.glob('/public/images/{cafe,glasses,gamingroom,stage}/*.{png,jpg,jpeg}', { eager: true })).length;
 const videoCountStatic = 4;
 
 function Hero() {
