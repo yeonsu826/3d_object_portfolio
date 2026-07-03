@@ -23,9 +23,10 @@ const GLB_FILES: Record<string, string> = {
 export const STATIC_GLB_MAP = Object.fromEntries(
   Object.entries(GLB_FILES).map(([key, filename]) => [
     key, 
-    `${import.meta.env.BASE_URL}glb_files/${filename}`
+    `/3d_object_portfolio/glb_files/${filename}`
   ])
 );
+
 const STATIC_GLB_IDS = new Set(Object.keys(STATIC_GLB_MAP));
 
 // ─── IndexedDB ────────────────────────────────────────────────────────────────
@@ -600,7 +601,7 @@ function Nav() {
 }
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
-// 1. '/public/...' 절대 경로를 사용하여 public 폴더 안의 파일들을 가져옵니다.
+
 const imageModules = import.meta.glob('/public/images/*/*.{png,jpg,jpeg}', { eager: true, query: '?url', import: 'default' });
 const BACKGROUND_IMAGES = Object.values(imageModules) as string[];
 // 2. 통계 개수를 세기 위한 glob 경로도 public으로 맞춰줍니다.
