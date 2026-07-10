@@ -1,5 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { ArrowUpRight, Menu, X, ExternalLink, Instagram, Linkedin, ChevronLeft, ChevronRight } from "lucide-react";
+// import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+// import * as THREE from "three";
+// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { Link } from "react-router-dom";
+
+import "../styles/fonts.css";
+import "../styles/index.css";
+import "../styles/tailwind.css";
+import '../styles/theme.css';
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -499,30 +508,38 @@ function Works() {
   );
 }
 
-
 // ─── About ────────────────────────────────────────────────────────────────────
+// 상단 파일 맨 위에 ArrowRight (또는 ArrowUpRight) 아이콘이 import 되어 있는지 확인해주세요!
+// import { Instagram, Linkedin, ArrowRight } from "lucide-react"; 
 
 function About() {
   return (
     <section id="about" className="bg-card py-32 border-t border-border">
       <div className="max-w-[1400px] mx-auto px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+          
+          {/* 왼쪽: 사진 영역 */}
           <div className="relative max-w-[420px] mx-auto lg:mx-0">
             <div className="relative aspect-[3/4] overflow-hidden bg-secondary rounded-3xl shadow-xl">
               <img src="./images/3212_4282.jpg" alt="Portrait" className="w-full h-full object-cover" />
             </div>
           </div>
+          
+          {/* 오른쪽: 텍스트 및 정보 영역 */}
           <div className="flex flex-col gap-10 lg:pt-8">
+            
+            {/* 1. 소개 텍스트 */}
             <div>
               <p className="font-['JetBrains_Mono'] text-xs text-primary tracking-widest uppercase mb-6">03 — About Me</p>
               <h2 className="font-['Fraunces'] font-light text-foreground leading-tight mb-8" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)" }}>
                 I build spaces that <em className="italic text-primary">exist nowhere</em> but feel real.
               </h2>
               <div className="flex flex-col gap-4 font-['Figtree'] text-base text-muted-foreground leading-relaxed">
-                <p>서울을 기반으로 활동하는 3D 디자이너입니다. 건축 시각화, 제품 렌더링, 스타일라이즈드 오브젝트 모델링을 주로 작업합니다.</p>
                 <p>기술적 정밀함과 예술적 직관의 교차점에서 작업하며, 아무 곳에도 존재하지 않지만 현실처럼 느껴지는 공간과 오브젝트를 만들어냅니다.</p>
               </div>
             </div>
+            
+            {/* 2. 사용 툴 */}
             <div className="border-t border-border pt-8">
               <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-6">Software & Tools</p>
               <div className="flex flex-wrap gap-3">
@@ -533,18 +550,30 @@ function About() {
                 ))}
               </div>
             </div>
+            
+            {/* 3. 연락처 및 SNS */}
             <div className="border-t border-border pt-8">
               <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-6">Contact</p>
               <div className="flex flex-wrap gap-3">
                 <a href="https://www.instagram.com/yeon_ddooo/" target="_blank" rel="noopener noreferrer" className="group flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:border-primary hover:text-primary">
-                    <Instagram size={18} />
-                    <span className="sr-only">Instagram</span>
-                  </a>
-                  <a href="https://www.linkedin.com/in/yeonsu0826/" target="_blank" rel="noopener noreferrer" className="group flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:border-primary hover:text-primary">
-                    <Linkedin size={18} />
-                    <span className="sr-only">LinkedIn</span>
-                  </a>
+                  <Instagram size={18} />
+                  <span className="sr-only">Instagram</span>
+                </a>
+                <a href="https://www.linkedin.com/in/yeonsu0826/" target="_blank" rel="noopener noreferrer" className="group flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:border-primary hover:text-primary">
+                  <Linkedin size={18} />
+                  <span className="sr-only">LinkedIn</span>
+                </a>
               </div>
+            </div>
+            {/* 4. 이력서 보기 버튼 */}
+            <div className="pt-4">
+              <Link 
+                to="/resume" 
+                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-foreground text-background py-4 px-6 font-medium transition-all hover:bg-foreground/90 hover:scale-[1.01] active:scale-[0.99]"
+              >
+                이력서 보기
+                <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-1" />
+              </Link>
             </div>
 
           </div>
