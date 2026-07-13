@@ -314,6 +314,7 @@ function Hero() {
     </section>
   );
 }
+
 // ─── 수직 스크롤을 가로 스크롤로 바꿔주는 래퍼 컴포넌트 ──────────────────────────────────
 function HorizontalScrollContainer({ children, className }: { children: React.ReactNode, className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -411,7 +412,7 @@ function Works() {
                   <h3 className="font-['Fraunces'] font-medium text-foreground text-2xl md:text-3xl">{group.groupName}</h3>
                 </div>
 
-                {/* 💡 커스텀 스크롤바 디자인이 추가된 부분입니다 */}
+                {/* 커스텀 스크롤바 디자인이 추가된 부분입니다 */}
                 <HorizontalScrollContainer 
                   className="flex overflow-x-auto gap-4 md:gap-6 pb-6 pr-8 md:pr-16 
                   [&::-webkit-scrollbar]:h-2 

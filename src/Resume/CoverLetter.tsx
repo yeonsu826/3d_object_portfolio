@@ -1,6 +1,6 @@
 // Resume/CoverLetter.tsx
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 import "./Resume.css";
 
 const COVER_LETTER = [
@@ -31,7 +31,7 @@ function PersonalProfile() {
     { key: "좋아하는 게임", value: "동물의 숲 · 젤다의 전설 · 테일즈 런너", icon: "▶", accent: "var(--accent2)" },
     { key: "사는 지역", value: "서울특별시 종로구 구기동", icon: "⌖", accent: "var(--accent2)" },
     { key: "취미", value: "기타치기 · 교회 밴드부 활동 중", icon: "♪", accent: "var(--accent)" },
-    { key: "APTITUDE", value: "컴공에서 고통받다 발견한 나의 진짜 재능 — 3D 공간 구현 이제는 3D를 사랑합니다", icon: "⬡", accent: "var(--accent)", wide: true },
+    { key: "적성", value: "컴공에서 고통받다 발견한 나의 진짜 재능 — 3D 공간 구현 이제는 3D를 사랑합니다", icon: "⬡", accent: "var(--accent)", wide: true },
   ];
 
   return (
@@ -64,42 +64,69 @@ function PersonalProfile() {
     </div>
   );
 }
-
 function GallerySection() {
   const [images, setImages] = useState<string[]>([]);
+  // 스크롤 영역을 제어하기 위한 ref 추가
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // 1. Vite 빌드 시 파일 경로 문자열만 배열 형태로 가져옵니다.
-    const modules = import.meta.glob('/public/images/coverletter/*.{jpg,jpeg,png,webp}');
+    const modules = import.meta.glob('/public/coverletter/*.{jpg,jpeg,png,webp}');
     
     // 2. 배포(dist) 환경을 완벽하게 고려한 경로 정제 로직
     const imagePaths = Object.keys(modules).map(path => {
-      // '/public' 문자열을 제거하여 루트 기준 경로로 변환
       const relativePath = path.replace('/public', '');
-      // 배포 환경의 베이스 URL(기본은 '/')을 가져와 안전하게 결합
       const baseUrl = import.meta.env.BASE_URL || '/';
-      // 슬래시가 중복되지 않도록 처리하여 최종 경로 반환
       return `${baseUrl}${relativePath.replace(/^\//, '')}`;
     });
     
     setImages(imagePaths);
   }, []);
 
+  // 마우스 상하 휠을 가로 스크롤로 변환하는 로직
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      // deltaY(상하 굴림) 값이 있을 때만 작동
+      if (e.deltaY !== 0) {
+        e.preventDefault(); // 페이지 전체가 상하로 스크롤되는 것을 방지
+        el.scrollLeft += e.deltaY; // 굴린 만큼 가로로 이동
+      }
+    };
+
+    // passive: false 옵션이 있어야 e.preventDefault()가 정상 작동합니다.
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    return () => el.removeEventListener("wheel", handleWheel);
+  }, [images]); // 이미지가 불러와진 후 실행되도록 의존성 배열에 images 추가
+
   if (images.length === 0) return null;
 
   return (
-    <div className="mt-20 border-t border-[var(--border)] pt-12">
+    <div className="mt-20 border-t border-[var(--border)] pt-12 w-full overflow-hidden">
       <h2 className="mono text-sm text-white mb-6 uppercase tracking-widest">GALLERY</h2>
       
-      <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+      {/* ref={scrollRef} 추가 및 w-full 적용 */}
+      <div 
+        ref={scrollRef}
+        className="flex w-full overflow-x-auto gap-4 md:gap-6 pb-6 
+        [&::-webkit-scrollbar]:h-2 
+        [&::-webkit-scrollbar-track]:bg-transparent hover:[&::-webkit-scrollbar-track]:bg-white/5 [&::-webkit-scrollbar-track]:rounded-full
+        [&::-webkit-scrollbar-thumb]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full
+        transition-colors duration-300"
+      >
         {images.map((src, i) => (
-          <img 
+          <div 
             key={i} 
-            src={src} 
-            alt={`Gallery image ${i}`}
-            className="h-64 w-auto rounded-sm border border-[var(--border)] object-cover hover:opacity-80 transition-opacity cursor-pointer"
-            onClick={() => window.open(src, '_blank')}
-          />
+            className="relative w-[200px] md:w-[280px] aspect-[4/3] rounded-xl overflow-hidden group bg-[#0a0a10] border border-white/5 flex-shrink-0"
+          >
+            <img 
+              src={src} 
+              alt={`Gallery image ${i + 1}`} 
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+            />
+          </div>
         ))}
       </div>
     </div>
@@ -108,51 +135,52 @@ function GallerySection() {
 
 export default function CoverLetterPage() {
   return (
-    <div style={{ background: "var(--bg)", minHeight: "100vh" }} className="scanline">
-      <div className="max-w-5xl mx-auto px-6 py-12">
-        <Link 
-          to="/" 
-          className="mono text-sm flex items-center gap-2 mb-10 transition-opacity hover:opacity-70" 
+    <div style={{ background: "var(--bg)", minHeight: "100vh" }} className="scanline pb-20">
+      <div className="max-w-[800px] mx-auto px-6 pt-24">
+        
+        {/* 뒤로 가기 버튼 */}
+        <Link
+          to="/"
+          className="mono text-sm flex items-center gap-2 mb-10 transition-opacity hover:opacity-70"
           style={{ color: "var(--accent2)" }}
         >
-          &lt;- BACK TO RESUME
+          {"<- BACK TO RESUME"}
         </Link>
 
-        <div>
-          <div className="flex items-center gap-3 mb-8" style={{ borderTop: "1px solid var(--border)", paddingTop: "1rem" }}>
-            <span className="mono text-xs tracking-[0.25em] uppercase font-semibold" style={{ color: "var(--muted)" }}>
-              COVER LETTER
-            </span>
-            <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-            <span className="mono text-xs" style={{ color: "var(--muted)" }}>자기소개서</span>
-          </div>
+        {/* 프로필 섹션 */}
+        <PersonalProfile />
 
-          <PersonalProfile />
-          
-          <div className="grid grid-cols-1 gap-6 mt-6">
-            {COVER_LETTER.map((sec, i) => (
-              <div 
-                key={i} 
-                className="rounded-sm p-6" 
-                style={{ 
-                  background: "var(--surface)", 
-                  border: "1px solid var(--border)", 
-                  borderLeft: `2px solid ${i < 2 ? "var(--accent2)" : "var(--accent)"}` 
-                }}
+        {/* 자기소개서 본문 섹션 */}
+        <div className="mt-16 flex flex-col gap-6">
+          {COVER_LETTER.map((sec, i) => (
+            <div
+              key={i}
+              className="rounded-sm p-6"
+              style={{
+                background: "var(--surface)",
+                border: "1px solid var(--border)",
+                borderLeft: `2px solid ${i < 2 ? "var(--accent2)" : "var(--accent)"}`
+              }}
+            >
+              <div
+                className="mono text-xs font-semibold mb-4 flex items-start gap-2 leading-5"
+                style={{ color: i < 2 ? "var(--accent2)" : "var(--accent)" }}
               >
-                <div className="mono text-xs font-semibold mb-4 flex items-start gap-2 leading-5" style={{ color: i < 2 ? "var(--accent2)" : "var(--accent)" }}>
-                  <span style={{ opacity: 0.5, flexShrink: 0 }}>[ {String(i + 1).padStart(2, "0")} ]</span>
-                  <span>{sec.label}</span>
-                </div>
-                <p className="text-sm leading-7" style={{ color: "#94a3b8" }}>{sec.body}</p>
+                <span style={{ opacity: 0.5, flexShrink: 0 }}>
+                  [ {String(i + 1).padStart(2, "0")} ]
+                </span>
+                {sec.label}
               </div>
-            ))}
-          </div>
-
-          {/* 정상적으로 화면에 노출되도록 호출 */}
-          <GallerySection />
-          
+              <p className="text-sm leading-7 whitespace-pre-wrap" style={{ color: "#94a3b8" }}>
+                {sec.body}
+              </p>
+            </div>
+          ))}
         </div>
+
+        {/* 갤러리 섹션 */}
+        <GallerySection />
+        
       </div>
     </div>
   );
