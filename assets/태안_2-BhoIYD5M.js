@@ -1,0 +1,1 @@
+const o="/3d_object_portfolio/assets/%ED%83%9C%EC%95%88_2-X0aCbhZG.webp";export{o as default};
