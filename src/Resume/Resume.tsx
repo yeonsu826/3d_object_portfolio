@@ -1,7 +1,9 @@
 import { useState } from "react";
-import "./index.css";
+import { Link } from "react-router-dom";
+import "./Resume.css";
 
-export default function Resume() {
+
+export default function CoverLetter() {
   return (
     <div
       style={{ background: "var(--bg)", minHeight: "100vh" }}
@@ -12,16 +14,27 @@ export default function Resume() {
         <Duality />
         <div className="grid grid-cols-1 gap-8 mt-10 lg:grid-cols-[1fr_290px]">
           <main className="flex flex-col gap-10">
-            <About />
+            {/* <About /> */}
             <Experience />
-            <Activities />
           </main>
           <aside className="flex flex-col gap-8">
-            <Skills />
             <Tools />
             <Certifications />
             <Strengths />
           </aside>
+        </div>
+        <div className="mt-16 text-center" style={{ borderTop: "1px solid var(--border)", paddingTop: "3rem" }}>
+          <Link 
+            to="/coverletter" 
+            className="inline-block px-8 py-3 mono text-xs tracking-widest font-semibold rounded-sm transition-opacity hover:opacity-80"
+            style={{ 
+              background: "var(--accent)", 
+              color: "#fff",
+              boxShadow: "0 4px 14px 0 rgba(6, 182, 212, 0.39)"
+            }}
+          >
+            COVER LETTER (자기소개서) 보러가기 ➔
+          </Link>
         </div>
         <Footer />
       </div>
@@ -81,8 +94,9 @@ function Header() {
           style={{ color: "var(--muted)" }}
         >
           <ContactRow icon="✉" value="yeonsu826@email.com" />
-          <ContactRow icon="⌖" value="서울, 대한민국" />
           <ContactRow icon="◈" value="github.com/yeonsu826" />
+          <ContactRow icon="⌖" value="서울, 대한민국" />
+
         </div>
       </div>
     </div>
@@ -104,6 +118,8 @@ function ContactRow({
   );
 }
 
+
+// (기존 Duality, DualityCard 컴포넌트는 동일하게 유지)
 function Duality() {
   return (
     <div
@@ -171,103 +187,69 @@ function DualityCard({
   );
 }
 
-const ABOUT_SECTIONS = [
-  {
-    label:
-      "약점을 강점으로 뒤바꾼 몰입, 코드 너머의 공간을 창조하다",
-    body: "대학 시절, 컴퓨터 공학의 순수 소프트웨어 로직 중심 커리큘럼은 제 시각적인 창작 욕구를 온전히 채워주지 못해 학업 성적 면에서 아쉬운 결과를 얻기도 했습니다. 하지만 전공에 대한 치열한 고민은 제 진짜 적성인 '실시간 그래픽스와 공간 연출'을 발견하는 전환점이 되었습니다. 대학에서 체득한 알고리즘적 사고와 데이터 흐름에 대한 이해를 바탕으로, 졸업 후 (주)이앤오즈의 유니티 클라이언트 개발자로 합류하여 1년 8개월간 실무를 성공적으로 수행하며 제 공학적 뼈대가 틀리지 않았음을 증명했습니다.",
-  },
-  {
-    label: "실무로 증명한 기술적 이해도: 공간을 렌더링하다",
-    body: "선임연구원으로 재직하며 저는 단순한 로직 구현을 넘어, 사용자와 맞닿는 '시각적이고 인터랙티브한 공간'을 구축하는 데 집중했습니다. Stable Diffusion API와 유니티를 연동한 실시간 포토 키오스크를 개발하며 최신 아트 파이프라인을 구축했고, 대화면 다중 터치스크린 게임을 개발하며 다수의 입력 처리와 렌더링 퍼포먼스를 최적화하는 경험을 쌓았습니다. 특히, 실제 벽면에 게임 화면을 투영하는 '프로젝션 매핑 기반 실감형 클라이밍 콘텐츠'를 개발할 때는 현실 공간의 물리적 제약과 3D 엔진 내의 좌표 및 충돌(Collider)을 완벽하게 동기화하며 공간 융합에 대한 깊은 이해도를 갖추게 되었습니다.",
-  },
-  {
-    label: "실무와 교육을 넘나들며 완성한 3D 기술 스택",
-    body: "유니티 클라이언트 개발자로 실무를 경험하며 3D 공간의 논리적 구조를 체득했다면, 퇴사 후에는 'MBC 미디어 캠퍼스 버추얼 테크 전문가 과정'에 참여하여 시각적인 아트 구현 능력을 훈련했습니다. 약 7개월간 블렌더(Blender)를 활용한 하드서페이스 프롭 모델링부터 캐릭터 리깅, 마블러스 디자이너 기반의 CFX(의상 시뮬레이션)까지 3D 에셋 제작의 전체 파이프라인을 집중적으로 훈련했습니다. 특히 제작한 에셋을 언리얼 엔진(Unreal Engine)에 임포트하여 모션 캡처 데이터와 AI 립싱크를 연동하는 프로젝트를 수행하며, Unity뿐만 아니라 Unreal 환경에서의 머티리얼 세팅과 물리 충돌 연산 최적화 노하우까지 섭렵할 수 있었습니다.",
-  },
-  {
-    label: "한계를 넘는 창작, 소통을 이끄는 아티스트",
-    body: "개발자의 논리로 엔진을 이해하고, 아티스트의 감각으로 툴을 다루며 어떠한 엔진 환경에서도 즉시 투입 가능한 실무형 3D 인재가 되고싶습니다. 입사 후 단기적인 목표는 팀의 아트 스타일과 파이프라인에 빠르게 적응하여 퀄리티 기준을 충족하는 최적화된 3D 에셋을 안정적으로 생산하는 것입니다. 나아가 개발자와 아티스트 간의 소통 비용을 줄이고, 원활한 협업을 이끌어내는 브릿지 역할을 수행하고 싶습니다. 최종적으로는 미적 감각과 기술적 문제 해결 능력을 완벽하게 조화시켜, 어떠한 제약 환경에서도 퍼포먼스 저하 없이 최고의 시각적 몰입감을 선사하는 '대체 불가능한 3D 아티스트'로 성장하겠습니다.",
-  },
-];
 
-function About() {
+// ─── 새롭게 추가된 개별 섹션 컴포넌트 ──────────────────────────────
+function AboutSectionItem({ sec, index, isLast }: { sec: any, index: number, isLast: boolean }) {
   const [expanded, setExpanded] = useState(false);
-  const visible = expanded
-    ? ABOUT_SECTIONS
-    : ABOUT_SECTIONS.slice(0, 2);
 
   return (
-    <Section label="ABOUT" index="01">
+    <div
+      className="px-6 py-5"
+      style={{
+        background: index % 2 === 0 ? "var(--surface)" : "#0d0d14",
+        borderBottom: !isLast ? "1px solid var(--border)" : "none",
+      }}
+    >
+      {/* Label (항상 보임) */}
       <div
-        className="rounded-sm overflow-hidden"
-        style={{ border: "1px solid var(--border)" }}
+        className="mono text-xs font-semibold mb-3 flex items-center gap-2"
+        style={{ color: index < 2 ? "var(--accent2)" : "var(--accent)" }}
       >
-        {visible.map((sec, i) => (
-          <div
-            key={i}
-            className="px-6 py-5"
-            style={{
-              background:
-                i % 2 === 0 ? "var(--surface)" : "#0d0d14",
-              borderBottom:
-                i < visible.length - 1
-                  ? "1px solid var(--border)"
-                  : "none",
-            }}
-          >
-            <div
-              className="mono text-xs font-semibold mb-3 flex items-center gap-2"
-              style={{
-                color:
-                  i < 2 ? "var(--accent2)" : "var(--accent)",
-              }}
-            >
-              <span style={{ opacity: 0.5 }}>
-                [{String(i + 1).padStart(2, "0")}]
-              </span>
-              {sec.label}
-            </div>
-            <p
-              className="text-sm leading-7"
-              style={{ color: "#94a3b8" }}
-            >
-              {sec.body}
-            </p>
-          </div>
-        ))}
-        <div
-          className="px-6 py-3"
-          style={{
-            background: "var(--surface)",
-            borderTop: expanded
-              ? "1px solid var(--border)"
-              : "none",
-          }}
-        >
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="mono text-xs flex items-center gap-2 transition-colors hover:opacity-80"
-            style={{
-              color: "var(--muted)",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              padding: 0,
-            }}
-          >
-            <span style={{ color: "var(--accent)" }}>
-              {expanded ? "▴" : "▾"}
-            </span>
-            {expanded
-              ? "접기"
-              : `나머지 ${ABOUT_SECTIONS.length - 2}개 섹션 더 보기`}
-          </button>
-        </div>
+        <span style={{ opacity: 0.5 }}>
+          [{String(index + 1).padStart(2, "0")}]
+        </span>
+        {sec.label}
       </div>
-    </Section>
+
+      {/* Summary 한 줄 요약 (항상 보임, 약간 밝은 텍스트로 강조) */}
+      <p 
+        className="text-sm leading-7 font-medium" 
+        style={{ color: "var(--foreground)" }}
+      >
+        {sec.summary}
+      </p>
+
+      {/* Body 세부 내용 (더보기 상태일 때만 보임) */}
+      {expanded && (
+        <p
+          className="text-sm leading-7 mt-3 transition-opacity"
+          style={{ color: "#94a3b8" }}
+        >
+          {sec.body}
+        </p>
+      )}
+
+      {/* 개별 더보기 / 접기 버튼 */}
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="mono text-xs flex items-center gap-2 transition-colors hover:opacity-80 mt-4"
+        style={{
+          color: "var(--muted)",
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          padding: 0,
+        }}
+      >
+        <span style={{ color: "var(--accent)" }}>
+          {expanded ? "▴" : "▾"}
+        </span>
+        {expanded ? "접기" : "더보기"}
+      </button>
+    </div>
   );
 }
+
 
 function Experience() {
   return (
@@ -281,26 +263,26 @@ function Experience() {
           type="실감형 콘텐츠 제작"
           items={[
             {
-              title: "AI 포토 키오스크 콘텐츠 개발",
-              tags: ["Unity", "Python", "Stable Diffusion"],
-              desc: "사용자의 사진을 실시간으로 촬영하고 Stable Diffusion으로 변환하여 프린트하는 포토 키오스크 시스템 개발. 다양한 이미지 변환 옵션과 사용자 경험 최적화.",
+              title: "AR Walk 해양 생물 체험 앱 개발",
+              tags: ["Unity", "AR", "Vuforia"],
+              desc: "벽면에 부착된 마커를 태블릿 카메라로 인식하면 다양한 해양 생물이 증강현실(AR)로 나타나는 실감형 오프라인 체험 콘텐츠 개발.",
             },
             {
-              title: "다인용 터치스크린 게임 개발",
-              tags: ["Unity", "멀티터치", "UI/UX"],
-              desc: "여러 사용자가 동시에 플레이 가능한 터치스크린 게임 개발. 안정성 확보 및 다수 사용자 동시 입력 처리 시스템 구현.",
+              title: "AR 느티나무숲 및 AI 다큐멘터리 생성 시스템",
+              tags: ["Unity", "AR", "AI 음성 변환", "AI API 연동"],
+              desc: "마커 인식 기반의 AR 느티나무 설명 콘텐츠. AR 체험을 촬영한 영상을 기반으로, 사용자가 42개국 언어 중 하나를 선택하면 해당 언어로 번역 및 더빙된 다큐멘터리 영상을 자동 생성하는 시스템 구축.",
             },
             {
-              title: "클라이밍 실감형 콘텐츠 개발",
-              tags: ["Unity", "프로젝션", "AR"],
-              desc: "벽면에 게임 화면을 투영하여 사용자가 직접 올라가 장애물을 터치하는 실감형 클라이밍 콘텐츠. 교육·레크리에이션 목적의 체험형 시스템.",
+              title: "AI 기반 다국어 영상 편지 시스템",
+              tags: ["Unity", "AI 음성 변환" , "AI API 연동"],
+              desc: "사용자가 한국어로 녹음한 영상을 바탕으로, 본인의 목소리 톤을 유지한 채 42개국 중 선택한 국가의 언어로 변환된 다국어 영상 편지를 생성하는 AI 파이프라인 개발.",
             },
           ]}
         />
 
         <ExperienceItem
           company="(사)한국산업기술보호협회"
-          dept="방산팀 사원"
+          dept="방산팀 인턴"
           period="2022. 09 — 2022. 12"
           duration="4개월"
           type="방산 행정"
@@ -430,78 +412,6 @@ function ExperienceItem({
   );
 }
 
-function Skills() {
-  const skills = [
-    { name: "Unity / C#", level: 88, side: "dev" },
-    { name: "Blender", level: 75, side: "art" },
-    { name: "Unreal Engine 5", level: 60, side: "art" },
-    { name: "AR Foundation", level: 80, side: "dev" },
-    { name: "3D 환경 구성", level: 78, side: "art" },
-    { name: "Python / AI 연동", level: 65, side: "dev" },
-  ];
-
-  return (
-    <Section label="SKILLS" index="—">
-      <div className="flex flex-col gap-3.5">
-        <div className="flex gap-3 mb-1">
-          <span
-            className="mono text-xs flex items-center gap-1.5"
-            style={{ color: "var(--accent2)" }}
-          >
-            <span
-              className="inline-block w-2 h-2 rounded-full"
-              style={{ background: "var(--accent2)" }}
-            />{" "}
-            DEV
-          </span>
-          <span
-            className="mono text-xs flex items-center gap-1.5"
-            style={{ color: "var(--accent)" }}
-          >
-            <span
-              className="inline-block w-2 h-2 rounded-full"
-              style={{ background: "var(--accent)" }}
-            />{" "}
-            ART
-          </span>
-        </div>
-        {skills.map((s) => (
-          <div key={s.name}>
-            <div className="flex justify-between mb-1">
-              <span
-                className="mono text-xs"
-                style={{ color: "var(--text)" }}
-              >
-                {s.name}
-              </span>
-              <span
-                className="mono text-xs"
-                style={{ color: "var(--muted)" }}
-              >
-                {s.level}%
-              </span>
-            </div>
-            <div
-              className="h-1 rounded-full"
-              style={{ background: "var(--border)" }}
-            >
-              <div
-                className="h-1 rounded-full transition-all"
-                style={{
-                  width: `${s.level}%`,
-                  background:
-                    s.side === "dev"
-                      ? "linear-gradient(to right, #0891b2, var(--accent2))"
-                      : "linear-gradient(to right, var(--accent), #a78bfa)",
-                }}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-}
 
 function Tools() {
   const tools = [
@@ -549,138 +459,6 @@ function Tools() {
   );
 }
 
-function Activities() {
-  return (
-    <Section label="ACTIVITIES" index="03">
-      <div
-        className="rounded-sm overflow-hidden"
-        style={{ border: "1px solid var(--border)" }}
-      >
-        <div
-          className="flex items-center justify-between flex-wrap gap-3 px-5 py-4"
-          style={{
-            background: "var(--surface)",
-            borderBottom: "1px solid var(--border)",
-          }}
-        >
-          <div>
-            <div
-              className="font-semibold text-sm"
-              style={{ color: "var(--text)" }}
-            >
-              Microsoft
-            </div>
-            <div
-              className="mono text-xs mt-0.5"
-              style={{ color: "var(--accent2)" }}
-            >
-              AI Challenge for Biodiversity
-            </div>
-          </div>
-          <div className="text-right">
-            <div
-              className="mono text-xs"
-              style={{ color: "var(--muted)" }}
-            >
-              2023. 12 — 2024. 01
-            </div>
-            <div
-              className="mono text-xs mt-0.5"
-              style={{ color: "var(--accent)" }}
-            >
-              2개월
-            </div>
-          </div>
-        </div>
-
-        <div
-          className="px-5 py-4"
-          style={{ background: "#0d0d14" }}
-        >
-          <p
-            className="text-xs leading-6 mb-5"
-            style={{ color: "#94a3b8" }}
-          >
-            AI, Big Data, 환경 및 생물 다양성에 관심 있는
-            대학생·직장인이 모여 기후변화 대응과 생물 다양성
-            보전 아이디어를 탐구하는 Microsoft 주관 프로그램.{" "}
-            <strong style={{ color: "var(--text)" }}>
-              해안가 쓰레기 문제 해결
-            </strong>
-            을 주제로 AR 기반 인터랙티브 시스템을
-            기획·연구하였습니다.
-          </p>
-
-          <div className="flex flex-col gap-3">
-            {[
-              {
-                step: "01",
-                title: "딥러닝 이미지 분류",
-                desc: "쓰레기 종류를 실시간으로 분류하는 딥러닝 모델 학습 및 적용",
-                tag: "AI / Deep Learning",
-                accent: "var(--accent2)",
-              },
-              {
-                step: "02",
-                title: "AR 쓰레기통 위치 안내",
-                desc: "AR 기술을 활용하여 사용자에게 근처 쓰레기통 위치를 시각적으로 안내하고 보상 시스템으로 행동 유도",
-                tag: "AR",
-                accent: "var(--accent2)",
-              },
-              {
-                step: "03",
-                title: "위치 데이터 분석 & 히트맵 시각화",
-                desc: "수집된 투기 위치 데이터를 Big Data 분석하여 히트맵으로 시각화, 문제 지점 파악 및 정책 제안",
-                tag: "Big Data / 시각화",
-                accent: "var(--accent)",
-              },
-            ].map((item) => (
-              <div
-                key={item.step}
-                className="flex gap-4 px-4 py-3 rounded-sm"
-                style={{
-                  background: "var(--surface)",
-                  border: "1px solid var(--border)",
-                }}
-              >
-                <span
-                  className="mono text-xs shrink-0 mt-0.5"
-                  style={{ color: item.accent, opacity: 0.6 }}
-                >
-                  [{item.step}]
-                </span>
-                <div>
-                  <div
-                    className="text-xs font-medium mb-1"
-                    style={{ color: "var(--text)" }}
-                  >
-                    {item.title}
-                  </div>
-                  <p
-                    className="text-xs leading-5"
-                    style={{ color: "#64748b" }}
-                  >
-                    {item.desc}
-                  </p>
-                  <span
-                    className="mono text-xs px-2 py-0.5 rounded-sm inline-block mt-2"
-                    style={{
-                      background: "var(--tag-bg)",
-                      color: item.accent,
-                      border: `1px solid ${item.accent === "var(--accent2)" ? "#1e3a4a" : "rgba(124,58,237,0.3)"}`,
-                    }}
-                  >
-                    {item.tag}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </Section>
-  );
-}
 
 function Certifications() {
   const certs = [
@@ -769,6 +547,7 @@ function Strengths() {
     </Section>
   );
 }
+
 
 function Section({
   label,

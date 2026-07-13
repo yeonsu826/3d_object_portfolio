@@ -105,6 +105,10 @@ const PORTFOLIO: PortfolioGroup[] = [
           `${import.meta.env.BASE_URL}images/cafe/4.jpeg`,
           `${import.meta.env.BASE_URL}images/cafe/5.jpeg`,
           `${import.meta.env.BASE_URL}images/cafe/6.jpeg`,
+          `${import.meta.env.BASE_URL}images/cafe/7.jpeg`,
+          `${import.meta.env.BASE_URL}images/cafe/8.jpeg`,
+          `${import.meta.env.BASE_URL}images/cafe/9.jpeg`,
+          `${import.meta.env.BASE_URL}images/cafe/10.jpeg`,
         ], 
         videoLinks: [
           "https://drive.google.com/file/d/1Gcl7gPJSkSSYWH6YBFoNTYB_78xN2WFp/view?usp=drive_link",
@@ -509,8 +513,7 @@ function Works() {
 }
 
 // ─── About ────────────────────────────────────────────────────────────────────
-// 상단 파일 맨 위에 ArrowRight (또는 ArrowUpRight) 아이콘이 import 되어 있는지 확인해주세요!
-// import { Instagram, Linkedin, ArrowRight } from "lucide-react"; 
+
 
 function About() {
   return (
