@@ -26,6 +26,7 @@ interface PortfolioItem {
 
 interface PortfolioGroup {
   groupName: string;
+  concept?:string;
   emoji: string;
   items: PortfolioItem[];
 }
@@ -89,6 +90,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   },
   {
     groupName: "카페 프로젝트",
+    concept: "Stylized",
     emoji: "☕",
     items: [
       { 
@@ -127,6 +129,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   },
   {
     groupName: "게이밍룸 프로젝트",
+    concept: "Stylized",
     emoji: "🎮",
     items: [
       { 
@@ -151,6 +154,7 @@ const PORTFOLIO: PortfolioGroup[] = [
         ] ,
         videoLinks: [
           "https://drive.google.com/file/d/1dV6JbgzoUdk7BgpNnIVEKubDOGhD8k8t/view?usp=drive_link"
+          
         ] 
       },
       
@@ -394,7 +398,7 @@ function Works() {
               {PORTFOLIO.map((g) => (
                 <button key={g.groupName} onClick={() => setActiveGroup(g.groupName)}
                   className={`font-['JetBrains_Mono'] text-xs tracking-widest uppercase px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${activeGroup === g.groupName ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105 font-semibold" : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/20 hover:text-white"}`}>
-                  {g.emoji} {g.groupName}
+                  {g.emoji} {g.groupName} {g.concept ? `(${g.concept})` : ""}
                 </button>
               ))}
             </div>
@@ -414,6 +418,11 @@ function Works() {
                 <div className="flex items-center gap-4 mb-8 pb-4 border-b border-white/10 pr-8 md:pr-16">
                   <span className="text-3xl">{group.emoji}</span>
                   <h3 className="font-['Fraunces'] font-medium text-foreground text-2xl md:text-3xl">{group.groupName}</h3>
+                  {group.concept && (
+                  <span className="px-3 py-1 mt-1 text-[10px] sm:text-xs font-['JetBrains_Mono'] tracking-widest text-primary border border-primary/50 bg-primary/10 rounded-full shadow-[0_0_8px_rgba(var(--primary-rgb),0.3)]">
+                      {group.concept}
+                  </span>
+                )}
                 </div>
 
                 {/* 커스텀 스크롤바 디자인이 추가된 부분입니다 */}
@@ -529,7 +538,7 @@ function About() {
           {/* 왼쪽: 사진 영역 */}
           <div className="relative max-w-[420px] mx-auto lg:mx-0">
             <div className="relative aspect-[3/4] overflow-hidden bg-secondary rounded-3xl shadow-xl">
-              <img src="./images/3212_4282.jpg" alt="Portrait" className="w-full h-full object-cover" />
+              <img src={`${import.meta.env.BASE_URL}images/3212_4282.jpg`} alt="Portrait" className="w-full h-full object-cover" />     
             </div>
           </div>
           
