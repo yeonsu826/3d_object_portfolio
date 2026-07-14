@@ -151,6 +151,7 @@ const PORTFOLIO: PortfolioGroup[] = [
         ] ,
         videoLinks: [
           "https://drive.google.com/file/d/1dV6JbgzoUdk7BgpNnIVEKubDOGhD8k8t/view?usp=drive_link"
+          
         ] 
       },
       
@@ -529,7 +530,7 @@ function About() {
           {/* 왼쪽: 사진 영역 */}
           <div className="relative max-w-[420px] mx-auto lg:mx-0">
             <div className="relative aspect-[3/4] overflow-hidden bg-secondary rounded-3xl shadow-xl">
-              <img src="./images/3212_4282.jpg" alt="Portrait" className="w-full h-full object-cover" />
+              <img src={`${import.meta.env.BASE_URL}images/3212_4282.jpg`} alt="Portrait" className="w-full h-full object-cover" />     
             </div>
           </div>
           
