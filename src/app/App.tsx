@@ -148,8 +148,12 @@ const PORTFOLIO: PortfolioGroup[] = [
           `${import.meta.env.BASE_URL}images/gamingroom/10.jpeg`,
           `${import.meta.env.BASE_URL}images/gamingroom/11.jpeg`,
           `${import.meta.env.BASE_URL}images/gamingroom/12.jpeg`,
+        ] ,
+        videoLinks: [
+          "https://drive.google.com/file/d/1dV6JbgzoUdk7BgpNnIVEKubDOGhD8k8t/view?usp=drive_link"
         ] 
       },
+      
     ],
   },
   {

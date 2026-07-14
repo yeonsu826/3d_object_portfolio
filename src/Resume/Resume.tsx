@@ -33,7 +33,7 @@ export default function CoverLetter() {
               boxShadow: "0 4px 14px 0 rgba(6, 182, 212, 0.39)"
             }}
           >
-            COVER LETTER (자기소개서) 보러가기 ➔
+            자기소개서 보러가기 ➔
           </Link>
         </div>
         <Footer />
@@ -54,7 +54,7 @@ function Header() {
             className="mono text-xs tracking-[0.3em] uppercase mb-3"
             style={{ color: "var(--accent2)" }}
           >
-            &gt;_ 이력서 · 2025
+            &gt;_ 이력서 · 2026
           </div>
           <h1
             className="mono text-5xl font-bold mb-3"
