@@ -534,12 +534,6 @@ function MyPortfolio() {
     "https://www.instagram.com/reel/DX0-xahAll4/",
     "https://www.instagram.com/reel/DZHSKgSPtdv/",
     "https://www.instagram.com/reel/DV0-jS0k0JN/",
-    "https://www.instagram.com/reel/DUuHznCkt_-/",
-    "https://www.instagram.com/reel/DT39vTvku1d/",
-    "https://www.instagram.com/reel/DQ_ZbRYCUMg/",
-    "https://www.instagram.com/reel/DQ6c7jWEmkz/",
-    "https://www.instagram.com/reel/C-NS8YMyVdy/",
-    
   ];
 
   return (
@@ -565,6 +559,7 @@ function MyPortfolio() {
         {instagramUrls.map((url, index) => (
           <div 
             key={index} 
+            // 3. ✨가장 중요✨: scale-90으로 인해 생긴 오른쪽(-mr-8)과 아래쪽(-mb-12)의 '유령 여백'을 마이너스 마진으로 당겨서 없애줍니다.
             className="flex-shrink-0 origin-top-left scale-90 -mr-8 -mb-12 rounded-xl overflow-hidden shadow-2xl border border-white/10 hover:border-primary/50 transition-colors duration-300 bg-[#0a0a10]"
           >
             <InstagramEmbed 
