@@ -4,6 +4,8 @@ import { ArrowUpRight, Menu, X, ExternalLink, Instagram, Linkedin, ChevronLeft, 
 // import * as THREE from "three";
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Link } from "react-router-dom";
+import { InstagramEmbed } from 'react-social-media-embed';
+
 
 import "../styles/fonts.css";
 import "../styles/index.css";
@@ -525,6 +527,52 @@ function Works() {
     </section>
   );
 }
+function MyPortfolio() {
+  // 1. 띄우고 싶은 인스타 영상 주소들을 쉼표(,)로 구분해서 넣으세요.
+  const instagramUrls = [
+    "https://www.instagram.com/reel/DaaF1gPhC5X/",
+    "https://www.instagram.com/reel/DX0-xahAll4/",
+    "https://www.instagram.com/reel/DZHSKgSPtdv/",
+    "https://www.instagram.com/reel/DV0-jS0k0JN/",
+  ];
+
+  return (
+    <div className="flex flex-col my-10 max-w-[1400px] mx-auto px-8 w-full">
+      {/* 1. 전체 위아래 여백 줄이기: my-20 -> my-10 으로 변경 */}
+      
+      <div className="flex items-center gap-4 mb-6 pb-4 border-b border-white/10"> 
+        {/* mb-8 -> mb-6 */}
+        <span className="text-3xl">📱</span>
+        <h3 className="font-['Fraunces'] font-medium text-foreground text-2xl md:text-3xl">
+          Instagram Works
+        </h3>
+      </div>
+      
+      <HorizontalScrollContainer 
+        // 2. 영상 사이의 기본 갭 줄이기: gap-6 -> gap-3 으로 변경
+        className="flex overflow-x-auto gap-3 pb-2
+        [&::-webkit-scrollbar]:h-2 
+        [&::-webkit-scrollbar-track]:bg-white/5 [&::-webkit-scrollbar-track]:rounded-full
+        [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/40
+        transition-colors w-full"
+      >
+        {instagramUrls.map((url, index) => (
+          <div 
+            key={index} 
+            // 3. ✨가장 중요✨: scale-90으로 인해 생긴 오른쪽(-mr-8)과 아래쪽(-mb-12)의 '유령 여백'을 마이너스 마진으로 당겨서 없애줍니다.
+            className="flex-shrink-0 origin-top-left scale-90 -mr-8 -mb-12 rounded-xl overflow-hidden shadow-2xl border border-white/10 hover:border-primary/50 transition-colors duration-300 bg-[#0a0a10]"
+          >
+            <InstagramEmbed 
+              url={url} 
+              width={328} 
+            />
+          </div>
+        ))}
+      </HorizontalScrollContainer>
+    </div>
+  );
+}
+
 
 // ─── About ────────────────────────────────────────────────────────────────────
 
@@ -600,6 +648,8 @@ function About() {
   );
 }
 
+
+
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
 function Footer() {
@@ -629,6 +679,8 @@ function Footer() {
   );
 }
 
+
+
 // ─── App ──────────────────────────────────────────────────────────────────────
 
 export default function App() {
@@ -637,6 +689,7 @@ export default function App() {
       <Nav />
       <Hero />
       <Works />
+      <MyPortfolio />
       <About />
       <Footer />
     </div>
