@@ -91,10 +91,6 @@ const PORTFOLIO: PortfolioGroup[] = [
           `${import.meta.env.BASE_URL}images/glasses/28.png`,
           `${import.meta.env.BASE_URL}images/glasses/29.png`,
         ], 
-        videoLinks: [
-          "https://drive.google.com/file/d/1dTS_g03Vwdw9BfpnFqk0ZQC4ey5lu9zM/view?usp=drive_link",
-          "https://drive.google.com/file/d/1XkE5SO1fS3AC-Kcrp3KGZinesodA1TJI/view?usp=drive_link",
-        ] 
       },
       { 
         id: "glass_project_process", 
@@ -129,11 +125,7 @@ const PORTFOLIO: PortfolioGroup[] = [
           `${import.meta.env.BASE_URL}images/cafe/8.jpeg`,
           `${import.meta.env.BASE_URL}images/cafe/9.jpeg`,
           `${import.meta.env.BASE_URL}images/cafe/10.jpeg`,
-        ], 
-        videoLinks: [
-          "https://drive.google.com/file/d/1Gcl7gPJSkSSYWH6YBFoNTYB_78xN2WFp/view?usp=drive_link",
-          "https://drive.google.com/file/d/1buT0a9OPEFYPeK3YSYEcteHSf8nRteZb/view?usp=sharing",
-        ] 
+        ]
       },
       { 
         id: "cafe_project_process", 
@@ -169,10 +161,6 @@ const PORTFOLIO: PortfolioGroup[] = [
           `${import.meta.env.BASE_URL}images/gamingroom/10.jpeg`,
           `${import.meta.env.BASE_URL}images/gamingroom/11.jpeg`,
           `${import.meta.env.BASE_URL}images/gamingroom/12.jpeg`,
-        ] ,
-        videoLinks: [
-          "https://drive.google.com/file/d/1dV6JbgzoUdk7BgpNnIVEKubDOGhD8k8t/view?usp=drive_link"
-          
         ] 
       },
       
@@ -571,124 +559,6 @@ function Works() {
   );
 }
 
-// function MyPortfolio() {
-//   // 1. 띄우고 싶은 인스타 영상 주소들을 쉼표(,)로 구분해서 넣으세요.
-//   const instagramUrls = [
-//     "https://www.instagram.com/reel/DaaF1gPhC5X/",
-//     "https://www.instagram.com/reel/DX0-xahAll4/",
-//     "https://www.instagram.com/reel/DZHSKgSPtdv/",
-//     "https://www.instagram.com/reel/DV0-jS0k0JN/",
-//     "https://www.instagram.com/reel/DUuHznCkt_-/",
-//     "https://www.instagram.com/reel/DT39vTvku1d/",
-//     "https://www.instagram.com/reel/DQ_ZbRYCUMg/",
-//     "https://www.instagram.com/reel/DQ6c7jWEmkz/",
-//     "https://www.instagram.com/reel/C-NS8YMyVdy/",
-//   ];
-
-//   return (
-//     <div className="flex flex-col my-10 max-w-[1400px] mx-auto px-8 w-full">
-//       {/* 1. 전체 위아래 여백 줄이기: my-20 -> my-10 으로 변경 */}
-      
-//       <div className="flex items-center gap-4 mb-6 pb-4 border-b border-white/10"> 
-//         {/* mb-8 -> mb-6 */}
-//         <span className="text-3xl">📱</span>
-//         <h3 className="font-['Fraunces'] font-medium text-foreground text-2xl md:text-3xl">
-//           Instagram Works
-//         </h3>
-//       </div>
-      
-//       <HorizontalScrollContainer 
-//         // 2. 영상 사이의 기본 갭 줄이기: gap-6 -> gap-3 으로 변경
-//         className="flex overflow-x-auto gap-3 pb-2
-//         [&::-webkit-scrollbar]:h-2 
-//         [&::-webkit-scrollbar-track]:bg-white/5 [&::-webkit-scrollbar-track]:rounded-full
-//         [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/40
-//         transition-colors w-full"
-//       >
-//         {instagramUrls.map((url, index) => (
-//           <div 
-//             key={index} 
-//             // 3. ✨가장 중요✨: scale-90으로 인해 생긴 오른쪽(-mr-8)과 아래쪽(-mb-12)의 '유령 여백'을 마이너스 마진으로 당겨서 없애줍니다.
-//             className="flex-shrink-0 origin-top-left scale-90 -mr-8 -mb-12 rounded-xl overflow-hidden shadow-2xl border border-white/10 hover:border-primary/50 transition-colors duration-300 bg-[#0a0a10]"
-//           >
-//             <InstagramEmbed 
-//               url={url} 
-//               width={328} 
-//             />
-//           </div>
-//         ))}
-//       </HorizontalScrollContainer>
-//     </div>
-//   );
-// }
-
-
-
-// ─── Vimeo Shorts 연동 ─────────────────────────────────────────────────────────────
-
-// function ShortsGallery() {
-  
-//   // ✨ 1. 배열을 객체 형태로 변경: 영상 고유 ID와 클릭 시 이동할 원본 링크를 짝지어줍니다.
-//   const vimeoVideos = [
-//     { id: "1211900105", link: "https://vimeo.com/1211900105" },
-//     { id: "1211900103", link: "https://vimeo.com/1211900103" },
-//     { id: "1211900047", link: "https://vimeo.com/1211900047" },
-//     { id: "1211900004", link: "https://vimeo.com/1211900004" }
-//   ];
-
-//   if (vimeoVideos.length === 0) return null;
-
-//   return (
-//     <section id="shorts" className="bg-[#050505] pt-10 pb-32">
-//       <div className="max-w-[1400px] mx-auto pl-8 md:pl-16">
-//         <div className="flex items-baseline gap-4 mb-10 pb-4 border-b border-white/10 pr-8 md:pr-16">
-//           <h3 className="font-['Fraunces'] font-normal text-white text-2xl md:text-3xl">Shorts</h3>
-//           <span className="font-['Figtree'] text-xs tracking-widest uppercase text-white/40">
-//             — Video Details
-//           </span>
-//         </div>
-        
-//         <HorizontalScrollContainer 
-//           className="flex overflow-x-auto gap-6 pb-8 pr-8 md:pr-16
-//           [&::-webkit-scrollbar]:h-1 
-//           [&::-webkit-scrollbar-track]:bg-transparent
-//           [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/40
-//           transition-colors w-full"
-//         >
-//           {vimeoVideos.map((video, index) => (
-//             // ✨ 2. div 태그를 a 태그(링크)로 변경하고 클릭 속성을 추가했습니다.
-//             <a 
-//               key={index} 
-//               href={video.link}
-//               target="_blank" // 새 창에서 열기
-//               rel="noopener noreferrer" // 보안 속성
-//               // cursor-pointer를 추가해 클릭할 수 있음을 나타냅니다.
-//               className="flex-shrink-0 w-[260px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-[#0a0a0a] group relative cursor-pointer block"
-//             >
-//               <iframe 
-//                 src={`https://player.vimeo.com/video/${video.id}?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1`}
-//                 frameBorder="0" 
-//                 allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
-//                 allowFullScreen
-//                 title={`Vimeo Shorts ${index}`}
-//                 // pointer-events-none 이 있어야 iframe을 통과해서 a 태그의 클릭 이벤트가 정상 작동합니다!
-//                 className="absolute top-0 left-0 w-full h-full object-cover scale-[1.02] group-hover:scale-100 transition-transform duration-700 pointer-events-none"
-//               ></iframe>
-              
-//               {/* ✨ 3. 마우스를 올렸을 때 "Watch Video" 라는 안내 문구가 예쁘게 뜹니다 (UX 향상) */}
-//               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
-//                 <span className="opacity-0 group-hover:opacity-100 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full font-['Figtree'] text-xs font-semibold text-white transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 flex items-center gap-1.5 shadow-lg">
-//                   Watch Video <ArrowUpRight size={14} />
-//                 </span>
-//               </div>
-//             </a>
-//           ))}
-//         </HorizontalScrollContainer>
-//       </div>
-//     </section>
-//   );
-// }
-
 // ─── Vimeo Video Gallery ─────────────────────────────────────────────────────────────
 
 function VideoGallery() {
@@ -768,7 +638,6 @@ function VideoGallery() {
 }
 // ─── About ────────────────────────────────────────────────────────────────────
 
-
 function About() {
   return (
     <section id="about" className="bg-card py-32 border-t border-border">
@@ -776,9 +645,10 @@ function About() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           
           {/* 왼쪽: 사진 영역 */}
-          <div className="relative max-w-[420px] mx-auto lg:mx-0">
-            <div className="relative aspect-[3/4] overflow-hidden bg-secondary rounded-3xl shadow-xl">
-              <img src={`${import.meta.env.BASE_URL}images/3212_4282.jpg`} alt="Portrait" className="w-full h-full object-cover" />     
+          {/* lg:mx-0 을 제거하고 w-full을 추가하여 해당 영역 내에서 완벽한 중앙 정렬을 맞춥니다 */}
+          <div className="relative max-w-[420px] w-full mx-auto">
+            <div className="relative aspect-[4/4] overflow-hidden bg-secondary rounded-3xl shadow-xl">
+              <img src={`${import.meta.env.BASE_URL}images/working.png`} alt="Portrait" className="w-full h-full object-cover" />     
             </div>
           </div>
           
@@ -792,7 +662,10 @@ function About() {
                 I build spaces that <em className="italic text-primary">exist nowhere</em> but feel real.
               </h2>
               <div className="flex flex-col gap-4 font-['Figtree'] text-base text-muted-foreground leading-relaxed">
-                <p>기술적 정밀함과 예술적 직관의 교차점에서 작업하며, 아무 곳에도 존재하지 않지만 현실처럼 느껴지는 공간과 오브젝트를 만들어냅니다.</p>
+                <p>3D 좋아합니다!</p>
+                <p>엔진 잘 다룹니다!</p>
+                <p>모델링 잘합니다!</p>
+                <p>열심히 하겠습니다!</p>
               </div>
             </div>
             
