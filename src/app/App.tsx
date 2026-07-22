@@ -530,6 +530,7 @@ function Works() {
 function MyPortfolio() {
   // 1. 띄우고 싶은 인스타 영상 주소들을 쉼표(,)로 구분해서 넣으세요.
   const instagramUrls = [
+    "https://www.instagram.com/reel/DaaF1gPhC5X/",
     "https://www.instagram.com/reel/DX0-xahAll4/",
     "https://www.instagram.com/reel/DZHSKgSPtdv/",
     "https://www.instagram.com/reel/DV0-jS0k0JN/",
