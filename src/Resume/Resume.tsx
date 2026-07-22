@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Resume.css";
 
-
 export default function CoverLetter() {
   return (
     <div
@@ -16,6 +15,8 @@ export default function CoverLetter() {
           <main className="flex flex-col gap-10">
             {/* <About /> */}
             <Experience />
+            {/* 💡 Education(학력) 컴포넌트 추가 */}
+            <Education />
           </main>
           <aside className="flex flex-col gap-8">
             <Tools />
@@ -118,7 +119,6 @@ function ContactRow({
   );
 }
 
-
 // (기존 Duality, DualityCard 컴포넌트는 동일하게 유지)
 function Duality() {
   return (
@@ -186,7 +186,6 @@ function DualityCard({
     </div>
   );
 }
-
 
 // ─── 새롭게 추가된 개별 섹션 컴포넌트 ──────────────────────────────
 function AboutSectionItem({ sec, index, isLast }: { sec: any, index: number, isLast: boolean }) {
@@ -412,6 +411,51 @@ function ExperienceItem({
   );
 }
 
+// 💡 새롭게 추가된 학력(Education) 컴포넌트 
+function Education() {
+  return (
+    <Section label="EDUCATION" index="03">
+      <div className="flex flex-col gap-6">
+        <div
+          className="rounded-sm overflow-hidden"
+          style={{ border: "1px solid var(--border)" }}
+        >
+          <div
+            className="flex items-center justify-between flex-wrap gap-3 px-5 py-4"
+            style={{
+              background: "var(--surface)",
+            }}
+          >
+            <div>
+              <div
+                className="font-semibold text-sm"
+                style={{ color: "var(--text)" }}
+              >
+                명지대학교 (자연)
+              </div>
+              <div
+                className="mono text-xs mt-0.5 flex gap-2"
+                style={{ color: "var(--muted)" }}
+              >
+                <span>컴퓨터공학과 (편입)</span>
+                <span style={{ color: "var(--border)" }}>|</span>
+                <span style={{ color: "var(--accent2)" }}>졸업</span>
+              </div>
+            </div>
+            <div className="text-right">
+              <div
+                className="mono text-xs"
+                style={{ color: "var(--muted)" }}
+              >
+                2021. 03 — 2023. 02
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
 
 function Tools() {
   const tools = [
@@ -458,7 +502,6 @@ function Tools() {
     </Section>
   );
 }
-
 
 function Certifications() {
   const certs = [
@@ -547,7 +590,6 @@ function Strengths() {
     </Section>
   );
 }
-
 
 function Section({
   label,

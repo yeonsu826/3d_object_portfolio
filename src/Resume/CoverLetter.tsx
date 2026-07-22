@@ -144,7 +144,7 @@ export default function CoverLetterPage() {
           className="mono text-sm flex items-center gap-2 mb-10 transition-opacity hover:opacity-70"
           style={{ color: "var(--accent2)" }}
         >
-          {"<- BACK TO RESUME"}
+          {"<- BACK TO PORTFOLIO"}
         </Link>
 
         {/* 프로필 섹션 */}

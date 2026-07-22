@@ -679,7 +679,6 @@ function VideoGallery() {
     </section>
   );
 }
-
 // ─── About ────────────────────────────────────────────────────────────────────
 
 function About() {
@@ -688,19 +687,46 @@ function About() {
       <div className="max-w-[1400px] mx-auto px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           
-          <div className="relative max-w-[420px] w-full mx-auto">
+          {/* 왼쪽: 사진 및 Contact 영역 */}
+          <div className="relative max-w-[420px] w-full mx-auto flex flex-col gap-8">
             <div className="relative aspect-[4/4] overflow-hidden bg-secondary rounded-3xl shadow-xl">
               <img src={`${import.meta.env.BASE_URL}images/working.png`} alt="Portrait" className="w-full h-full object-cover" />     
             </div>
+
+            {/* 💡 텍스트 영역에 있던 Contact를 사진 밑으로 이동하고 크기(w-16, h-16, size 28)를 키웠습니다. */}
+            <div className="flex flex-col items-center pt-2">
+              <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-4">Contact</p>
+              <div className="flex gap-5">
+                <a 
+                  href="https://www.instagram.com/yeon_ddooo/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="group flex h-16 w-16 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:border-primary hover:text-primary shadow-sm"
+                >
+                  <Instagram size={28} />
+                  <span className="sr-only">Instagram</span>
+                </a>
+                <a 
+                  href="https://www.linkedin.com/in/yeonsu0826/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="group flex h-16 w-16 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:border-primary hover:text-primary shadow-sm"
+                >
+                  <Linkedin size={28} />
+                  <span className="sr-only">LinkedIn</span>
+                </a>
+              </div>
+            </div>
           </div>
           
+          {/* 오른쪽: 텍스트 및 정보 영역 */}
           <div className="flex flex-col gap-10 lg:pt-8">
             
             <div>
               <p className="font-['JetBrains_Mono'] text-xs text-primary tracking-widest uppercase mb-6">03 — About Me</p>
-              <h2 className="font-['Fraunces'] font-light text-foreground leading-tight mb-8" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)" }}>
-                I build spaces that <em className="italic text-primary">exist nowhere</em> but feel real.
-              </h2>
+              <h3 className="font-['Fraunces'] font-light text-foreground leading-tight mb-8" style={{ fontSize: "clamp(1.75rem, 3.5vw, 3rem)" }}>
+                I engineer <em className="italic text-primary">visual experiences</em> beyond the code.
+              </h3>
               <div className="flex flex-col gap-4 font-['Figtree'] text-base text-muted-foreground leading-relaxed">
                 <p>3D 좋아합니다!</p>
                 <p>엔진 잘 다룹니다!</p>
@@ -720,20 +746,6 @@ function About() {
               </div>
             </div>
             
-            <div className="border-t border-border pt-8">
-              <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-6">Contact</p>
-              <div className="flex flex-wrap gap-3">
-                <a href="https://www.instagram.com/yeon_ddooo/" target="_blank" rel="noopener noreferrer" className="group flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:border-primary hover:text-primary">
-                  <Instagram size={18} />
-                  <span className="sr-only">Instagram</span>
-                </a>
-                <a href="https://www.linkedin.com/in/yeonsu0826/" target="_blank" rel="noopener noreferrer" className="group flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:border-primary hover:text-primary">
-                  <Linkedin size={18} />
-                  <span className="sr-only">LinkedIn</span>
-                </a>
-              </div>
-            </div>
-            
             <div className="pt-4">
               <Link 
                 to="/resume" 
@@ -749,7 +761,6 @@ function About() {
     </section>
   );
 }
-
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
 function Footer() {
