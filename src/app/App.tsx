@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ArrowUpRight, Menu, X, ExternalLink, Instagram, Linkedin, ChevronLeft, ChevronRight,Play } from "lucide-react";
+import { ArrowUpRight, Menu, X, ExternalLink, Instagram, Linkedin, ChevronLeft, ChevronRight, Play } from "lucide-react";
 // import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 // import * as THREE from "three";
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -45,6 +45,7 @@ interface PortfolioItem {
 interface PortfolioGroup {
   groupName: string;
   concept?:string;
+  tools?: string[]; // ✨ 프로젝트별 사용 툴을 입력할 수 있도록 속성 추가
   emoji: string;
   items: PortfolioItem[];
 }
@@ -53,6 +54,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   {
     groupName: "안경 프로젝트",
     emoji: "👓",
+    tools: ["Blender", "Unreal Engine"], // ✨ 여기에 툴을 적어주세요!
     items: [
       { 
         id: "glasses_result_gallery", 
@@ -105,6 +107,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   {
     groupName: "카페 프로젝트",
     concept: "Stylized",
+    tools: ["Blender", "Unreal Engine", "Substance Painter"], // ✨ 여기에 툴을 적어주세요!
     emoji: "☕",
     items: [
       { 
@@ -140,6 +143,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   {
     groupName: "게이밍룸 프로젝트",
     concept: "Stylized",
+    tools: ["Blender", "Unreal Engine", "Substance Painter"], // ✨ 여기에 툴을 적어주세요!
     emoji: "🎮",
     items: [
       { 
@@ -168,6 +172,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   },
   {
     groupName: "무대 디자인 프로젝트",
+    tools: ["Blender", "Unreal Engine", "Substance Painter"], // ✨ 여기에 툴을 적어주세요!
     emoji: "🎭",
     items: [
       { 
@@ -193,6 +198,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   },
   {
     groupName: "개발 프로젝트 아카이브",
+    tools: ["Unity", "C#"],
     emoji: "🗃️",
     items: [
       {
@@ -448,17 +454,25 @@ function Works() {
 
             return (
               <div key={group.groupName} className="w-full">
-                <div className="flex items-center gap-4 mb-8 pb-4 border-b border-white/10 pr-8 md:pr-16">
+                <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-8 pb-4 border-b border-white/10 pr-8 md:pr-16">
                   <span className="text-3xl">{group.emoji}</span>
-                  <h3 className="font-['Fraunces'] font-medium text-foreground text-2xl md:text-3xl">{group.groupName}</h3>
+                  <h3 className="font-['Fraunces'] font-medium text-foreground text-2xl md:text-3xl mr-2">{group.groupName}</h3>
+                  
+                  {/* 기존 컨셉 태그 */}
                   {group.concept && (
-                  <span className="px-3 py-1 mt-1 text-[10px] sm:text-xs font-['JetBrains_Mono'] tracking-widest text-primary border border-primary/50 bg-primary/10 rounded-full shadow-[0_0_8px_rgba(var(--primary-rgb),0.3)]">
-                      {group.concept}
-                  </span>
-                )}
+                    <span className="px-3 py-1 text-[10px] sm:text-xs font-['JetBrains_Mono'] tracking-widest text-primary border border-primary/50 bg-primary/10 rounded-full shadow-[0_0_8px_rgba(var(--primary-rgb),0.3)]">
+                        {group.concept}
+                    </span>
+                  )}
+
+                  {/* ✨ 추가된 부분: 사용한 툴 태그 렌더링 */}
+                  {group.tools && group.tools.map((tool, idx) => (
+                    <span key={idx} className="px-3 py-1 text-[10px] sm:text-xs font-['JetBrains_Mono'] tracking-widest text-white/70 border border-white/20 bg-white/5 rounded-full">
+                      {tool}
+                    </span>
+                  ))}
                 </div>
 
-                {/* 커스텀 스크롤바 디자인이 추가된 부분입니다 */}
                 <HorizontalScrollContainer 
                   className="flex overflow-x-auto gap-4 md:gap-6 pb-6 pr-8 md:pr-16 
                   [&::-webkit-scrollbar]:h-2 
@@ -516,10 +530,9 @@ function Works() {
           })}
         </div>
       </div>
-{/* Lightbox 모달 */}
+      {/* Lightbox 모달 */}
       {lightbox && (
         <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-8 transition-opacity" onClick={() => setLightbox(null)}>
-          {/* 빈 공간을 눌러도 꺼지도록 기존의 e.stopPropagation()을 제거했습니다 */}
           <div className="relative w-full max-w-[95vw] h-full flex items-center justify-center">
             
             <button type="button" onClick={() => setLightbox(null)} className="absolute top-4 right-4 z-20 rounded-full bg-white/10 border border-white/20 p-3 text-white hover:bg-white/20 backdrop-blur-md transition-all">
@@ -527,13 +540,11 @@ function Works() {
             </button>
             
             <button type="button" disabled={lightbox.index === 0} 
-                    // 좌우 버튼을 눌렀을 때는 창이 꺼지지 않도록 방지
                     onClick={(e) => { e.stopPropagation(); setLightbox({ ...lightbox, index: lightbox.index - 1 }); }} 
                     className="absolute left-4 md:left-8 z-20 rounded-full bg-black/50 border border-white/20 p-4 text-white hover:bg-black/80 backdrop-blur-md transition-all disabled:opacity-0 disabled:cursor-not-allowed">
               <ChevronLeft size={32} />
             </button>
             
-            {/* 이미지 클릭 시 꺼지도록 onClick 추가 및 커서(cursor-zoom-out) 변경 */}
             <img 
               src={lightbox.images[lightbox.index]} 
               alt="Enlarged view" 
@@ -542,13 +553,11 @@ function Works() {
             />
             
             <button type="button" disabled={lightbox.index >= lightbox.images.length - 1} 
-                    // 좌우 버튼을 눌렀을 때는 창이 꺼지지 않도록 방지
                     onClick={(e) => { e.stopPropagation(); setLightbox({ ...lightbox, index: lightbox.index + 1 }); }} 
                     className="absolute right-4 md:right-8 z-20 rounded-full bg-black/50 border border-white/20 p-4 text-white hover:bg-black/80 backdrop-blur-md transition-all disabled:opacity-0 disabled:cursor-not-allowed">
               <ChevronRight size={32} />
             </button>
 
-            {/* 클릭을 방해하지 않도록 pointer-events-none 추가 */}
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full font-['JetBrains_Mono'] text-white/80 text-sm pointer-events-none">
               {lightbox.index + 1} / {lightbox.images.length}
             </div>
@@ -562,17 +571,18 @@ function Works() {
 // ─── Vimeo Video Gallery ─────────────────────────────────────────────────────────────
 
 function VideoGallery() {
-  const vimeoVideos = [
-    { id: "1211900105", type: "portrait" }, // 세로형 영상
-    { id: "1211900103", type: "portrait" }, 
-    { id: "1211900047", type: "portrait" }, 
-    { id: "1211900004", type: "portrait" }, 
-    { id: "1211913186", type: "portrait" }, 
+  // ✨ 영상 데이터에 tools 배열 추가
+  const vimeoVideos: { id: string; type: string; tools?: string[] }[] = [
+    { id: "1211900105", type: "portrait", tools: ["Blender", "Unreal Engine", "Substance Painter"] },
+    { id: "1211900103", type: "portrait", tools: ["Blender", "Unreal Engine", "Substance Painter"] }, 
+    { id: "1211900047", type: "portrait", tools: ["Blender", "Unreal Engine", "Substance Painter"] }, 
+    { id: "1211900004", type: "portrait", tools: ["Blender", "Unreal Engine", "Substance Painter"] }, 
+    { id: "1211913186", type: "portrait", tools: ["Blender", "Unreal Engine", "Substance Painter"] }, 
 
-    { id: "1211907156", type: "landscape" }, // 가로형 영상
-    { id: "1211907154", type: "landscape" },
-    { id: "1211907153", type: "landscape" },
-    { id: "1211907155", type: "landscape" },
+    { id: "1211907156", type: "landscape", tools: ["Unity", "C#"] },
+    { id: "1211907154", type: "landscape", tools: ["Unity", "C#"] },
+    { id: "1211907153", type: "landscape", tools: ["Unity", "C#"] },
+    { id: "1211907155", type: "landscape", tools: ["Unity", "C#"] },
   ];
 
   if (vimeoVideos.length === 0) return null;
@@ -580,35 +590,50 @@ function VideoGallery() {
   const portraitVideos = vimeoVideos.filter(video => video.type === "portrait");
   const landscapeVideos = vimeoVideos.filter(video => video.type === "landscape");
 
-  const renderVideoCard = (video, index) => (
-    <a 
+  // ✨ 영상과 툴 버튼을 묶어주는 래퍼(div)로 변경되었습니다
+  const renderVideoCard = (video: { id: string; type: string; tools?: string[] }, index: number) => (
+    <div 
       key={video.id + index} 
-      href={`https://vimeo.com/${video.id}`} 
-      target="_blank" 
-      rel="noopener noreferrer" 
-      className={`flex-shrink-0 rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-[#0a0a0a] group relative cursor-pointer block
-        ${video.type === "landscape" 
-          ? "w-[400px] md:w-[480px] aspect-video" // 가로형 (16:9)
-          : "w-[240px] md:w-[260px] aspect-[9/16]" // 세로형 (9:16)
-        }
-      `}
+      className={`flex-shrink-0 flex flex-col gap-3 
+        ${video.type === "landscape" ? "w-[400px] md:w-[480px]" : "w-[240px] md:w-[260px]"}`
+      }
     >
-      <iframe 
-        src={`https://player.vimeo.com/video/${video.id}?background=1&autoplay=1&loop=1&muted=1&dnt=1`}
-        frameBorder="0" 
-        allow="autoplay; fullscreen; picture-in-picture" 
-        allowFullScreen
-        title={`Vimeo Video ${video.id}`}
-        className="absolute top-0 left-0 w-full h-full object-cover scale-[1.02] group-hover:scale-100 transition-transform duration-700 pointer-events-none"
-      ></iframe>
-      
-      {/* 마우스 오버 시 뜨는 재생 버튼 오버레이 */}
-      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
-        <span className="opacity-0 group-hover:opacity-100 bg-white text-black px-5 py-2.5 rounded-full font-['Figtree'] text-xs font-bold transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 flex items-center gap-2 shadow-xl">
-          Play Video <Play size={14} className="fill-black" />
-        </span>
-      </div>
-    </a>
+      <a 
+        href={`https://vimeo.com/${video.id}`} 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className={`rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-[#0a0a0a] group relative cursor-pointer block w-full
+          ${video.type === "landscape" ? "aspect-video" : "aspect-[9/16]"}
+        `}
+      >
+        <iframe 
+          src={`https://player.vimeo.com/video/${video.id}?background=1&autoplay=1&loop=1&muted=1&dnt=1`}
+          frameBorder="0" 
+          allow="autoplay; fullscreen; picture-in-picture" 
+          allowFullScreen
+          title={`Vimeo Video ${video.id}`}
+          className="absolute top-0 left-0 w-full h-full object-cover scale-[1.02] group-hover:scale-100 transition-transform duration-700 pointer-events-none"
+        ></iframe>
+        
+        {/* 마우스 오버 시 뜨는 재생 버튼 오버레이 */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
+          <span className="opacity-0 group-hover:opacity-100 bg-white text-black px-5 py-2.5 rounded-full font-['Figtree'] text-xs font-bold transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 flex items-center gap-2 shadow-xl">
+            Play Video <Play size={14} className="fill-black" />
+          </span>
+        </div>
+      </a>
+
+      {/* ✨ 영상 밑에 툴을 렌더링하는 영역 (버튼 형태) */}
+      {video.tools && video.tools.length > 0 && (
+        <div className="flex flex-wrap gap-2 px-1">
+          {video.tools.map((tool, i) => (
+            <span key={i} className="font-['JetBrains_Mono'] text-[10px] tracking-wider text-white/60 bg-white/5 border border-white/10 px-2.5 py-1 rounded-md cursor-default hover:text-white/90 hover:bg-white/10 transition-colors">
+              {tool}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
   );
 
   return (
@@ -621,11 +646,11 @@ function VideoGallery() {
           </span>
         </div>
         
-        {/* 💡 3. 위쪽 줄: 세로형(Portrait) 영상만 렌더링 */}
+        {/* 위쪽 줄: 세로형(Portrait) 영상 */}
         {portraitVideos.length > 0 && (
-          <div className="mb-12"> {/* 두 스크롤 영역 사이의 간격 추가 */}
+          <div className="mb-12">
             <HorizontalScrollContainer 
-              className="flex overflow-x-auto gap-6 pb-8 pr-8 md:pr-16 items-center
+              className="flex overflow-x-auto gap-6 pb-8 pr-8 md:pr-16 items-start
               [&::-webkit-scrollbar]:h-1 
               [&::-webkit-scrollbar-track]:bg-transparent
               [&::-webkit-scrollbar-thumb]:bg-white/20 hover:[&::-webkit-scrollbar-thumb]:bg-white/40
@@ -636,11 +661,11 @@ function VideoGallery() {
           </div>
         )}
 
-        {/* 💡 4. 아래쪽 줄: 가로형(Landscape) 영상만 렌더링 */}
+        {/* 아래쪽 줄: 가로형(Landscape) 영상 */}
         {landscapeVideos.length > 0 && (
           <div>
             <HorizontalScrollContainer 
-              className="flex overflow-x-auto gap-6 pb-8 pr-8 md:pr-16 items-center
+              className="flex overflow-x-auto gap-6 pb-8 pr-8 md:pr-16 items-start
               [&::-webkit-scrollbar]:h-1 
               [&::-webkit-scrollbar-track]:bg-transparent
               [&::-webkit-scrollbar-thumb]:bg-white/20 hover:[&::-webkit-scrollbar-thumb]:bg-white/40
@@ -663,18 +688,14 @@ function About() {
       <div className="max-w-[1400px] mx-auto px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           
-          {/* 왼쪽: 사진 영역 */}
-          {/* lg:mx-0 을 제거하고 w-full을 추가하여 해당 영역 내에서 완벽한 중앙 정렬을 맞춥니다 */}
           <div className="relative max-w-[420px] w-full mx-auto">
             <div className="relative aspect-[4/4] overflow-hidden bg-secondary rounded-3xl shadow-xl">
               <img src={`${import.meta.env.BASE_URL}images/working.png`} alt="Portrait" className="w-full h-full object-cover" />     
             </div>
           </div>
           
-          {/* 오른쪽: 텍스트 및 정보 영역 */}
           <div className="flex flex-col gap-10 lg:pt-8">
             
-            {/* 1. 소개 텍스트 */}
             <div>
               <p className="font-['JetBrains_Mono'] text-xs text-primary tracking-widest uppercase mb-6">03 — About Me</p>
               <h2 className="font-['Fraunces'] font-light text-foreground leading-tight mb-8" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)" }}>
@@ -688,7 +709,6 @@ function About() {
               </div>
             </div>
             
-            {/* 2. 사용 툴 */}
             <div className="border-t border-border pt-8">
               <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-6">Software & Tools</p>
               <div className="flex flex-wrap gap-3">
@@ -700,7 +720,6 @@ function About() {
               </div>
             </div>
             
-            {/* 3. 연락처 및 SNS */}
             <div className="border-t border-border pt-8">
               <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-6">Contact</p>
               <div className="flex flex-wrap gap-3">
@@ -715,7 +734,6 @@ function About() {
               </div>
             </div>
             
-            {/* 4. 이력서 보기 버튼 */}
             <div className="pt-4">
               <Link 
                 to="/resume" 
@@ -724,19 +742,7 @@ function About() {
                 이력서 보기
                 <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-1" />
               </Link>
-
-              {/* <Link 
-                to="/dev-archive" 
-                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-foreground text-background py-4 px-6 font-medium transition-all hover:bg-foreground/90 active:scale-[0.99]"
-              >
-                개발 프로젝트 아카이브 보러가기
-                <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-              </Link> */}
             </div>
-
-
-
-
           </div>
         </div>
       </div>
@@ -744,24 +750,19 @@ function About() {
   );
 }
 
-
-
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
 function Footer() {
   return (
     <footer className="bg-card border-t border-border px-8 py-8">
       <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        
         <span className="font-['Fraunces'] text-lg font-light text-foreground">
           JEONG YEON SU<span className="text-primary">.</span>
         </span>
-
         <div className="flex items-center gap-8 sm:gap-12">
           <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase">
             Seoul, KR
           </p>
-          
           <span 
             className="font-['JetBrains_Mono'] text-[10px] text-muted-foreground/20 hover:text-muted-foreground/60 transition-colors cursor-default"
             title="Jesu Juva"
@@ -769,13 +770,10 @@ function Footer() {
             J.J
           </span>
         </div>
-
       </div>
     </footer>
   );
 }
-
-
 
 // ─── App ──────────────────────────────────────────────────────────────────────
 
