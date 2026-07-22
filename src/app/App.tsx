@@ -6,11 +6,27 @@ import { ArrowUpRight, Menu, X, ExternalLink, Instagram, Linkedin, ChevronLeft, 
 import { Link } from "react-router-dom";
 import { InstagramEmbed } from 'react-social-media-embed';
 
-
 import "../styles/fonts.css";
 import "../styles/index.css";
 import "../styles/tailwind.css";
 import '../styles/theme.css';
+
+// ─── 공통 스크롤 함수 (헤더 높이만큼 여백을 두고 부드럽게 스크롤) ─────────────
+const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  e.preventDefault();
+  const element = document.getElementById(id);
+  
+  if (element) {
+    const headerOffset = 80; // 상단 Nav 바 높이
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth"
+    });
+  }
+};
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -230,7 +246,15 @@ function Nav() {
         </button>
         <ul className="hidden md:flex items-center gap-10">
           {["Works", "About"].map((l) => (
-            <li key={l}><a href={`#${l.toLowerCase()}`} className="font-['Figtree'] text-sm text-muted-foreground hover:text-foreground transition-colors tracking-widest uppercase">{l}</a></li>
+            <li key={l}>
+              <a 
+                href={`#${l.toLowerCase()}`} 
+                onClick={(e) => scrollToSection(e, l.toLowerCase())}
+                className="font-['Figtree'] text-sm text-muted-foreground hover:text-foreground transition-colors tracking-widest uppercase"
+              >
+                {l}
+              </a>
+            </li>
           ))}
         </ul>
         <button onClick={() => setOpen(!open)} className="md:hidden text-foreground">{open ? <X size={22} /> : <Menu size={22} />}</button>
@@ -239,7 +263,18 @@ function Nav() {
         <div className="md:hidden bg-card border-b border-border px-8 py-6">
           <ul className="flex flex-col gap-5">
             {["Works", "About"].map((l) => (
-              <li key={l}><a href={`#${l.toLowerCase()}`} onClick={() => setOpen(false)} className="font-['Figtree'] text-base text-foreground tracking-widest uppercase">{l}</a></li>
+              <li key={l}>
+                <a 
+                  href={`#${l.toLowerCase()}`} 
+                  onClick={(e) => {
+                    scrollToSection(e, l.toLowerCase());
+                    setOpen(false);
+                  }} 
+                  className="font-['Figtree'] text-base text-foreground tracking-widest uppercase"
+                >
+                  {l}
+                </a>
+              </li>
             ))}
           </ul>
         </div>
@@ -300,10 +335,18 @@ function Hero() {
         </h1>
         
          <div className="flex flex-col sm:flex-row items-center gap-4">
-           <a href="#works" className="group flex items-center gap-3 font-['Figtree'] text-sm font-medium bg-white text-black px-8 py-4 rounded-full hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
+           <a 
+             href="#works" 
+             onClick={(e) => scrollToSection(e, 'works')}
+             className="group flex items-center gap-3 font-['Figtree'] text-sm font-medium bg-white text-black px-8 py-4 rounded-full hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)]"
+           >
              작업물 보기 <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
            </a>
-           <a href="#about" className="flex items-center gap-2 font-['Figtree'] text-sm font-medium bg-white/5 text-white border border-white/10 px-8 py-4 rounded-full hover:bg-white/15 backdrop-blur-md transition-all duration-300">
+           <a 
+             href="#about" 
+             onClick={(e) => scrollToSection(e, 'about')}
+             className="flex items-center gap-2 font-['Figtree'] text-sm font-medium bg-white/5 text-white border border-white/10 px-8 py-4 rounded-full hover:bg-white/15 backdrop-blur-md transition-all duration-300"
+           >
              About Me
            </a>
          </div>
@@ -622,7 +665,7 @@ function About() {
             </div>
             
             {/* 3. 연락처 및 SNS */}
-            <div className="border-t border-border pt-8">
+            {/* <div className="border-t border-border pt-8">
               <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-6">Contact</p>
               <div className="flex flex-wrap gap-3">
                 <a href="https://www.instagram.com/yeon_ddooo/" target="_blank" rel="noopener noreferrer" className="group flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:border-primary hover:text-primary">
@@ -634,7 +677,8 @@ function About() {
                   <span className="sr-only">LinkedIn</span>
                 </a>
               </div>
-            </div>
+            </div> */}
+            
             {/* 4. 이력서 보기 버튼 */}
             <div className="pt-4">
               <Link 
