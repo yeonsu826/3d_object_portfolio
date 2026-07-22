@@ -700,6 +700,8 @@ function VideoGallery() {
     { id: "1211900103", type: "portrait" }, // 세로형portrait
     { id: "1211900047", type: "portrait" }, 
     { id: "1211900004", type: "portrait" }, 
+    { id: "1211913186", type: "portrait" }, 
+
 
     { id: "1211907156", type: "landscape" }, // 가로형 영상 (일반 16:9) 가로형landscape
     { id: "1211907154", type: "landscape" },
