@@ -562,24 +562,54 @@ function Works() {
 // ─── Vimeo Video Gallery ─────────────────────────────────────────────────────────────
 
 function VideoGallery() {
-  
-  // ✨ 데이터 입력이 엄청나게 단순해졌습니다.
-  // 영상의 숫자 ID와, 가로형(landscape)/세로형(portrait) 타입만 적어주면 끝입니다!
   const vimeoVideos = [
-    { id: "1211900105", type: "portrait" }, // 세로형 영상 (쇼츠 비율)
-    { id: "1211900103", type: "portrait" }, // 세로형portrait
+    { id: "1211900105", type: "portrait" }, // 세로형 영상
+    { id: "1211900103", type: "portrait" }, 
     { id: "1211900047", type: "portrait" }, 
     { id: "1211900004", type: "portrait" }, 
     { id: "1211913186", type: "portrait" }, 
 
-
-    { id: "1211907156", type: "landscape" }, // 가로형 영상 (일반 16:9) 가로형landscape
+    { id: "1211907156", type: "landscape" }, // 가로형 영상
     { id: "1211907154", type: "landscape" },
     { id: "1211907153", type: "landscape" },
     { id: "1211907155", type: "landscape" },
   ];
 
   if (vimeoVideos.length === 0) return null;
+
+  const portraitVideos = vimeoVideos.filter(video => video.type === "portrait");
+  const landscapeVideos = vimeoVideos.filter(video => video.type === "landscape");
+
+  const renderVideoCard = (video, index) => (
+    <a 
+      key={video.id + index} 
+      href={`https://vimeo.com/${video.id}`} 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      className={`flex-shrink-0 rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-[#0a0a0a] group relative cursor-pointer block
+        ${video.type === "landscape" 
+          ? "w-[400px] md:w-[480px] aspect-video" // 가로형 (16:9)
+          : "w-[240px] md:w-[260px] aspect-[9/16]" // 세로형 (9:16)
+        }
+      `}
+    >
+      <iframe 
+        src={`https://player.vimeo.com/video/${video.id}?background=1&autoplay=1&loop=1&muted=1&dnt=1`}
+        frameBorder="0" 
+        allow="autoplay; fullscreen; picture-in-picture" 
+        allowFullScreen
+        title={`Vimeo Video ${video.id}`}
+        className="absolute top-0 left-0 w-full h-full object-cover scale-[1.02] group-hover:scale-100 transition-transform duration-700 pointer-events-none"
+      ></iframe>
+      
+      {/* 마우스 오버 시 뜨는 재생 버튼 오버레이 */}
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
+        <span className="opacity-0 group-hover:opacity-100 bg-white text-black px-5 py-2.5 rounded-full font-['Figtree'] text-xs font-bold transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 flex items-center gap-2 shadow-xl">
+          Play Video <Play size={14} className="fill-black" />
+        </span>
+      </div>
+    </a>
+  );
 
   return (
     <section id="shorts" className="bg-[#050505] pt-10 pb-32">
@@ -591,51 +621,40 @@ function VideoGallery() {
           </span>
         </div>
         
-        <HorizontalScrollContainer 
-          className="flex overflow-x-auto gap-6 pb-8 pr-8 md:pr-16 items-center
-          [&::-webkit-scrollbar]:h-1 
-          [&::-webkit-scrollbar-track]:bg-transparent
-          [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/40
-          transition-colors w-full"
-        >
-          {vimeoVideos.map((video, index) => (
-            // ✨ a 태그 클릭 시 id를 이용해 원본 비메오 링크로 자동 이동합니다.
-            <a 
-              key={index} 
-              href={`https://vimeo.com/${video.id}`} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              // ✨ type에 따라 가로/세로 크기 자동 조절
-              className={`flex-shrink-0 rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-[#0a0a0a] group relative cursor-pointer block
-                ${video.type === "landscape" 
-                  ? "w-[400px] md:w-[480px] aspect-video" // 가로형 (16:9)
-                  : "w-[240px] md:w-[260px] aspect-[9/16]" // 세로형 (9:16)
-                }
-              `}
+        {/* 💡 3. 위쪽 줄: 세로형(Portrait) 영상만 렌더링 */}
+        {portraitVideos.length > 0 && (
+          <div className="mb-12"> {/* 두 스크롤 영역 사이의 간격 추가 */}
+            <HorizontalScrollContainer 
+              className="flex overflow-x-auto gap-6 pb-8 pr-8 md:pr-16 items-center
+              [&::-webkit-scrollbar]:h-1 
+              [&::-webkit-scrollbar-track]:bg-transparent
+              [&::-webkit-scrollbar-thumb]:bg-white/20 hover:[&::-webkit-scrollbar-thumb]:bg-white/40
+              transition-colors w-full"
             >
-              <iframe 
-                // ✨ 복잡한 토큰 없이 id만 깔끔하게 사용합니다.
-                src={`https://player.vimeo.com/video/${video.id}?background=1&autoplay=1&loop=1&muted=1&dnt=1`}
-                frameBorder="0" 
-                allow="autoplay; fullscreen; picture-in-picture" 
-                allowFullScreen
-                title={`Vimeo Video ${index}`}
-                className="absolute top-0 left-0 w-full h-full object-cover scale-[1.02] group-hover:scale-100 transition-transform duration-700 pointer-events-none"
-              ></iframe>
-              
-              {/* 마우스 오버 시 뜨는 재생 버튼 오버레이 */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
-                <span className="opacity-0 group-hover:opacity-100 bg-white text-black px-5 py-2.5 rounded-full font-['Figtree'] text-xs font-bold transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 flex items-center gap-2 shadow-xl">
-                  Play Video <Play size={14} className="fill-black" />
-                </span>
-              </div>
-            </a>
-          ))}
-        </HorizontalScrollContainer>
+              {portraitVideos.map((video, index) => renderVideoCard(video, index))}
+            </HorizontalScrollContainer>
+          </div>
+        )}
+
+        {/* 💡 4. 아래쪽 줄: 가로형(Landscape) 영상만 렌더링 */}
+        {landscapeVideos.length > 0 && (
+          <div>
+            <HorizontalScrollContainer 
+              className="flex overflow-x-auto gap-6 pb-8 pr-8 md:pr-16 items-center
+              [&::-webkit-scrollbar]:h-1 
+              [&::-webkit-scrollbar-track]:bg-transparent
+              [&::-webkit-scrollbar-thumb]:bg-white/20 hover:[&::-webkit-scrollbar-thumb]:bg-white/40
+              transition-colors w-full"
+            >
+              {landscapeVideos.map((video, index) => renderVideoCard(video, index))}
+            </HorizontalScrollContainer>
+          </div>
+        )}
       </div>
     </section>
   );
 }
+
 // ─── About ────────────────────────────────────────────────────────────────────
 
 function About() {
@@ -705,7 +724,18 @@ function About() {
                 이력서 보기
                 <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-1" />
               </Link>
+
+              {/* <Link 
+                to="/dev-archive" 
+                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-foreground text-background py-4 px-6 font-medium transition-all hover:bg-foreground/90 active:scale-[0.99]"
+              >
+                개발 프로젝트 아카이브 보러가기
+                <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              </Link> */}
             </div>
+
+
+
 
           </div>
         </div>
