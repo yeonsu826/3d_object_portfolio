@@ -4,15 +4,11 @@ import { ArrowUpRight, Menu, X, ExternalLink, Instagram, Linkedin, ChevronLeft, 
 // import * as THREE from "three";
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Link } from "react-router-dom";
-import { InstagramEmbed } from 'react-social-media-embed';
 
-import "../styles/fonts.css";
 import "../styles/index.css";
-import "../styles/tailwind.css";
-import '../styles/theme.css';
 
-import SplashScreen from "./SplashScreen"; // 경로에 맞게 수정
-
+import SplashScreen from "./components/SplashScreen"; // 경로에 맞게 수정
+import LoadingImage from "./components/LoadingImage";
 
 
 
@@ -59,7 +55,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   {
     groupName: "안경 프로젝트",
     emoji: "👓",
-    tools: ["Blender", "Unreal Engine"], // ✨ 여기에 툴을 적어주세요!
+    tools: ["Blender", "Unreal Engine"], 
     items: [
       { 
         id: "glasses_result_gallery", 
@@ -112,7 +108,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   {
     groupName: "카페 프로젝트",
     concept: "Stylized",
-    tools: ["Blender", "Unreal Engine", "Substance Painter"], // ✨ 여기에 툴을 적어주세요!
+    tools: ["Blender", "Unreal Engine", "Substance Painter"],
     emoji: "☕",
     items: [
       { 
@@ -148,7 +144,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   {
     groupName: "게이밍룸 프로젝트",
     concept: "Stylized",
-    tools: ["Blender", "Unreal Engine", "Substance Painter"], // ✨ 여기에 툴을 적어주세요!
+    tools: ["Blender", "Unreal Engine", "Substance Painter"], 
     emoji: "🎮",
     items: [
       { 
@@ -177,7 +173,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   },
   {
     groupName: "무대 디자인 프로젝트",
-    tools: ["Blender", "Unreal Engine", "Substance Painter"], // ✨ 여기에 툴을 적어주세요!
+    tools: ["Blender", "Unreal Engine", "Substance Painter"], 
     emoji: "🎭",
     items: [
       { 
@@ -310,7 +306,7 @@ function Hero() {
     <section id="hero" className="relative min-h-screen overflow-hidden bg-[#050508] flex flex-col justify-center items-center text-center">
       <div className="absolute inset-0 bg-[#050508]">
         {BACKGROUND_IMAGES.map((src, index) => (
-          <img
+          <LoadingImage
             key={src}
             src={src}
             alt={`Background ${index}`}
@@ -492,7 +488,7 @@ function Works() {
                       onClick={() => setLightbox({ images, index: idx })}
                       className="relative w-[200px] md:w-[280px] aspect-[4/3] rounded-xl overflow-hidden cursor-zoom-in group bg-[#0a0a10] border border-white/5 flex-shrink-0"
                     >
-                      <img src={img} alt={`${group.groupName} ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                      <LoadingImage src={img} alt={`${group.groupName} ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                         <span className="opacity-0 group-hover:opacity-100 bg-black/60 text-white backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium transition-opacity shadow-lg">크게 보기</span>
                       </div>
@@ -522,7 +518,7 @@ function Works() {
                   {standaloneLinkItem && !galleryItem && (
                     <a href={standaloneLinkItem.link} target="_blank" rel="noopener noreferrer"
                        className="relative w-[200px] md:w-[280px] aspect-[4/3] rounded-xl overflow-hidden group bg-[#0a0a10] border border-white/10 flex flex-col items-center justify-center gap-4 hover:border-primary/50 transition-colors flex-shrink-0">
-                      <img src={standaloneLinkItem.thumb} alt={standaloneLinkItem.title} className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-20 transition-opacity" />
+                      <LoadingImage src={standaloneLinkItem.thumb} alt={standaloneLinkItem.title} className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-20 transition-opacity" />
                       <div className="relative z-10 p-4 bg-white/10 rounded-full group-hover:scale-110 transition-transform backdrop-blur-md">
                         <ExternalLink size={24} className="text-white" />
                       </div>
@@ -550,7 +546,7 @@ function Works() {
               <ChevronLeft size={32} />
             </button>
             
-            <img 
+            <LoadingImage 
               src={lightbox.images[lightbox.index]} 
               alt="Enlarged view" 
               onClick={(e) => { e.stopPropagation(); setLightbox(null); }}
@@ -695,7 +691,7 @@ function About() {
           {/* 왼쪽: 사진 및 Contact 영역 */}
           <div className="relative max-w-[420px] w-full mx-auto flex flex-col gap-8">
             <div className="relative aspect-[4/4] overflow-hidden bg-secondary rounded-3xl shadow-xl">
-              <img src={`${import.meta.env.BASE_URL}images/working.png`} alt="Portrait" className="w-full h-full object-cover" />     
+              <LoadingImage src={`${import.meta.env.BASE_URL}images/working.png`} alt="Portrait" className="w-full h-full object-cover" />     
             </div>
 
             {/* 💡 텍스트 영역에 있던 Contact를 사진 밑으로 이동하고 크기(w-16, h-16, size 28)를 키웠습니다. */}
@@ -792,10 +788,12 @@ function Footer() {
 }
 
 // ─── App ──────────────────────────────────────────────────────────────────────
-
 export default function App() {
   return (
-    <div className="bg-background min-h-screen overflow-x-hidden" style={{ fontFamily: "'Figtree', sans-serif" }}>
+    <div 
+      className="min-h-screen w-full bg-background" 
+      style={{ fontFamily: "'Figtree', sans-serif" }}
+      >
       <SplashScreen />
       <Nav />
       <Hero />

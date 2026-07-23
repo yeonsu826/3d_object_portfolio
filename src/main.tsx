@@ -7,7 +7,7 @@ import App from './app/App';
 import Resume from './Resume/Resume'; 
 import CoverLetterPage from './Resume/CoverLetter'; 
 import DevArchive from './Dev/DevArchive'; 
-import ScrollToTop from './app/ScrollToTop'
+import ScrollToTop from './app/components/ScrollToTop'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

@@ -22,9 +22,20 @@ interface Target {
 }
 
 export default function SplashScreen() {
+  // 🌟 핵심 추가 1: 브라우저 세션에 '이미 봤음' 기록이 있는지 확인해서 초기 상태 결정
+  const [isMounted, setIsMounted] = useState(() => {
+    return sessionStorage.getItem("hasSeenSplash") !== "true";
+  });
+
+  // 🌟 핵심 추가 2: 로딩창이 처음 뜨면 브라우저에 '봤음' 도장 찍기
+  useEffect(() => {
+    if (isMounted) {
+      sessionStorage.setItem("hasSeenSplash", "true");
+    }
+  }, [isMounted]);
+
   const [progress, setProgress] = useState(0);
   const [isHiding, setIsHiding] = useState(false);
-  const [isMounted, setIsMounted] = useState(true);
   const [isShaking, setIsShaking] = useState(false);
   
   const [bootText, setBootText] = useState("SYSTEM READY");
@@ -35,36 +46,36 @@ export default function SplashScreen() {
   const requestRef = useRef<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // ⚙️ 타겟 명중 시 오르는 기본값 반으로 감소 (12 -> 6)
   const [difficulty, setDifficulty] = useState({ autoAdd: 0.1, boost: 6, interval: 20 });
   const [netStatus, setNetStatus] = useState("CHECKING CONNECTION...");
 
-  // 네트워크 속도 체크 및 세팅 (boost 값을 모두 절반으로 줄임)
+  // 네트워크 속도 체크
   useEffect(() => {
+    // 이미 로딩창을 본 상태면 네트워크 체크도 생략 (최적화)
+    if (!isMounted) return;
+
     const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
     if (connection) {
       const mbps = connection.downlink;
       if (mbps >= 10) {
-        // 빠름: 타겟당 15% -> 7.5% 오름
-        setDifficulty({ autoAdd: 0.15, boost: 6, interval: 20 }); 
+        setDifficulty({ autoAdd: 0.15, boost: 7.5, interval: 20 }); 
         setNetStatus(`UPLINK: ${mbps}Mbps (FAST)`);
       } else if (mbps >= 2) {
-        // 보통: 타겟당 10% -> 5% 오름
-        setDifficulty({ autoAdd: 0.1, boost: 4, interval: 20 });  
+        setDifficulty({ autoAdd: 0.1, boost: 5, interval: 20 });  
         setNetStatus(`UPLINK: ${mbps}Mbps (NORMAL)`);
       } else {
-        // 느림: 타겟당 8% -> 4% 오름
-        setDifficulty({ autoAdd: 0.05, boost: 3, interval: 20 });  
+        setDifficulty({ autoAdd: 0.05, boost: 4, interval: 20 });  
         setNetStatus(`UPLINK: ${mbps}Mbps (SLOW)`);
       }
     } else {
-      setDifficulty({ autoAdd: 0.1, boost: 4, interval: 20 });
+      setDifficulty({ autoAdd: 0.1, boost: 5, interval: 20 });
       setNetStatus("UPLINK: UNKNOWN (STANDARD)");
     }
-  }, []);
+  }, [isMounted]);
 
-  // 1. 자동 로딩 로직 (가만히 있어도 게이지가 서서히 오름)
+  // 자동 로딩 로직
   useEffect(() => {
+    if (!isMounted) return;
     const autoProgress = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) return 100;
@@ -72,7 +83,7 @@ export default function SplashScreen() {
       });
     }, difficulty.interval); 
     return () => clearInterval(autoProgress);
-  }, [difficulty]);
+  }, [difficulty, isMounted]);
 
   // 100% 도달 시 시퀀스 처리
   useEffect(() => {
@@ -90,8 +101,9 @@ export default function SplashScreen() {
     }
   }, [progress]);
 
-  // 2. 타겟(코어) 생성 로직
+  // 타겟 생성 로직
   useEffect(() => {
+    if (!isMounted) return;
     const targetInterval = setInterval(() => {
       if (isReadyRef.current || !containerRef.current) return;
       
@@ -118,9 +130,9 @@ export default function SplashScreen() {
       clearInterval(targetInterval);
       clearInterval(lifeInterval);
     };
-  }, []);
+  }, [isMounted]);
 
-  // 3. 파티클 물리 업데이트 로직
+  // 파티클 물리 업데이트 로직
   const updateParticles = useCallback(() => {
     setParticles((prevParticles) => {
       const activeParticles = prevParticles.filter(p => p.life > 0);
@@ -135,11 +147,12 @@ export default function SplashScreen() {
   }, []);
 
   useEffect(() => {
+    if (!isMounted) return;
     requestRef.current = requestAnimationFrame(updateParticles);
     return () => cancelAnimationFrame(requestRef.current!);
-  }, [updateParticles]);
+  }, [updateParticles, isMounted]);
 
-  // 4. 타겟 명중 시 이벤트 (줄어든 boost 값 적용)
+  // 타겟 클릭 핸들러
   const handleTargetClick = (e: React.MouseEvent | React.TouchEvent, targetId: number) => {
     if (progress >= 100) return;
     e.stopPropagation(); 
@@ -170,12 +183,12 @@ export default function SplashScreen() {
 
     setParticles(prev => [...prev, ...newParticles]);
     
-    // 🌟 절반으로 줄어든 difficulty.boost 값만큼 게이지 상승
     setProgress((prev) => Math.min(prev + difficulty.boost, 100));
     setIsShaking(true);
     setTimeout(() => setIsShaking(false), 50);
   };
 
+  // 🌟 핵심 추가 3: 이미 봤다면 화면 전체를 아예 렌더링하지 않음!
   if (!isMounted) return null;
 
   return (
