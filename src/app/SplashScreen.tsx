@@ -32,50 +32,53 @@ export default function SplashScreen() {
   const [targets, setTargets] = useState<Target[]>([]);
   
   const isReadyRef = useRef(false);
-  const requestRef = useRef<number>();
+  const requestRef = useRef<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // ⚙️ 난이도 설정 (autoAdd: 가만히 있어도 오르는 양 / boost: 타겟 파괴 시 오르는 양)
-  const [difficulty, setDifficulty] = useState({ autoAdd: 0.1, boost: 12, interval: 20 });
+  // ⚙️ 타겟 명중 시 오르는 기본값 반으로 감소 (12 -> 6)
+  const [difficulty, setDifficulty] = useState({ autoAdd: 0.1, boost: 6, interval: 20 });
   const [netStatus, setNetStatus] = useState("CHECKING CONNECTION...");
 
-  // 네트워크 속도 체크 및 세팅
+  // 네트워크 속도 체크 및 세팅 (boost 값을 모두 절반으로 줄임)
   useEffect(() => {
     const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
     if (connection) {
       const mbps = connection.downlink;
       if (mbps >= 10) {
-        setDifficulty({ autoAdd: 0.15, boost: 15, interval: 20 }); // 빠름: 약 13초 자동완성
+        // 빠름: 타겟당 15% -> 7.5% 오름
+        setDifficulty({ autoAdd: 0.15, boost: 6, interval: 20 }); 
         setNetStatus(`UPLINK: ${mbps}Mbps (FAST)`);
       } else if (mbps >= 2) {
-        setDifficulty({ autoAdd: 0.1, boost: 10, interval: 20 });  // 보통: 약 20초 자동완성
+        // 보통: 타겟당 10% -> 5% 오름
+        setDifficulty({ autoAdd: 0.1, boost: 4, interval: 20 });  
         setNetStatus(`UPLINK: ${mbps}Mbps (NORMAL)`);
       } else {
-        setDifficulty({ autoAdd: 0.05, boost: 8, interval: 20 });  // 느림: 약 40초 자동완성
+        // 느림: 타겟당 8% -> 4% 오름
+        setDifficulty({ autoAdd: 0.05, boost: 3, interval: 20 });  
         setNetStatus(`UPLINK: ${mbps}Mbps (SLOW)`);
       }
     } else {
-      setDifficulty({ autoAdd: 0.1, boost: 10, interval: 20 });
+      setDifficulty({ autoAdd: 0.1, boost: 4, interval: 20 });
       setNetStatus("UPLINK: UNKNOWN (STANDARD)");
     }
   }, []);
 
-  // 🌟 1. 자동 로딩 로직 (가만히 있어도 게이지가 서서히 오름)
+  // 1. 자동 로딩 로직 (가만히 있어도 게이지가 서서히 오름)
   useEffect(() => {
     const autoProgress = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) return 100;
         return prev + difficulty.autoAdd; 
       });
-    }, difficulty.interval); // 0.02초마다 부드럽게 증가
+    }, difficulty.interval); 
     return () => clearInterval(autoProgress);
   }, [difficulty]);
 
-  // 100% 도달 시 시퀀스 처리 (게임 종료 및 부팅 텍스트)
+  // 100% 도달 시 시퀀스 처리
   useEffect(() => {
     if (progress >= 100 && !isReadyRef.current) {
       isReadyRef.current = true;
-      setTargets([]); // 화면에 남은 타겟들 전부 삭제
+      setTargets([]); 
 
       setTimeout(() => setBootText("MOUNTING 3D ENGINE..."), 600);
       setTimeout(() => setBootText("FETCHING ASSETS..."), 1400);
@@ -87,9 +90,8 @@ export default function SplashScreen() {
     }
   }, [progress]);
 
-  // 🌟 2. 타겟(코어) 생성 로직
+  // 2. 타겟(코어) 생성 로직
   useEffect(() => {
-    // 0.8초마다 타겟 생성 (너무 빠르지 않게 여유로운 템포)
     const targetInterval = setInterval(() => {
       if (isReadyRef.current || !containerRef.current) return;
       
@@ -99,12 +101,11 @@ export default function SplashScreen() {
         x: Math.random() * (width - 150) + 75,
         y: Math.random() * (height - 250) + 125,
         size: 40 + Math.random() * 40,
-        life: 100, // 놓치면 알아서 사라짐
+        life: 100, 
       };
       setTargets(prev => [...prev, newTarget]);
     }, 800); 
 
-    // 타겟 수명 감소
     const lifeInterval = setInterval(() => {
       if (isReadyRef.current) return;
       setTargets(prev => 
@@ -119,14 +120,14 @@ export default function SplashScreen() {
     };
   }, []);
 
-  // 🌟 3. 파티클 물리 업데이트 로직 (화려한 폭죽)
+  // 3. 파티클 물리 업데이트 로직
   const updateParticles = useCallback(() => {
     setParticles((prevParticles) => {
       const activeParticles = prevParticles.filter(p => p.life > 0);
       return activeParticles.map(p => {
         let newVx = p.vx * 0.92;
         let newVy = p.vy * 0.92;
-        newVy += 0.2; // 중력 가속도
+        newVy += 0.2; 
         return { ...p, x: p.x + newVx, y: p.y + newVy, vx: newVx, vy: newVy, life: p.life - 1 };
       });
     });
@@ -138,10 +139,10 @@ export default function SplashScreen() {
     return () => cancelAnimationFrame(requestRef.current!);
   }, [updateParticles]);
 
-  // 🌟 4. 타겟 명중 시 이벤트 (보너스 게이지 획득!)
+  // 4. 타겟 명중 시 이벤트 (줄어든 boost 값 적용)
   const handleTargetClick = (e: React.MouseEvent | React.TouchEvent, targetId: number) => {
     if (progress >= 100) return;
-    e.stopPropagation(); // 배경 클릭 방지
+    e.stopPropagation(); 
 
     let clientX, clientY;
     if ('touches' in e) {
@@ -154,7 +155,6 @@ export default function SplashScreen() {
 
     setTargets(prev => prev.filter(t => t.id !== targetId));
 
-    // 폭죽 이펙트 생성
     const newParticles: Particle[] = Array.from({ length: 35 }).map(() => {
       const angle = Math.random() * Math.PI * 2;
       const speed = Math.random() * 12 + 5; 
@@ -170,7 +170,7 @@ export default function SplashScreen() {
 
     setParticles(prev => [...prev, ...newParticles]);
     
-    // 보너스 게이지 획득 (boost 만큼 훅 오름)
+    // 🌟 절반으로 줄어든 difficulty.boost 값만큼 게이지 상승
     setProgress((prev) => Math.min(prev + difficulty.boost, 100));
     setIsShaking(true);
     setTimeout(() => setIsShaking(false), 50);
@@ -237,7 +237,6 @@ export default function SplashScreen() {
           }`}>
             {progress >= 100 
               ? ">>> ALL SYSTEMS GO <<<" 
-              // 🌟 유저가 안심할 수 있도록 문구 변경
               : "가만히 있어도 로딩되지만, 코어를 파괴하면 가속됩니다!"} 
           </p>
           {progress < 100 && (
@@ -247,11 +246,9 @@ export default function SplashScreen() {
           )}
         </div>
 
-        {/* 프로그레스 바 (자동으로 스르륵 차오름) */}
         <div className="w-full h-[2px] bg-white/10 mb-4 overflow-hidden relative">
           <div 
             className={`h-full transition-all ease-linear ${progress >= 100 ? 'bg-green-400 box-shadow-[0_0_10px_green]' : 'bg-white/80'}`}
-            // 0.02초(20ms) 주기로 아주 부드럽게 바가 움직임
             style={{ width: `${progress}%`, transitionDuration: '20ms' }}
           />
         </div>
