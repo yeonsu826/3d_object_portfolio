@@ -287,7 +287,7 @@ function Nav() {
 const imageModules = import.meta.glob('/dist/images/*/*.{png,jpg,jpeg}', { eager: true, query: '?url', import: 'default' });
 const BACKGROUND_IMAGES = Object.values(imageModules) as string[];
 const renderImageCountStatic = Object.keys(import.meta.glob('/dist/images/{cafe,glasses,gamingroom,stage}/*.{png,jpg,jpeg}', { eager: true })).length;
-const videoCountStatic = 4;
+const videoCountStatic = 9; // Vimeo 영상 개수 (수동으로 설정)
 
 function Hero() {
   const [currentBgIndex, setCurrentBgIndex] = useState(0);
