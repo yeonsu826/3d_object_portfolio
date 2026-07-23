@@ -11,6 +11,11 @@ import "../styles/index.css";
 import "../styles/tailwind.css";
 import '../styles/theme.css';
 
+import SplashScreen from "./SplashScreen"; // 경로에 맞게 수정
+
+
+
+
 // ─── 공통 스크롤 함수 (헤더 높이만큼 여백을 두고 부드럽게 스크롤) ─────────────
 const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
   e.preventDefault();
@@ -725,7 +730,7 @@ function About() {
             <div>
               <p className="font-['JetBrains_Mono'] text-xs text-primary tracking-widest uppercase mb-6">03 — About Me</p>
               <h3 className="font-['Fraunces'] font-light text-foreground leading-tight mb-8" style={{ fontSize: "clamp(1.75rem, 3.5vw, 3rem)" }}>
-                I engineer <em className="italic text-primary">visual experiences</em> beyond the code.
+                <em className="italic text-primary">Pick me</em> Up
               </h3>
               <div className="flex flex-col gap-4 font-['Figtree'] text-base text-muted-foreground leading-relaxed">
                 <p>3D 좋아합니다!</p>
@@ -791,6 +796,7 @@ function Footer() {
 export default function App() {
   return (
     <div className="bg-background min-h-screen overflow-x-hidden" style={{ fontFamily: "'Figtree', sans-serif" }}>
+      <SplashScreen />
       <Nav />
       <Hero />
       <Works />

@@ -7,10 +7,12 @@ import App from './app/App';
 import Resume from './Resume/Resume'; 
 import CoverLetterPage from './Resume/CoverLetter'; 
 import DevArchive from './Dev/DevArchive'; 
+import ScrollToTop from './app/ScrollToTop'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <HashRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/resume" element={<Resume />} />
