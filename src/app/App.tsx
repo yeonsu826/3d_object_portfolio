@@ -218,7 +218,6 @@ const TOOLS = [
   { name: "Unreal" },
   { name: "Blender" },
   { name: "Substance Painter" },
-  { name: "Three.js" },
 ];
 
 // ─── Nav ─────────────────────────────────────────────────────────────────────
@@ -236,9 +235,14 @@ function Nav() {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/90 backdrop-blur-md border-b border-border" : ""}`}>
       <nav className="max-w-[1400px] mx-auto px-8 py-5 flex items-center justify-between">
-        <button className="font-['Fraunces'] text-xl font-light tracking-tight text-foreground select-none" style={{ background: "none", border: "none", cursor: "default" }}>
+        <Link 
+          to="/" 
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="font-['Fraunces'] text-xl font-light tracking-tight text-foreground select-none cursor-pointer transition-opacity hover:opacity-70" 
+          style={{ background: "none", border: "none" }}
+        >
           JEONG YEON SU<span className="text-primary">.</span>
-        </button>
+        </Link>
         <ul className="hidden md:flex items-center gap-10">
           {["Works", "About"].map((l) => (
             <li key={l}>
@@ -280,33 +284,45 @@ function Nav() {
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
-const imageModules = import.meta.glob('/dist/images/*/*.{png,jpg,jpeg}', { eager: true, query: '?url', import: 'default' });
-const BACKGROUND_IMAGES = Object.values(imageModules) as string[];
-const renderImageCountStatic = Object.keys(import.meta.glob('/dist/images/{cafe,glasses,gamingroom,stage}/*.{png,jpg,jpeg}', { eager: true })).length;
-const videoCountStatic = 9; // Vimeo 영상 개수 (수동으로 설정)
 
+// 기존 BACKGROUND_IMAGES 상수를 INITIAL_IMAGES로 이름 변경
+const imageModules = import.meta.glob('/public/images/*/*.{png,jpg,jpeg}', { eager: true, query: '?url', import: 'default' });
+const INITIAL_IMAGES = Object.values(imageModules) as string[];
+
+const renderImageCountStatic = Object.keys(import.meta.glob('/public/images/{cafe,glasses,gamingroom,stage}/*.{png,jpg,jpeg}', { eager: true })).length;
+const videoCountStatic = 9;
 function Hero() {
+  // 섞인 이미지를 담을 상태(State) 추가
+  const [bgImages, setBgImages] = useState<string[]>([]);
   const [currentBgIndex, setCurrentBgIndex] = useState(0);
 
   useEffect(() => {
-    for (let i = BACKGROUND_IMAGES.length - 1; i > 0; i--) {
+    // 원본을 직접 건드리지 않고, 복사본을 만들어서 섞음
+    const shuffled = [...INITIAL_IMAGES];
+    for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [BACKGROUND_IMAGES[i], BACKGROUND_IMAGES[j]] = [BACKGROUND_IMAGES[j], BACKGROUND_IMAGES[i]];
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
+    // 섞인 배열을 리액트 상태에 안전하게 저장
+    setBgImages(shuffled);
   }, []);
 
   useEffect(() => {
+    // 이미지가 아직 세팅되지 않았다면 타이머 실행 안 함 (에러 방지)
+    if (bgImages.length === 0) return;
+    
     const timer = setInterval(() => {
-      setCurrentBgIndex((prev) => (prev + 1) % BACKGROUND_IMAGES.length);
+      setCurrentBgIndex((prev) => (prev + 1) % bgImages.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [bgImages]);
 
   return (
     <section id="hero" className="relative min-h-screen overflow-hidden bg-[#050508] flex flex-col justify-center items-center text-center">
       <div className="absolute inset-0 bg-[#050508]">
-        {BACKGROUND_IMAGES.map((src, index) => (
-          <LoadingImage
+        {/* 🌟 LoadingImage 대신 순정 img 태그로 변경했습니다! */}
+        {bgImages.map((src, index) => (
+          <img
             key={src}
             src={src}
             alt={`Background ${index}`}
@@ -317,6 +333,7 @@ function Hero() {
         ))}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
       </div>
+      
       <div className="relative z-10 max-w-[1400px] mx-auto px-8 mt-20 flex flex-col items-center w-full">
          <span className="font-['JetBrains_Mono'] text-[10px] text-white/70 tracking-[0.3em] uppercase mb-5 border border-white/10 px-5 py-2 rounded-full bg-white/5 backdrop-blur-md shadow-lg">
            3D Modeler, Developer, Artist
@@ -363,7 +380,6 @@ function Hero() {
   );
 }
 
-// ─── 수직 스크롤을 가로 스크롤로 바꿔주는 래퍼 컴포넌트 ──────────────────────────────────
 function HorizontalScrollContainer({ children, className }: { children: React.ReactNode, className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -517,12 +533,20 @@ function Works() {
 
                   {standaloneLinkItem && !galleryItem && (
                     <a href={standaloneLinkItem.link} target="_blank" rel="noopener noreferrer"
-                       className="relative w-[200px] md:w-[280px] aspect-[4/3] rounded-xl overflow-hidden group bg-[#0a0a10] border border-white/10 flex flex-col items-center justify-center gap-4 hover:border-primary/50 transition-colors flex-shrink-0">
-                      <LoadingImage src={standaloneLinkItem.thumb} alt={standaloneLinkItem.title} className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-20 transition-opacity" />
-                      <div className="relative z-10 p-4 bg-white/10 rounded-full group-hover:scale-110 transition-transform backdrop-blur-md">
-                        <ExternalLink size={24} className="text-white" />
+                      className="relative w-[200px] md:w-[280px] aspect-[4/3] rounded-xl overflow-hidden group bg-[#0a0a10] border border-white/10 flex flex-col items-center justify-center hover:border-primary/50 transition-colors flex-shrink-0">
+                      
+                      {/* 배경 이미지 영역을 강제로 absolute로 깔아서 뒤(z-0)로 보냄 */}
+                      <div className="absolute inset-0 z-0">
+                        <LoadingImage src={standaloneLinkItem.thumb} alt={standaloneLinkItem.title} className="w-full h-full opacity-40 group-hover:opacity-20 transition-opacity" />
                       </div>
-                      <span className="relative z-10 font-medium text-white/90 text-sm md:text-base">{standaloneLinkItem.title}</span>
+                      
+                      {/* 내용물(아이콘, 텍스트)을 z-10으로 맨 위로 띄움 */}
+                      <div className="relative z-10 flex flex-col items-center gap-4">
+                        <div className="p-4 bg-white/10 rounded-full group-hover:scale-110 transition-transform backdrop-blur-md">
+                          <ExternalLink size={24} className="text-white" />
+                        </div>
+                        <span className="font-medium text-white/90 text-sm md:text-base">{standaloneLinkItem.title}</span>
+                      </div>
                     </a>
                   )}
                 </HorizontalScrollContainer>
@@ -681,7 +705,6 @@ function VideoGallery() {
   );
 }
 // ─── About ────────────────────────────────────────────────────────────────────
-
 function About() {
   return (
     <section id="about" className="bg-card py-32 border-t border-border">
@@ -694,7 +717,6 @@ function About() {
               <LoadingImage src={`${import.meta.env.BASE_URL}images/working.png`} alt="Portrait" className="w-full h-full object-cover" />     
             </div>
 
-            {/* 💡 텍스트 영역에 있던 Contact를 사진 밑으로 이동하고 크기(w-16, h-16, size 28)를 키웠습니다. */}
             <div className="flex flex-col items-center pt-2">
               <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-4">Contact</p>
               <div className="flex gap-5">
@@ -720,8 +742,8 @@ function About() {
             </div>
           </div>
           
-          {/* 오른쪽: 텍스트 및 정보 영역 */}
-          <div className="flex flex-col gap-10 lg:pt-8">
+          {/* 오른쪽: 텍스트 및 정보 영역 (lg:pt-8 제거함!) */}
+          <div className="flex flex-col gap-10">
             
             <div>
               <p className="font-['JetBrains_Mono'] text-xs text-primary tracking-widest uppercase mb-6">03 — About Me</p>
