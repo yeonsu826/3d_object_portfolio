@@ -18,14 +18,8 @@ const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => 
   const element = document.getElementById(id);
   
   if (element) {
-    const headerOffset = 80; // 상단 Nav 바 높이
-    const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.scrollY - headerOffset;
-
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: "smooth"
-    });
+    // 복잡한 위치 계산 없이 브라우저 내장 함수 사용!
+    element.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 };
 
@@ -435,31 +429,31 @@ function Works() {
   }, [lightbox]);
 
   return (
-    <section id="works" className="bg-background py-32">
-      <div className="max-w-[1400px] mx-auto pl-8 md:pl-16">
-        <div className="mb-12 pr-8 md:pr-16">
-          <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-4">02 — Works</p>
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-            <div className="flex flex-col gap-4">
-              <h2 className="font-['Fraunces'] font-light text-foreground leading-tight" style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}>
-                Projects
-              </h2>
-            </div>
-            
-            <div className="flex flex-wrap gap-2 md:gap-3">
-              <button onClick={() => setActiveGroup("all")}
-                className={`font-['JetBrains_Mono'] text-xs tracking-widest uppercase px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${activeGroup === "all" ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105 font-semibold" : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/20 hover:text-white"}`}>
-                All
-              </button>
-              {PORTFOLIO.map((g) => (
-                <button key={g.groupName} onClick={() => setActiveGroup(g.groupName)}
-                  className={`font-['JetBrains_Mono'] text-xs tracking-widest uppercase px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${activeGroup === g.groupName ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105 font-semibold" : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/20 hover:text-white"}`}>
-                  {g.emoji} {g.groupName} {g.concept ? `(${g.concept})` : ""}
+<section id="works" className="scroll-mt-20 bg-background py-32">
+        <div className="max-w-[1400px] mx-auto pl-8 md:pl-16">
+          <div className="mb-12 pr-8 md:pr-16">
+            <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-4">02 — Works</p>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+              <div className="flex flex-col gap-4">
+                <h2 className="font-['Fraunces'] font-light text-foreground leading-tight" style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}>
+                  Projects
+                </h2>
+              </div>
+              
+              <div className="flex flex-wrap gap-2 md:gap-3">
+                <button onClick={() => setActiveGroup("all")}
+                  className={`font-['JetBrains_Mono'] text-xs tracking-widest uppercase px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${activeGroup === "all" ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105 font-semibold" : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/20 hover:text-white"}`}>
+                  All
                 </button>
-              ))}
+                {PORTFOLIO.map((g) => (
+                  <button key={g.groupName} onClick={() => setActiveGroup(g.groupName)}
+                    className={`font-['JetBrains_Mono'] text-xs tracking-widest uppercase px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${activeGroup === g.groupName ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105 font-semibold" : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/20 hover:text-white"}`}>
+                    {g.emoji} {g.groupName} {g.concept ? `(${g.concept})` : ""}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
 
         <div className="flex flex-col gap-24">
           {groups.map((group) => {
@@ -662,7 +656,7 @@ function VideoGallery() {
   );
 
   return (
-    <section id="shorts" className="bg-[#050505] pt-10 pb-32">
+    <section id="shorts" className="scroll-mt-20 bg-[#050505] pt-10 pb-32">
       <div className="max-w-[1400px] mx-auto pl-8 md:pl-16">
         <div className="flex items-baseline gap-4 mb-10 pb-4 border-b border-white/10 pr-8 md:pr-16">
           <h3 className="font-['Fraunces'] font-normal text-white text-2xl md:text-3xl">Video Log</h3>
@@ -707,7 +701,7 @@ function VideoGallery() {
 // ─── About ────────────────────────────────────────────────────────────────────
 function About() {
   return (
-    <section id="about" className="bg-card py-32 border-t border-border">
+    <section id="about" className="scroll-mt-20 bg-card py-32 border-t border-border">
       <div className="max-w-[1400px] mx-auto px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           
