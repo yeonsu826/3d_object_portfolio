@@ -1,24 +1,128 @@
-import { useState, useEffect, useRef } from "react";
-import { ArrowUpRight, Menu, X, ExternalLink, Instagram, Linkedin, ChevronLeft, ChevronRight, Play } from "lucide-react";
-// import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-// import * as THREE from "three";
-// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { useState, useEffect, useRef, createContext, useContext } from "react";
+import { ArrowUpRight, Menu, X, ExternalLink, Instagram, Linkedin, ChevronLeft, ChevronRight, Play, Globe } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import "../styles/index.css";
 
-import SplashScreen from "./components/SplashScreen"; // 경로에 맞게 수정
+import SplashScreen from "./components/SplashScreen";
 import LoadingImage from "./components/LoadingImage";
 
+// ─── Translations ─────────────────────────────────────────────────────────────
 
+const TRANSLATIONS = {
+  ko: {
+    navWorks: "Works",
+    navAbout: "About",
+    heroTag: "3D Modeler, Developer, Artist",
+    heroTitle1: "Feel Spaces, ",
+    heroTitle2: "Through Technology.",
+    viewWorks: "작업물 보기",
+    aboutMeBtn: "About Me",
+    projects: "Projects",
+    renders: "Renders",
+    videos: "Videos",
+    all: "All",
+    viewLarge: "크게 보기",
+    viewProcess: "제작 과정 보기",
+    videoLog: "Video Log",
+    videoLogSub: "— Cinematic & Videos",
+    playVideo: "Play Video",
+    aboutTitle: "Pick me Up",
+    aboutDesc1: "3D 좋아합니다!",
+    aboutDesc2: "엔진 잘 다룹니다!",
+    aboutDesc3: "모델링 잘합니다!",
+    aboutDesc4: "열심히 하겠습니다!",
+    contact: "Contact",
+    toolsTitle: "Software & Tools",
+    resumeBtn: "이력서 보기",
+    location: "Seoul, KR",
+    groups: {
+      glasses: "안경 프로젝트",
+      cafe: "카페 프로젝트",
+      gamingroom: "게이밍룸 프로젝트",
+      stage: "무대 디자인 프로젝트",
+      dev: "개발 프로젝트 아카이브",
+    },
+    items: {
+      glassesResult: "안경 결과 렌더링",
+      glassesDesc: "안경 프로젝트 결과 이미지와 영상",
+      glassesProcess: "안경 제작 과정",
+      glassesProcessDesc: "제작 과정 설명 페이지",
+      cafeResult: "카페 결과 렌더링",
+      cafeDesc: "카페 프로젝트 결과 이미지와 영상",
+      cafeProcess: "카페 공간 제작 과정",
+      cafeProcessDesc: "스타일라이즈드 컨셉 공간 제작 설명 페이지",
+      gamingResult: "게이밍룸 결과 렌더링",
+      gamingDesc: "게이밍룸 프로젝트 이미지 갤러리",
+      stageResult: "무대 결과 렌더링",
+      stageDesc: "무대 디자인 프로젝트 이미지 갤러리",
+      devArchive: "개발 프로젝트 아카이브",
+      devArchiveDesc: "진행 해왔던 유니티 개발 프로젝트들을 볼 수 있습니다. (외부 링크)",
+    }
+  },
+  en: {
+    navWorks: "Works",
+    navAbout: "About",
+    heroTag: "3D Modeler, Developer, Artist",
+    heroTitle1: "Feel Spaces, ",
+    heroTitle2: "Through Technology.",
+    viewWorks: "View Works",
+    aboutMeBtn: "About Me",
+    projects: "Projects",
+    renders: "Renders",
+    videos: "Videos",
+    all: "All",
+    viewLarge: "View Large",
+    viewProcess: "View Process",
+    videoLog: "Video Log",
+    videoLogSub: "— Cinematic & Videos",
+    playVideo: "Play Video",
+    aboutTitle: "Pick me Up",
+    aboutDesc1: "Passionate about 3D!",
+    aboutDesc2: "Proficient with game engines!",
+    aboutDesc3: "Skilled in 3D modeling!",
+    aboutDesc4: "Always eager to build!",
+    contact: "Contact",
+    toolsTitle: "Software & Tools",
+    resumeBtn: "View Resume",
+    location: "Seoul, KR",
+    groups: {
+      glasses: "Glasses Project",
+      cafe: "Cafe Project",
+      gamingroom: "Gaming Room Project",
+      stage: "Stage Design Project",
+      dev: "Dev Project Archive",
+    },
+    items: {
+      glassesResult: "Glasses Renderings",
+      glassesDesc: "Result images and videos of the glasses project",
+      glassesProcess: "Glasses Process",
+      glassesProcessDesc: "Process explanation page",
+      cafeResult: "Cafe Renderings",
+      cafeDesc: "Result images and videos of the cafe project",
+      cafeProcess: "Cafe Space Process",
+      cafeProcessDesc: "Stylized concept space creation guide",
+      gamingResult: "Gaming Room Renderings",
+      gamingDesc: "Gaming room project image gallery",
+      stageResult: "Stage Renderings",
+      stageDesc: "Stage design project image gallery",
+      devArchive: "Dev Project Archive",
+      devArchiveDesc: "Explore past Unity development projects. (External Link)",
+    }
+  }
+};
 
-// ─── 공통 스크롤 함수 (헤더 높이만큼 여백을 두고 부드럽게 스크롤) ─────────────
+const LangContext = createContext<{ lang: 'ko' | 'en'; setLang: (l: 'ko' | 'en') => void; t: typeof TRANSLATIONS.ko }>({
+  lang: 'ko',
+  setLang: () => {},
+  t: TRANSLATIONS.ko,
+});
+
+// ─── 공통 스크롤 함수 ─────────────────────────────────────────────────────
 const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
   e.preventDefault();
   const element = document.getElementById(id);
-  
   if (element) {
-    // 복잡한 위치 계산 없이 브라우저 내장 함수 사용!
     element.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 };
@@ -27,8 +131,8 @@ const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => 
 
 interface PortfolioItem {
   id: string;
-  title: string;
-  desc: string;
+  titleKey: keyof typeof TRANSLATIONS.ko.items;
+  descKey: keyof typeof TRANSLATIONS.ko.items;
   thumb: string;
   mediaType?: 'gallery';
   galleryImages?: string[];
@@ -38,23 +142,23 @@ interface PortfolioItem {
 }
 
 interface PortfolioGroup {
-  groupName: string;
-  concept?:string;
-  tools?: string[]; // ✨ 프로젝트별 사용 툴을 입력할 수 있도록 속성 추가
+  groupKey: keyof typeof TRANSLATIONS.ko.groups;
+  concept?: string;
+  tools?: string[];
   emoji: string;
   items: PortfolioItem[];
 }
 
 const PORTFOLIO: PortfolioGroup[] = [
   {
-    groupName: "안경 프로젝트",
+    groupKey: "glasses",
     emoji: "👓",
     tools: ["Blender", "Unreal Engine"], 
     items: [
       { 
         id: "glasses_result_gallery", 
-        title: "안경 결과 렌더링", 
-        desc: "안경 프로젝트 결과 이미지와 영상", 
+        titleKey: "glassesResult", 
+        descKey: "glassesDesc", 
         thumb: `${import.meta.env.BASE_URL}images/glasses/1.png`, 
         mediaType: "gallery", 
         galleryImages: [
@@ -91,8 +195,8 @@ const PORTFOLIO: PortfolioGroup[] = [
       },
       { 
         id: "glass_project_process", 
-        title: "안경 제작 과정", 
-        desc: "제작 과정 설명 페이지", 
+        titleKey: "glassesProcess", 
+        descKey: "glassesProcessDesc", 
         thumb: `${import.meta.env.BASE_URL}images/glass_project_process.png`, 
         isProcess: true, 
         link: `${import.meta.env.BASE_URL}glasses_project/index.html` 
@@ -100,15 +204,15 @@ const PORTFOLIO: PortfolioGroup[] = [
     ],
   },
   {
-    groupName: "카페 프로젝트",
+    groupKey: "cafe",
     concept: "Stylized",
     tools: ["Blender", "Unreal Engine", "Substance Painter"],
     emoji: "☕",
     items: [
       { 
         id: "cafe_result_gallery", 
-        title: "카페 결과 렌더링", 
-        desc: "카페 프로젝트 결과 이미지와 영상", 
+        titleKey: "cafeResult", 
+        descKey: "cafeDesc", 
         thumb: `${import.meta.env.BASE_URL}images/cafe/0.jpeg`, 
         mediaType: "gallery", 
         galleryImages: [
@@ -127,8 +231,8 @@ const PORTFOLIO: PortfolioGroup[] = [
       },
       { 
         id: "cafe_project_process", 
-        title: "카페 공간 제작 과정", 
-        desc: "스타일라이즈드 컨셉 공간 제작 설명 페이지", 
+        titleKey: "cafeProcess", 
+        descKey: "cafeProcessDesc", 
         thumb: `${import.meta.env.BASE_URL}images/cafe_project_process.png`, 
         isProcess: true, 
         link: `${import.meta.env.BASE_URL}cafe_project/index.html` 
@@ -136,15 +240,15 @@ const PORTFOLIO: PortfolioGroup[] = [
     ],
   },
   {
-    groupName: "게이밍룸 프로젝트",
+    groupKey: "gamingroom",
     concept: "Stylized",
     tools: ["Blender", "Unreal Engine", "Substance Painter"], 
     emoji: "🎮",
     items: [
       { 
         id: "gamingroom_result_gallery", 
-        title: "게이밍룸 결과 렌더링", 
-        desc: "게이밍룸 프로젝트 이미지 갤러리", 
+        titleKey: "gamingResult", 
+        descKey: "gamingDesc", 
         thumb: `${import.meta.env.BASE_URL}images/gamingroom/1.jpeg`, 
         mediaType: "gallery", 
         galleryImages: [
@@ -162,18 +266,17 @@ const PORTFOLIO: PortfolioGroup[] = [
           `${import.meta.env.BASE_URL}images/gamingroom/12.jpeg`,
         ] 
       },
-      
     ],
   },
   {
-    groupName: "무대 디자인 프로젝트",
+    groupKey: "stage",
     tools: ["Blender", "Unreal Engine", "Substance Painter"], 
     emoji: "🎭",
     items: [
       { 
         id: "stage_result_gallery", 
-        title: "무대 결과 렌더링", 
-        desc: "무대 디자인 프로젝트 이미지 갤러리", 
+        titleKey: "stageResult", 
+        descKey: "stageDesc", 
         thumb: `${import.meta.env.BASE_URL}images/stage/1.jpeg`, 
         mediaType: "gallery", 
         galleryImages: [
@@ -192,14 +295,14 @@ const PORTFOLIO: PortfolioGroup[] = [
     ],
   },
   {
-    groupName: "개발 프로젝트 아카이브",
+    groupKey: "dev",
     tools: ["Unity", "C#"],
     emoji: "🗃️",
     items: [
       {
         id: "dev_archive",
-        title: "개발 프로젝트 아카이브",
-        desc: "진행 해왔던 유니티 개발 프로젝트들을 볼 수 있습니다. (외부 링크)",
+        titleKey: "devArchive",
+        descKey: "devArchiveDesc",
         thumb: `${import.meta.env.BASE_URL}images/dev.jpg`,
         link: "https://kaput-muskox-1f4.notion.site/2a3a13adf6c48050b9b5cfe097165b8c",
       },
@@ -214,17 +317,41 @@ const TOOLS = [
   { name: "Substance Painter" },
 ];
 
+const imageModules = import.meta.glob('/public/images/*/*.{png,jpg,jpeg}', { eager: true, query: '?url', import: 'default' });
+const INITIAL_IMAGES = Object.values(imageModules) as string[];
+
+const renderImageCountStatic = Object.keys(import.meta.glob('/public/images/{cafe,glasses,gamingroom,stage}/*.{png,jpg,jpeg}', { eager: true })).length;
+const videoCountStatic = 9;
 // ─── Nav ─────────────────────────────────────────────────────────────────────
 
 function Nav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { lang, setLang, t } = useContext(LangContext);
   
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", fn);
     return () => window.removeEventListener("scroll", fn);
   }, []);
+// 언어 변경 토글 UI (여백 및 대칭 정밀 조정)
+  const LanguageToggle = () => (
+    <div 
+      className="flex items-center bg-white/5 border border-white/10 rounded-full py-1 pl-4 pr-1.5 cursor-pointer hover:bg-white/10 transition-colors shadow-sm"
+      onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')}
+      title="Change Language"
+    >
+      <Globe size={15} className="text-white/70" />
+      <div className="flex items-center ml-3 font-['JetBrains_Mono'] text-[10px] sm:text-xs tracking-widest gap-0.5">
+        <span className={`w-11 text-center py-1.5 rounded-full transition-all duration-300 ${lang === 'ko' ? 'bg-white text-black font-bold shadow-md' : 'text-white/40 hover:text-white/70'}`}>
+          KO
+        </span>
+        <span className={`w-11 text-center py-1.5 rounded-full transition-all duration-300 ${lang === 'en' ? 'bg-white text-black font-bold shadow-md' : 'text-white/40 hover:text-white/70'}`}>
+          EN
+        </span>
+      </div>
+    </div>
+  );
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/90 backdrop-blur-md border-b border-border" : ""}`}>
@@ -237,35 +364,50 @@ function Nav() {
         >
           JEONG YEON SU<span className="text-primary">.</span>
         </Link>
-        <ul className="hidden md:flex items-center gap-10">
-          {["Works", "About"].map((l) => (
-            <li key={l}>
-              <a 
-                href={`#${l.toLowerCase()}`} 
-                onClick={(e) => scrollToSection(e, l.toLowerCase())}
-                className="font-['Figtree'] text-sm text-muted-foreground hover:text-foreground transition-colors tracking-widest uppercase"
-              >
-                {l}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <button onClick={() => setOpen(!open)} className="md:hidden text-foreground">{open ? <X size={22} /> : <Menu size={22} />}</button>
+        
+        {/* 데스크탑 네비게이션 */}
+        <div className="hidden md:flex items-center gap-10">
+          <ul className="flex items-center gap-10">
+            {["works", "about"].map((l) => (
+              <li key={l}>
+                <a 
+                  href={`#${l}`} 
+                  onClick={(e) => scrollToSection(e, l)}
+                  className="font-['Figtree'] text-sm text-muted-foreground hover:text-foreground transition-colors tracking-widest uppercase"
+                >
+                  {l === "works" ? t.navWorks : t.navAbout}
+                </a>
+              </li>
+            ))}
+          </ul>
+          
+          {/* 눈에 띄는 스위치형 토글 */}
+          <LanguageToggle />
+        </div>
+
+        {/* 모바일 네비게이션 */}
+        <div className="flex items-center gap-4 md:hidden">
+          <LanguageToggle />
+          <button onClick={() => setOpen(!open)} className="text-foreground">
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </nav>
+      
       {open && (
         <div className="md:hidden bg-card border-b border-border px-8 py-6">
           <ul className="flex flex-col gap-5">
-            {["Works", "About"].map((l) => (
+            {["works", "about"].map((l) => (
               <li key={l}>
                 <a 
-                  href={`#${l.toLowerCase()}`} 
+                  href={`#${l}`} 
                   onClick={(e) => {
-                    scrollToSection(e, l.toLowerCase());
+                    scrollToSection(e, l);
                     setOpen(false);
                   }} 
                   className="font-['Figtree'] text-base text-foreground tracking-widest uppercase"
                 >
-                  {l}
+                  {l === "works" ? t.navWorks : t.navAbout}
                 </a>
               </li>
             ))}
@@ -278,33 +420,22 @@ function Nav() {
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
-
-// 기존 BACKGROUND_IMAGES 상수를 INITIAL_IMAGES로 이름 변경
-const imageModules = import.meta.glob('/public/images/*/*.{png,jpg,jpeg}', { eager: true, query: '?url', import: 'default' });
-const INITIAL_IMAGES = Object.values(imageModules) as string[];
-
-const renderImageCountStatic = Object.keys(import.meta.glob('/public/images/{cafe,glasses,gamingroom,stage}/*.{png,jpg,jpeg}', { eager: true })).length;
-const videoCountStatic = 9;
 function Hero() {
-  // 섞인 이미지를 담을 상태(State) 추가
   const [bgImages, setBgImages] = useState<string[]>([]);
   const [currentBgIndex, setCurrentBgIndex] = useState(0);
+  const { t } = useContext(LangContext);
 
   useEffect(() => {
-    // 원본을 직접 건드리지 않고, 복사본을 만들어서 섞음
     const shuffled = [...INITIAL_IMAGES];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
-    // 섞인 배열을 리액트 상태에 안전하게 저장
     setBgImages(shuffled);
   }, []);
 
   useEffect(() => {
-    // 이미지가 아직 세팅되지 않았다면 타이머 실행 안 함 (에러 방지)
     if (bgImages.length === 0) return;
-    
     const timer = setInterval(() => {
       setCurrentBgIndex((prev) => (prev + 1) % bgImages.length);
     }, 5000);
@@ -314,7 +445,6 @@ function Hero() {
   return (
     <section id="hero" className="relative min-h-screen overflow-hidden bg-[#050508] flex flex-col justify-center items-center text-center">
       <div className="absolute inset-0 bg-[#050508]">
-        {/* 🌟 LoadingImage 대신 순정 img 태그로 변경했습니다! */}
         {bgImages.map((src, index) => (
           <img
             key={src}
@@ -330,13 +460,13 @@ function Hero() {
       
       <div className="relative z-10 max-w-[1400px] mx-auto px-8 mt-20 flex flex-col items-center w-full">
          <span className="font-['JetBrains_Mono'] text-[10px] text-white/70 tracking-[0.3em] uppercase mb-5 border border-white/10 px-5 py-2 rounded-full bg-white/5 backdrop-blur-md shadow-lg">
-           3D Modeler, Developer, Artist
-         </span> 
-                    
+           {t.heroTag}
+         </span>            
+        
         <h1 className="font-['Fraunces'] text-white tracking-wide mb-8 md:mb-16" style={{ fontSize: "clamp(2rem, 6vw, 5rem)" }}>
-          Feel Spaces, 
+          {t.heroTitle1}
           <span className="font-['Fraunces'] text-white/70 text-xl md:text-2xl">
-          &nbsp;&nbsp; Through Technology.
+          &nbsp;&nbsp; {t.heroTitle2}
           </span>
         </h1>
         
@@ -346,22 +476,22 @@ function Hero() {
              onClick={(e) => scrollToSection(e, 'works')}
              className="group flex items-center gap-3 font-['Figtree'] text-sm font-medium bg-white text-black px-8 py-4 rounded-full hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)]"
            >
-             작업물 보기 <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+             {t.viewWorks} <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
            </a>
            <a 
              href="#about" 
              onClick={(e) => scrollToSection(e, 'about')}
              className="flex items-center gap-2 font-['Figtree'] text-sm font-medium bg-white/5 text-white border border-white/10 px-8 py-4 rounded-full hover:bg-white/15 backdrop-blur-md transition-all duration-300"
            >
-             About Me
+             {t.aboutMeBtn}
            </a>
          </div>
 
          <div className="flex flex-wrap justify-center gap-10 md:gap-20 mt-24 pt-10 border-t border-white/10 w-full max-w-4xl">
            {[
-             { value: String(PORTFOLIO.length), label: "Projects" },
-             { value: String(renderImageCountStatic), label: "Renders" },
-             { value: String(videoCountStatic), label: "Videos" },
+             { value: String(PORTFOLIO.length), label: t.projects },
+             { value: String(renderImageCountStatic), label: t.renders },
+             { value: String(videoCountStatic), label: t.videos },
            ].map((s) => (
              <div key={s.label} className="flex flex-col gap-2">
                <span className="font-['Fraunces'] font-semibold text-3xl text-white/90 drop-shadow-lg">{s.value}</span>
@@ -382,10 +512,9 @@ function HorizontalScrollContainer({ children, className }: { children: React.Re
     if (!container) return;
 
     const handleWheel = (e: WheelEvent) => {
-      // e.deltaY 값이 있으면 세로 스크롤 휠을 굴린 것
       if (e.deltaY !== 0) {
-        e.preventDefault(); // 기본 수직 스크롤 방지
-        container.scrollLeft += e.deltaY; // 좌우 스크롤로 변환
+        e.preventDefault();
+        container.scrollLeft += e.deltaY;
       }
     };
 
@@ -405,8 +534,9 @@ function HorizontalScrollContainer({ children, className }: { children: React.Re
 function Works() {
   const [activeGroup, setActiveGroup] = useState<string>("all");
   const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
+  const { t } = useContext(LangContext);
 
-  const groups = activeGroup === "all" ? PORTFOLIO : PORTFOLIO.filter(g => g.groupName === activeGroup);
+  const groups = activeGroup === "all" ? PORTFOLIO : PORTFOLIO.filter(g => t.groups[g.groupKey] === activeGroup);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -429,34 +559,38 @@ function Works() {
   }, [lightbox]);
 
   return (
-<section id="works" className="scroll-mt-20 bg-background py-32">
+    <section id="works" className="scroll-mt-20 bg-background py-32">
         <div className="max-w-[1400px] mx-auto pl-8 md:pl-16">
           <div className="mb-12 pr-8 md:pr-16">
             <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-4">02 — Works</p>
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
               <div className="flex flex-col gap-4">
                 <h2 className="font-['Fraunces'] font-light text-foreground leading-tight" style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}>
-                  Projects
+                  {t.projects}
                 </h2>
               </div>
               
               <div className="flex flex-wrap gap-2 md:gap-3">
                 <button onClick={() => setActiveGroup("all")}
                   className={`font-['JetBrains_Mono'] text-xs tracking-widest uppercase px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${activeGroup === "all" ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105 font-semibold" : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/20 hover:text-white"}`}>
-                  All
+                  {t.all}
                 </button>
-                {PORTFOLIO.map((g) => (
-                  <button key={g.groupName} onClick={() => setActiveGroup(g.groupName)}
-                    className={`font-['JetBrains_Mono'] text-xs tracking-widest uppercase px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${activeGroup === g.groupName ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105 font-semibold" : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/20 hover:text-white"}`}>
-                    {g.emoji} {g.groupName} {g.concept ? `(${g.concept})` : ""}
-                  </button>
-                ))}
+                {PORTFOLIO.map((g) => {
+                  const groupName = t.groups[g.groupKey];
+                  return (
+                    <button key={g.groupKey} onClick={() => setActiveGroup(groupName)}
+                      className={`font-['JetBrains_Mono'] text-xs tracking-widest uppercase px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${activeGroup === groupName ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105 font-semibold" : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/20 hover:text-white"}`}>
+                      {g.emoji} {groupName} {g.concept ? `(${g.concept})` : ""}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
 
         <div className="flex flex-col gap-24">
           {groups.map((group) => {
+            const groupName = t.groups[group.groupKey];
             const galleryItem = group.items.find(i => i.mediaType === "gallery");
             const processItem = group.items.find(i => i.isProcess);
             const standaloneLinkItem = group.items.find(i => i.link && !i.isProcess);
@@ -464,19 +598,17 @@ function Works() {
             const images = galleryItem?.galleryImages || [];
 
             return (
-              <div key={group.groupName} className="w-full">
+              <div key={group.groupKey} className="w-full">
                 <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-8 pb-4 border-b border-white/10 pr-8 md:pr-16">
                   <span className="text-3xl">{group.emoji}</span>
-                  <h3 className="font-['Fraunces'] font-medium text-foreground text-2xl md:text-3xl mr-2">{group.groupName}</h3>
+                  <h3 className="font-['Fraunces'] font-medium text-foreground text-2xl md:text-3xl mr-2">{groupName}</h3>
                   
-                  {/* 기존 컨셉 태그 */}
                   {group.concept && (
                     <span className="px-3 py-1 text-[10px] sm:text-xs font-['JetBrains_Mono'] tracking-widest text-primary border border-primary/50 bg-primary/10 rounded-full shadow-[0_0_8px_rgba(var(--primary-rgb),0.3)]">
                         {group.concept}
                     </span>
                   )}
 
-                  {/* ✨ 추가된 부분: 사용한 툴 태그 렌더링 */}
                   {group.tools && group.tools.map((tool, idx) => (
                     <span key={idx} className="px-3 py-1 text-[10px] sm:text-xs font-['JetBrains_Mono'] tracking-widest text-white/70 border border-white/20 bg-white/5 rounded-full">
                       {tool}
@@ -498,9 +630,9 @@ function Works() {
                       onClick={() => setLightbox({ images, index: idx })}
                       className="relative w-[200px] md:w-[280px] aspect-[4/3] rounded-xl overflow-hidden cursor-zoom-in group bg-[#0a0a10] border border-white/5 flex-shrink-0"
                     >
-                      <LoadingImage src={img} alt={`${group.groupName} ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                      <LoadingImage src={img} alt={`${groupName} ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                        <span className="opacity-0 group-hover:opacity-100 bg-black/60 text-white backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium transition-opacity shadow-lg">크게 보기</span>
+                        <span className="opacity-0 group-hover:opacity-100 bg-black/60 text-white backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium transition-opacity shadow-lg">{t.viewLarge}</span>
                       </div>
                     </div>
                   ))}
@@ -511,7 +643,7 @@ function Works() {
                       <div className="p-4 bg-white/10 rounded-full group-hover:scale-110 transition-transform">
                         <ExternalLink size={24} className="text-white" />
                       </div>
-                      <span className="font-medium text-white/90 text-sm md:text-base">영상 {idx + 1} 보기</span>
+                      <span className="font-medium text-white/90 text-sm md:text-base">Video {idx + 1}</span>
                     </a>
                   ))}
 
@@ -521,7 +653,7 @@ function Works() {
                       <div className="p-4 bg-primary/20 rounded-full group-hover:scale-110 transition-transform">
                         <ArrowUpRight size={24} className="text-primary" />
                       </div>
-                      <span className="font-medium text-primary text-sm md:text-base">제작 과정 보기</span>
+                      <span className="font-medium text-primary text-sm md:text-base">{t.viewProcess}</span>
                     </a>
                   )}
 
@@ -529,17 +661,15 @@ function Works() {
                     <a href={standaloneLinkItem.link} target="_blank" rel="noopener noreferrer"
                       className="relative w-[200px] md:w-[280px] aspect-[4/3] rounded-xl overflow-hidden group bg-[#0a0a10] border border-white/10 flex flex-col items-center justify-center hover:border-primary/50 transition-colors flex-shrink-0">
                       
-                      {/* 배경 이미지 영역을 강제로 absolute로 깔아서 뒤(z-0)로 보냄 */}
                       <div className="absolute inset-0 z-0">
-                        <LoadingImage src={standaloneLinkItem.thumb} alt={standaloneLinkItem.title} className="w-full h-full opacity-40 group-hover:opacity-20 transition-opacity" />
+                        <LoadingImage src={standaloneLinkItem.thumb} alt={t.items[standaloneLinkItem.titleKey]} className="w-full h-full opacity-40 group-hover:opacity-20 transition-opacity" />
                       </div>
                       
-                      {/* 내용물(아이콘, 텍스트)을 z-10으로 맨 위로 띄움 */}
                       <div className="relative z-10 flex flex-col items-center gap-4">
                         <div className="p-4 bg-white/10 rounded-full group-hover:scale-110 transition-transform backdrop-blur-md">
                           <ExternalLink size={24} className="text-white" />
                         </div>
-                        <span className="font-medium text-white/90 text-sm md:text-base">{standaloneLinkItem.title}</span>
+                        <span className="font-medium text-white/90 text-sm md:text-base">{t.items[standaloneLinkItem.titleKey]}</span>
                       </div>
                     </a>
                   )}
@@ -549,7 +679,7 @@ function Works() {
           })}
         </div>
       </div>
-      {/* Lightbox 모달 */}
+      
       {lightbox && (
         <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-8 transition-opacity" onClick={() => setLightbox(null)}>
           <div className="relative w-full max-w-[95vw] h-full flex items-center justify-center">
@@ -587,10 +717,9 @@ function Works() {
   );
 }
 
-// ─── Vimeo Video Gallery ─────────────────────────────────────────────────────────────
+// ─── Video Gallery ─────────────────────────────────────────────────────────────
 
 function VideoGallery() {
-  // ✨ 영상 데이터에 tools 배열 추가
   const vimeoVideos: { id: string; type: string; tools?: string[] }[] = [
     { id: "1211900105", type: "portrait", tools: ["Blender", "Unreal Engine", "Substance Painter"] },
     { id: "1211900103", type: "portrait", tools: ["Blender", "Unreal Engine", "Substance Painter"] }, 
@@ -604,12 +733,12 @@ function VideoGallery() {
     { id: "1211907155", type: "landscape", tools: ["Unity", "C#", "Particle Effect"] },
   ];
 
+  const { t } = useContext(LangContext);
   if (vimeoVideos.length === 0) return null;
 
   const portraitVideos = vimeoVideos.filter(video => video.type === "portrait");
   const landscapeVideos = vimeoVideos.filter(video => video.type === "landscape");
 
-  // ✨ 영상과 툴 버튼을 묶어주는 래퍼(div)로 변경되었습니다
   const renderVideoCard = (video: { id: string; type: string; tools?: string[] }, index: number) => (
     <div 
       key={video.id + index} 
@@ -634,15 +763,13 @@ function VideoGallery() {
           className="absolute top-0 left-0 w-full h-full object-cover scale-[1.02] group-hover:scale-100 transition-transform duration-700 pointer-events-none"
         ></iframe>
         
-        {/* 마우스 오버 시 뜨는 재생 버튼 오버레이 */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
           <span className="opacity-0 group-hover:opacity-100 bg-white text-black px-5 py-2.5 rounded-full font-['Figtree'] text-xs font-bold transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 flex items-center gap-2 shadow-xl">
-            Play Video <Play size={14} className="fill-black" />
+            {t.playVideo} <Play size={14} className="fill-black" />
           </span>
         </div>
       </a>
 
-      {/* ✨ 영상 밑에 툴을 렌더링하는 영역 (버튼 형태) */}
       {video.tools && video.tools.length > 0 && (
         <div className="flex flex-wrap gap-2 px-1">
           {video.tools.map((tool, i) => (
@@ -659,13 +786,12 @@ function VideoGallery() {
     <section id="shorts" className="scroll-mt-20 bg-[#050505] pt-10 pb-32">
       <div className="max-w-[1400px] mx-auto pl-8 md:pl-16">
         <div className="flex items-baseline gap-4 mb-10 pb-4 border-b border-white/10 pr-8 md:pr-16">
-          <h3 className="font-['Fraunces'] font-normal text-white text-2xl md:text-3xl">Video Log</h3>
+          <h3 className="font-['Fraunces'] font-normal text-white text-2xl md:text-3xl">{t.videoLog}</h3>
           <span className="font-['Figtree'] text-xs tracking-widest uppercase text-white/40">
-            — Cinematic & Videos
+            {t.videoLogSub}
           </span>
         </div>
         
-        {/* 위쪽 줄: 세로형(Portrait) 영상 */}
         {portraitVideos.length > 0 && (
           <div className="mb-12">
             <HorizontalScrollContainer 
@@ -680,7 +806,6 @@ function VideoGallery() {
           </div>
         )}
 
-        {/* 아래쪽 줄: 가로형(Landscape) 영상 */}
         {landscapeVideos.length > 0 && (
           <div>
             <HorizontalScrollContainer 
@@ -698,21 +823,24 @@ function VideoGallery() {
     </section>
   );
 }
+
 // ─── About ────────────────────────────────────────────────────────────────────
+
 function About() {
+  const { t } = useContext(LangContext);
+
   return (
     <section id="about" className="scroll-mt-20 bg-card py-32 border-t border-border">
       <div className="max-w-[1400px] mx-auto px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           
-          {/* 왼쪽: 사진 및 Contact 영역 */}
           <div className="relative max-w-[420px] w-full mx-auto flex flex-col gap-8">
             <div className="relative aspect-[4/4] overflow-hidden bg-secondary rounded-3xl shadow-xl">
               <LoadingImage src={`${import.meta.env.BASE_URL}images/working.png`} alt="Portrait" className="w-full h-full object-cover" />     
             </div>
 
             <div className="flex flex-col items-center pt-2">
-              <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-4">Contact</p>
+              <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-4">{t.contact}</p>
               <div className="flex gap-5">
                 <a 
                   href="https://www.instagram.com/yeon_ddooo/" 
@@ -736,24 +864,22 @@ function About() {
             </div>
           </div>
           
-          {/* 오른쪽: 텍스트 및 정보 영역 (lg:pt-8 제거함!) */}
           <div className="flex flex-col gap-10">
-            
             <div>
               <p className="font-['JetBrains_Mono'] text-xs text-primary tracking-widest uppercase mb-6">03 — About Me</p>
               <h3 className="font-['Fraunces'] font-light text-foreground leading-tight mb-8" style={{ fontSize: "clamp(1.75rem, 3.5vw, 3rem)" }}>
                 <em className="italic text-primary">Pick me</em> Up
               </h3>
               <div className="flex flex-col gap-4 font-['Figtree'] text-base text-muted-foreground leading-relaxed">
-                <p>3D 좋아합니다!</p>
-                <p>엔진 잘 다룹니다!</p>
-                <p>모델링 잘합니다!</p>
-                <p>열심히 하겠습니다!</p>
+                <p>{t.aboutDesc1}</p>
+                <p>{t.aboutDesc2}</p>
+                <p>{t.aboutDesc3}</p>
+                <p>{t.aboutDesc4}</p>
               </div>
             </div>
             
             <div className="border-t border-border pt-8">
-              <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-6">Software & Tools</p>
+              <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-6">{t.toolsTitle}</p>
               <div className="flex flex-wrap gap-3">
                 {TOOLS.map((tool) => (
                   <span key={tool.name} className="rounded-full border border-border bg-card px-4 py-2 text-sm text-foreground">
@@ -768,7 +894,7 @@ function About() {
                 to="/resume" 
                 className="group flex w-full items-center justify-center gap-2 rounded-xl bg-foreground text-background py-4 px-6 font-medium transition-all hover:bg-foreground/90 hover:scale-[1.01] active:scale-[0.99]"
               >
-                이력서 보기
+                {t.resumeBtn}
                 <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
@@ -778,18 +904,22 @@ function About() {
     </section>
   );
 }
+
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
 function Footer() {
+  const { t } = useContext(LangContext);
+
   return (
     <footer className="bg-card border-t border-border px-8 py-8">
       <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <span className="font-['Fraunces'] text-lg font-light text-foreground">
           JEONG YEON SU<span className="text-primary">.</span>
         </span>
+
         <div className="flex items-center gap-8 sm:gap-12">
           <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase">
-            Seoul, KR
+            {t.location}
           </p>
           <span 
             className="font-['JetBrains_Mono'] text-[10px] text-muted-foreground/20 hover:text-muted-foreground/60 transition-colors cursor-default"
@@ -805,18 +935,34 @@ function Footer() {
 
 // ─── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
+  // 컴포넌트가 마운트될 때 localStorage에서 저장된 언어를 불러옴
+  const [lang, setLangState] = useState<'ko' | 'en'>(() => {
+    const saved = localStorage.getItem('portfolio_lang');
+    return (saved === 'en' || saved === 'ko') ? saved : 'ko';
+  });
+
+  // 언어를 변경할 때 localStorage에도 같이 저장해줌
+  const setLang = (newLang: 'ko' | 'en') => {
+    setLangState(newLang);
+    localStorage.setItem('portfolio_lang', newLang);
+  };
+
+  const t = TRANSLATIONS[lang];
+
   return (
-    <div 
-      className="min-h-screen w-full bg-background" 
-      style={{ fontFamily: "'Figtree', sans-serif" }}
-      >
-      <SplashScreen />
-      <Nav />
-      <Hero />
-      <Works />
-      <VideoGallery />
-      <About />
-      <Footer />
-    </div>
+    <LangContext.Provider value={{ lang, setLang, t }}>
+      <div 
+        className="min-h-screen w-full bg-background" 
+        style={{ fontFamily: "'Figtree', sans-serif" }}
+        >
+        <SplashScreen />
+        <Nav />
+        <Hero />
+        <Works />
+        <VideoGallery />
+        <About />
+        <Footer />
+      </div>
+    </LangContext.Provider>
   );
 }
