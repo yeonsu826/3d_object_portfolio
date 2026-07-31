@@ -8,7 +8,7 @@ import "./Resume.css";
 
 const TRANSLATIONS = {
   ko: {
-    backToPort: "BACK TO PORTFOLIO",
+    backBtn: "포트폴리오로 돌아가기",
     profileTitle: "PERSONAL PROFILE",
     profileSub: "정연수에 대해",
     galleryTitle: "GALLERY",
@@ -42,7 +42,7 @@ const TRANSLATIONS = {
     ]
   },
   en: {
-    backToPort: "BACK TO PORTFOLIO",
+    backBtn: "BACK TO PORTFOLIO",
     profileTitle: "PERSONAL PROFILE",
     profileSub: "About Jeong Yeon Su",
     galleryTitle: "GALLERY",
@@ -83,13 +83,60 @@ const CoverLetterLangContext = createContext<{ lang: 'ko' | 'en'; setLang: (l: '
   t: TRANSLATIONS.ko,
 });
 
-// 아이콘 매핑 배열 (이모티콘 대신 사용)
+// 아이콘 매핑 배열
 const PROFILE_ICONS = [User, Calendar, BookOpen, Brain, Gamepad2, MapPin, Music, Sparkles];
+
+// ─── 공통 네비게이션바 (자기소개서용) ──────────────────────────────────────────
+function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  const { lang, setLang, t } = useContext(CoverLetterLangContext);
+
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+
+  return (
+    <header 
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      style={{ 
+        backgroundColor: "var(--bg)", // 완전 불투명 처리
+        borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent" 
+      }}
+    >
+      <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+        <Link
+          to="/"
+          className="mono text-sm flex items-center gap-2 transition-opacity hover:opacity-70 font-semibold"
+          style={{ color: "var(--accent2)" }}
+        >
+          {"<- "} {t.backBtn}
+        </Link>
+        
+        <div 
+          className="flex items-center bg-white/5 border border-white/10 rounded-full py-1 pl-4 pr-1.5 cursor-pointer hover:bg-white/10 transition-colors shadow-sm"
+          onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')}
+          title="Change Language"
+        >
+          <Globe size={15} className="text-white/70" />
+          <div className="flex items-center ml-3 font-['JetBrains_Mono'] text-[10px] sm:text-xs tracking-widest gap-0.5">
+            <span className={`w-11 text-center py-1.5 rounded-full transition-all duration-300 ${lang === 'ko' ? 'bg-white text-black font-bold shadow-md' : 'text-white/40 hover:text-white/70'}`}>
+              KO
+            </span>
+            <span className={`w-11 text-center py-1.5 rounded-full transition-all duration-300 ${lang === 'en' ? 'bg-white text-black font-bold shadow-md' : 'text-white/40 hover:text-white/70'}`}>
+              EN
+            </span>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
 
 function PersonalProfile() {
   const { t } = useContext(CoverLetterLangContext);
   
-  // 번역 데이터와 아이콘 컴포넌트를 결합
   const items = t.profileData.map((data, index) => ({
     ...data,
     IconComponent: PROFILE_ICONS[index % PROFILE_ICONS.length]
@@ -191,7 +238,6 @@ function GallerySection() {
   );
 }
 
-
 export default function CoverLetterPage() {
   const [lang, setLangState] = useState<'ko' | 'en'>(() => {
     const saved = localStorage.getItem('portfolio_lang');
@@ -208,35 +254,9 @@ export default function CoverLetterPage() {
   return (
     <CoverLetterLangContext.Provider value={{ lang, setLang, t }}>
       <div style={{ background: "var(--bg)", minHeight: "100vh" }} className="scanline pb-20">
-        <div className="max-w-[800px] mx-auto px-6 pt-24">
+        <Nav />
+        <div className="max-w-5xl mx-auto px-6 pt-32">
           
-          {/* 상단 네비게이션 & 언어 토글 */}
-          <div className="flex items-center justify-between mb-10">
-            <Link
-              to="/"
-              className="mono text-sm flex items-center gap-2 transition-opacity hover:opacity-70"
-              style={{ color: "var(--accent2)" }}
-            >
-              {"<- "}{t.backToPort}
-            </Link>
-            
-            <div 
-              className="flex items-center bg-white/5 border border-white/10 rounded-full py-1 pl-4 pr-1.5 cursor-pointer hover:bg-white/10 transition-colors shadow-sm"
-              onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')}
-              title="Change Language"
-            >
-              <Globe size={15} className="text-white/70" />
-              <div className="flex items-center ml-3 font-['JetBrains_Mono'] text-[10px] sm:text-xs tracking-widest gap-0.5">
-                <span className={`w-11 text-center py-1.5 rounded-full transition-all duration-300 ${lang === 'ko' ? 'bg-white text-black font-bold shadow-md' : 'text-white/40 hover:text-white/70'}`}>
-                  KO
-                </span>
-                <span className={`w-11 text-center py-1.5 rounded-full transition-all duration-300 ${lang === 'en' ? 'bg-white text-black font-bold shadow-md' : 'text-white/40 hover:text-white/70'}`}>
-                  EN
-                </span>
-              </div>
-            </div>
-          </div>
-
           <PersonalProfile />
 
           <div className="mt-16 flex flex-col gap-6">

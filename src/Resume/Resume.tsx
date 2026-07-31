@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Globe, Mail, Github, MapPin, Zap, Link2, Target, Layout } from "lucide-react";
 import "./Resume.css";
@@ -7,6 +7,7 @@ import "./Resume.css";
 
 const TRANSLATIONS = {
   ko: {
+    backBtn: "포트폴리오로 돌아가기",
     resumeTitle: "이력서 · 2026",
     name: "정연수",
     location: "서울, 대한민국",
@@ -92,6 +93,7 @@ const TRANSLATIONS = {
     footerRight: "= TA (Technical Artist) or 3D Artist"
   },
   en: {
+    backBtn: "BACK TO PORTFOLIO",
     resumeTitle: "Resume · 2026",
     name: "JEONG YEON SU",
     location: "Seoul, South Korea",
@@ -116,7 +118,7 @@ const TRANSLATIONS = {
     secStrengths: "KEY STRENGTHS",
     expData: [
       {
-        company: "ENOZ's Co., Ltd.",
+        company: "ENOZ Co., Ltd.",
         dept: "Senior Researcher, Dev Team",
         period: "2024. 04 — 2025. 11",
         duration: "1 Yr 8 Mos",
@@ -183,6 +185,55 @@ const ResumeLangContext = createContext<{ lang: 'ko' | 'en'; setLang: (l: 'ko' |
   setLang: () => {},
   t: TRANSLATIONS.ko,
 });
+
+// ─── 공통 네비게이션바 (이력서용) ──────────────────────────────────────────────
+function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  const { lang, setLang, t } = useContext(ResumeLangContext);
+
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+
+  return (
+    <header 
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      style={{ 
+        backgroundColor: "var(--bg)", // 완전 불투명 처리
+        borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent" 
+      }}
+    >
+      <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+        <Link
+          to="/"
+          className="mono text-sm flex items-center gap-2 transition-opacity hover:opacity-70 font-semibold"
+          style={{ color: "var(--accent2)" }}
+        >
+          {"<- "} {t.backBtn}
+        </Link>
+        
+        <div 
+          className="flex items-center bg-white/5 border border-white/10 rounded-full py-1 pl-4 pr-1.5 cursor-pointer hover:bg-white/10 transition-colors shadow-sm"
+          onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')}
+          title="Change Language"
+        >
+          <Globe size={15} className="text-white/70" />
+          <div className="flex items-center ml-3 font-['JetBrains_Mono'] text-[10px] sm:text-xs tracking-widest gap-0.5">
+            <span className={`w-11 text-center py-1.5 rounded-full transition-all duration-300 ${lang === 'ko' ? 'bg-white text-black font-bold shadow-md' : 'text-white/40 hover:text-white/70'}`}>
+              KO
+            </span>
+            <span className={`w-11 text-center py-1.5 rounded-full transition-all duration-300 ${lang === 'en' ? 'bg-white text-black font-bold shadow-md' : 'text-white/40 hover:text-white/70'}`}>
+              EN
+            </span>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
+
 export default function CoverLetter() {
   const [lang, setLangState] = useState<'ko' | 'en'>(() => {
     const saved = localStorage.getItem('portfolio_lang');
@@ -202,8 +253,8 @@ export default function CoverLetter() {
         style={{ background: "var(--bg)", minHeight: "100vh" }}
         className="scanline"
       >
-        {/* 내부 코드 동일 */}
-        <div className="max-w-5xl mx-auto px-6 py-12">
+        <Nav />
+        <div className="max-w-5xl mx-auto px-6 pt-28 pb-12">
           <Header />
           <Duality />
           <div className="grid grid-cols-1 gap-8 mt-10 lg:grid-cols-[1fr_290px]">
@@ -238,7 +289,7 @@ export default function CoverLetter() {
 }
 
 function Header() {
-  const { lang, setLang, t } = useContext(ResumeLangContext);
+  const { t } = useContext(ResumeLangContext);
 
   return (
     <div
@@ -287,24 +338,7 @@ function Header() {
           </div>
         </div>
         
-        {/* 오른쪽 컨택트 & 언어 토글 영역 */}
-        <div className="flex flex-col items-end gap-5">
-          <div 
-            className="flex items-center bg-white/5 border border-white/10 rounded-full py-1 pl-4 pr-1.5 cursor-pointer hover:bg-white/10 transition-colors shadow-sm"
-            onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')}
-            title="Change Language"
-          >
-            <Globe size={15} className="text-white/70" />
-            <div className="flex items-center ml-3 font-['JetBrains_Mono'] text-[10px] sm:text-xs tracking-widest gap-0.5">
-              <span className={`w-11 text-center py-1.5 rounded-full transition-all duration-300 ${lang === 'ko' ? 'bg-white text-black font-bold shadow-md' : 'text-white/40 hover:text-white/70'}`}>
-                KO
-              </span>
-              <span className={`w-11 text-center py-1.5 rounded-full transition-all duration-300 ${lang === 'en' ? 'bg-white text-black font-bold shadow-md' : 'text-white/40 hover:text-white/70'}`}>
-                EN
-              </span>
-            </div>
-          </div>
-
+        <div className="flex flex-col items-end gap-5 justify-end h-full mt-4">
           <div
             className="mono text-xs flex flex-col gap-2.5"
             style={{ color: "var(--muted)" }}
