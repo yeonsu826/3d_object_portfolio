@@ -41,7 +41,13 @@ const TRANSLATIONS = {
       cafe: "카페 프로젝트",
       gamingroom: "게이밍룸 프로젝트",
       stage: "무대 디자인 프로젝트",
-      dev: "개발 프로젝트 아카이브",
+      devAIGameGroup: "AI 게임",
+      devAIVideoletterGroup: "AI 비디오 레터",
+      devARContentGroup: "AR 콘텐츠",
+      devInteractiveRacingGroup: "인터랙티브 레이싱",
+      devTaeanGroup: "태안 교육청",
+      devGeumsanGroup: "금산 교육청",
+      devWorkGroup: "작업 과정",
     },
     items: {
       glassesResult: "안경 결과 렌더링",
@@ -56,8 +62,21 @@ const TRANSLATIONS = {
       gamingDesc: "게이밍룸 프로젝트 이미지 갤러리",
       stageResult: "무대 결과 렌더링",
       stageDesc: "무대 디자인 프로젝트 이미지 갤러리",
-      devArchive: "개발 프로젝트 아카이브",
-      devArchiveDesc: "진행 해왔던 유니티 개발 프로젝트들을 볼 수 있습니다. (외부 링크)",
+      devAIGame: "AI Game 프로젝트",
+      devAIGameDesc: "AI를 활용한 게임 프로그램 캡쳐 화면입니다.",
+      devAIVideoletter: "AI Video Letter",
+      devAIVideoletterDesc: "AI 비디오 레터 구현 화면입니다.",
+      devARContent: "AR Content 프로젝트",
+      devARContentDesc: "증강현실(AR) 콘텐츠 프로그램 구현 화면입니다.",
+      devInteractiveRacing: "Interactive Racing",
+      devInteractiveRacingDesc: "모션 인식 기반 인터랙티브 레이싱 게임 캡쳐 화면입니다.",
+      devTaean: "태안 인공지능교육 체험센터",
+      devTaeanDesc: "태안 교육청 오프라인 인터랙티브 공간 세팅 사진입니다.",
+      devGeumsan: "금산 AI 교육 체험센터",
+      devGeumsanDesc: "금산 교육청 지능형 미디어 파이프라인 세팅 사진입니다.",
+      devWork: "작업 과정 (Work Process)",
+      devWorkDesc: "전반적인 프로젝트 개발 및 오프라인 환경 세팅 작업 과정입니다.",
+      
     }
   },
   en: {
@@ -91,7 +110,13 @@ const TRANSLATIONS = {
       cafe: "Cafe Project",
       gamingroom: "Gaming Room Project",
       stage: "Stage Design Project",
-      dev: "Dev Project Archive",
+      devAIGameGroup: "AI Game",
+      devAIVideoletterGroup: "AI Video Letter",
+      devARContentGroup: "AR Content",
+      devInteractiveRacingGroup: "Interactive Racing",
+      devTaeanGroup: "Taean Center",
+      devGeumsanGroup: "Geumsan Center",
+      devWorkGroup: "Work Process",
     },
     items: {
       glassesResult: "Glasses Renderings",
@@ -106,8 +131,20 @@ const TRANSLATIONS = {
       gamingDesc: "Gaming room project image gallery",
       stageResult: "Stage Renderings",
       stageDesc: "Stage design project image gallery",
-      devArchive: "Dev Project Archive",
-      devArchiveDesc: "Explore past Unity development projects. (External Link)",
+      devAIGame: "AI Game Project",
+      devAIGameDesc: "Screenshot of the AI-based game program.",
+      devAIVideoletter: "AI Video Letter",
+      devAIVideoletterDesc: "Implementation screen of the AI video letter program.",
+      devARContent: "AR Content Project",
+      devARContentDesc: "Implementation screen of the Augmented Reality (AR) content.",
+      devInteractiveRacing: "Interactive Racing",
+      devInteractiveRacingDesc: "Screenshot of the motion-recognition interactive racing game.",
+      devTaean: "Taean AI Education Center",
+      devTaeanDesc: "Setup photos of the offline interactive space at the Taean Education Office.",
+      devGeumsan: "Geumsan AI Education Center",
+      devGeumsanDesc: "Setup photos of the intelligent media pipeline at the Geumsan Education Office.",
+      devWork: "Work Process",
+      devWorkDesc: "Images showing the overall project development and offline environment setup process."
     }
   }
 };
@@ -148,6 +185,7 @@ interface PortfolioGroup {
   emoji: string;
   items: PortfolioItem[];
 }
+
 
 const PORTFOLIO: PortfolioGroup[] = [
   {
@@ -293,22 +331,223 @@ const PORTFOLIO: PortfolioGroup[] = [
         ] 
       },
     ],
-  },
+  },// 1. AIGame 프로젝트
   {
-    groupKey: "dev",
+    groupKey: "devAIGameGroup",
     tools: ["Unity", "C#"],
-    emoji: "🗃️",
+    emoji: "🎮",
     items: [
       {
-        id: "dev_archive",
-        titleKey: "devArchive",
-        descKey: "devArchiveDesc",
-        thumb: `${import.meta.env.BASE_URL}images/dev.jpg`,
-        link: "https://kaput-muskox-1f4.notion.site/2a3a13adf6c48050b9b5cfe097165b8c",
+        id: "dev_aigame",
+        titleKey: "devAIGame",
+        descKey: "devAIGameDesc",
+        thumb: `${import.meta.env.BASE_URL}images/dev/AIGame/1.png`,
+        mediaType: "gallery",
+        galleryImages: [
+          `${import.meta.env.BASE_URL}images/dev/AIGame/1.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIGame/2.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIGame/3.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIGame/4.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIGame/5.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIGame/6.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIGame/7.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIGame/8.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIGame/9.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIGame/10.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIGame/11.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIGame/12.png`,
+        ],
+      },
+    ],
+  },
+
+  // 2. AIVideoletter 프로젝트
+  {
+    groupKey: "devAIVideoletterGroup",
+    tools: ["Unity", "C#"],
+    emoji: "💌",
+    items: [
+      {
+        id: "dev_aivideoletter",
+        titleKey: "devAIVideoletter",
+        descKey: "devAIVideoletterDesc",
+        thumb: `${import.meta.env.BASE_URL}images/dev/AIVideoletter/1.png`,
+        mediaType: "gallery",
+        galleryImages: [
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/1.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/2.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/3.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/4.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/5.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/6.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/7.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/8.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/9.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/10.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/11.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/12.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/13.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/14.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/15.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/16.png`,
+          `${import.meta.env.BASE_URL}images/dev/AIVideoletter/17.png`,
+        ],
+      },
+    ],
+  },
+
+  // 3. ARContent 프로젝트
+  {
+    groupKey: "devARContentGroup",
+    tools: ["Unity", "AR"],
+    emoji: "📱",
+    items: [
+      {
+        id: "dev_arcontent",
+        titleKey: "devARContent",
+        descKey: "devARContentDesc",
+        thumb: `${import.meta.env.BASE_URL}images/dev/ARContent/1.png`,
+        mediaType: "gallery",
+        galleryImages: [
+          `${import.meta.env.BASE_URL}images/dev/ARContent/1.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/ARContent/2.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/ARContent/3.png`,
+          `${import.meta.env.BASE_URL}images/dev/ARContent/4.png`,
+          `${import.meta.env.BASE_URL}images/dev/ARContent/5.png`,
+          `${import.meta.env.BASE_URL}images/dev/ARContent/6.png`,
+          `${import.meta.env.BASE_URL}images/dev/ARContent/7.png`,
+          `${import.meta.env.BASE_URL}images/dev/ARContent/8.png`,
+          `${import.meta.env.BASE_URL}images/dev/ARContent/9.png`,
+        ],
+      },
+    ],
+  },
+
+  // 4. InteractiveRacing 프로젝트
+  {
+    groupKey: "devInteractiveRacingGroup",
+    tools: ["Unity", "C#"],
+    emoji: "🏎️",
+    items: [
+      {
+        id: "dev_interactiveracing",
+        titleKey: "devInteractiveRacing",
+        descKey: "devInteractiveRacingDesc",
+        thumb: `${import.meta.env.BASE_URL}images/dev/InteractiveRacing/1.png`,
+        mediaType: "gallery",
+        galleryImages: [
+          `${import.meta.env.BASE_URL}images/dev/InteractiveRacing/1.png`,
+          `${import.meta.env.BASE_URL}images/dev/InteractiveRacing/2.png`,
+          `${import.meta.env.BASE_URL}images/dev/InteractiveRacing/3.png`,
+          `${import.meta.env.BASE_URL}images/dev/InteractiveRacing/4.png`,
+          `${import.meta.env.BASE_URL}images/dev/InteractiveRacing/5.png`,
+          `${import.meta.env.BASE_URL}images/dev/InteractiveRacing/6.png`,
+          `${import.meta.env.BASE_URL}images/dev/InteractiveRacing/7.png`,
+          `${import.meta.env.BASE_URL}images/dev/InteractiveRacing/8.png`,
+        ],
+      },
+    ],
+  },
+
+  // 5. Taean 프로젝트
+  {
+    groupKey: "devTaeanGroup",
+    tools: ["Unity", "Hardware"],
+    emoji: "🏫",
+    items: [
+      {
+        id: "dev_taean",
+        titleKey: "devTaean",
+        descKey: "devTaeanDesc",
+        thumb: `${import.meta.env.BASE_URL}images/dev/Taean/6.jpg`,
+        mediaType: "gallery",
+        galleryImages: [
+          `${import.meta.env.BASE_URL}images/dev/Taean/1.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Taean/2.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Taean/3.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Taean/4.png`,
+          `${import.meta.env.BASE_URL}images/dev/Taean/5.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Taean/6.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Taean/7.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Taean/8.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Taean/9.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Taean/10.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Taean/11.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Taean/12.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Taean/13.jpg`,
+        ],
+      },
+    ],
+  },
+
+  // 6. Geumsan 프로젝트
+  {
+    groupKey: "devGeumsanGroup",
+    tools: ["Unity", "Hardware"],
+    emoji: "🏢",
+    items: [
+      {
+        id: "dev_geumsan",
+        titleKey: "devGeumsan",
+        descKey: "devGeumsanDesc",
+        thumb: `${import.meta.env.BASE_URL}images/dev/Geumsan/1.jpg`,
+        mediaType: "gallery",
+        galleryImages: [
+          `${import.meta.env.BASE_URL}images/dev/Geumsan/1.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Geumsan/2.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Geumsan/3.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Geumsan/4.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Geumsan/5.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Geumsan/6.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Geumsan/7.png`,
+        ],
+      },
+    ],
+  },
+
+  // 7. Work Process 프로젝트
+  {
+    groupKey: "devWorkGroup",
+    tools: ["Process"],
+    emoji: "🛠️",
+    items: [
+      {
+        id: "dev_work",
+        titleKey: "devWork",
+        descKey: "devWorkDesc",
+        thumb: `${import.meta.env.BASE_URL}images/dev/Work/1.jpg`,
+        mediaType: "gallery",
+        galleryImages: [
+          `${import.meta.env.BASE_URL}images/dev/Work/1.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/2.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/3.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/4.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/5.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/6.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/7.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/8.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/9.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/10.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/11.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/12.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/13.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/14.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/15.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/16.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/17.png`,
+          `${import.meta.env.BASE_URL}images/dev/Work/18.png`,
+          `${import.meta.env.BASE_URL}images/dev/Work/19.png`,
+          `${import.meta.env.BASE_URL}images/dev/Work/20.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/21.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/22.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/23.jpg`,
+          `${import.meta.env.BASE_URL}images/dev/Work/24.jpg`,
+        ],
       },
     ],
   },
 ];
+
 
 const TOOLS = [
   { name: "Unity" },  
