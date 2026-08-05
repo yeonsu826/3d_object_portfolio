@@ -191,7 +191,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   {
     groupKey: "glasses",
     emoji: "👓",
-    tools: ["Blender", "Unreal Engine"], 
+    tools: ["Design", "Blender", "Unreal Engine"], 
     items: [
       { 
         id: "glasses_result_gallery", 
@@ -244,7 +244,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   {
     groupKey: "cafe",
     concept: "Stylized",
-    tools: ["Blender", "Unreal Engine", "Substance Painter"],
+    tools: ["Design", "Blender", "Unreal Engine", "Substance Painter"],
     emoji: "☕",
     items: [
       { 
@@ -280,7 +280,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   {
     groupKey: "gamingroom",
     concept: "Stylized",
-    tools: ["Blender", "Unreal Engine", "Substance Painter"], 
+    tools: ["Design", "Blender", "Unreal Engine", "Substance Painter"], 
     emoji: "🎮",
     items: [
       { 
@@ -308,7 +308,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   },
   {
     groupKey: "stage",
-    tools: ["Blender", "Unreal Engine", "Substance Painter"], 
+    tools: ["Design", "Blender", "Unreal Engine", "Substance Painter"], 
     emoji: "🎭",
     items: [
       { 
@@ -334,7 +334,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   },// 1. AIGame 프로젝트
   {
     groupKey: "devAIGameGroup",
-    tools: ["Unity", "C#"],
+    tools: ["Develop", "Unity", "C#"],
     emoji: "🎮",
     items: [
       {
@@ -364,7 +364,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   // 2. AIVideoletter 프로젝트
   {
     groupKey: "devAIVideoletterGroup",
-    tools: ["Unity", "C#"],
+    tools: ["Develop","Unity", "C#"],
     emoji: "💌",
     items: [
       {
@@ -399,14 +399,14 @@ const PORTFOLIO: PortfolioGroup[] = [
   // 3. ARContent 프로젝트
   {
     groupKey: "devARContentGroup",
-    tools: ["Unity", "AR"],
+    tools: ["Develop", "Unity", "AR"],
     emoji: "📱",
     items: [
       {
         id: "dev_arcontent",
         titleKey: "devARContent",
         descKey: "devARContentDesc",
-        thumb: `${import.meta.env.BASE_URL}images/dev/ARContent/1.png`,
+        thumb: `${import.meta.env.BASE_URL}images/dev/ARContent/3.png`,
         mediaType: "gallery",
         galleryImages: [
           `${import.meta.env.BASE_URL}images/dev/ARContent/1.jpg`,
@@ -426,7 +426,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   // 4. InteractiveRacing 프로젝트
   {
     groupKey: "devInteractiveRacingGroup",
-    tools: ["Unity", "C#"],
+    tools: ["Develop", "Unity", "C#"],
     emoji: "🏎️",
     items: [
       {
@@ -452,14 +452,14 @@ const PORTFOLIO: PortfolioGroup[] = [
   // 5. Taean 프로젝트
   {
     groupKey: "devTaeanGroup",
-    tools: ["Unity", "Hardware"],
+    tools: ["Develop", "Hardware"],
     emoji: "🏫",
     items: [
       {
         id: "dev_taean",
         titleKey: "devTaean",
         descKey: "devTaeanDesc",
-        thumb: `${import.meta.env.BASE_URL}images/dev/Taean/6.jpg`,
+        thumb: `${import.meta.env.BASE_URL}images/dev/Taean/1.jpg`,
         mediaType: "gallery",
         galleryImages: [
           `${import.meta.env.BASE_URL}images/dev/Taean/1.jpg`,
@@ -483,7 +483,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   // 6. Geumsan 프로젝트
   {
     groupKey: "devGeumsanGroup",
-    tools: ["Unity", "Hardware"],
+    tools: ["Develop", "Hardware"],
     emoji: "🏢",
     items: [
       {
@@ -508,7 +508,7 @@ const PORTFOLIO: PortfolioGroup[] = [
   // 7. Work Process 프로젝트
   {
     groupKey: "devWorkGroup",
-    tools: ["Process"],
+    tools: ["Develop", "Process"],
     emoji: "🛠️",
     items: [
       {
@@ -550,6 +550,8 @@ const PORTFOLIO: PortfolioGroup[] = [
 
 
 const TOOLS = [
+  { name: "Develop" },
+  { name: "Design" },
   { name: "Unity" },  
   { name: "Unreal" },
   { name: "Blender" },
@@ -771,11 +773,25 @@ function HorizontalScrollContainer({ children, className }: { children: React.Re
 // ─── Works ────────────────────────────────────────────────────────────────────
 
 function Works() {
+  const [mainTab, setMainTab] = useState<'all' | 'Design' | 'Develop'>('all');
   const [activeGroup, setActiveGroup] = useState<string>("all");
   const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
   const { t } = useContext(LangContext);
 
-  const groups = activeGroup === "all" ? PORTFOLIO : PORTFOLIO.filter(g => t.groups[g.groupKey] === activeGroup);
+  // 1. 메인 탭 필터링
+  const filteredByMainTab = PORTFOLIO.filter((g) => {
+    if (mainTab === 'all') return true;
+    return g.tools?.includes(mainTab);
+  });
+
+  // 2. 하위 카테고리 필터링
+  const displayGroups = activeGroup === "all" 
+    ? filteredByMainTab 
+    : filteredByMainTab.filter(g => t.groups[g.groupKey] === activeGroup);
+
+  useEffect(() => {
+    setActiveGroup('all');
+  }, [mainTab]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -799,161 +815,179 @@ function Works() {
 
   return (
     <section id="works" className="scroll-mt-20 bg-background py-32">
-        <div className="max-w-[1400px] mx-auto pl-8 md:pl-16">
-          <div className="mb-12 pr-8 md:pr-16">
-            <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-4">02 — Works</p>
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-              <div className="flex flex-col gap-4">
-                <h2 className="font-['Fraunces'] font-light text-foreground leading-tight" style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}>
-                  {t.projects}
-                </h2>
-              </div>
-              
-              <div className="flex flex-wrap gap-2 md:gap-3">
-                <button onClick={() => setActiveGroup("all")}
-                  className={`font-['JetBrains_Mono'] text-xs tracking-widest uppercase px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${activeGroup === "all" ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105 font-semibold" : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/20 hover:text-white"}`}>
-                  {t.all}
-                </button>
-                {PORTFOLIO.map((g) => {
-                  const groupName = t.groups[g.groupKey];
-                  return (
-                    <button key={g.groupKey} onClick={() => setActiveGroup(groupName)}
-                      className={`font-['JetBrains_Mono'] text-xs tracking-widest uppercase px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${activeGroup === groupName ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105 font-semibold" : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/20 hover:text-white"}`}>
-                      {g.emoji} {groupName} {g.concept ? `(${g.concept})` : ""}
-                    </button>
-                  );
-                })}
-              </div>
+      <div className="max-w-[1400px] mx-auto px-8 md:px-16">
+        
+        {/* 상단 탭 영역 */}
+        <div className="mb-12 relative">
+          <p className="font-['JetBrains_Mono'] text-xs text-muted-foreground tracking-widest uppercase mb-4">02 — Works</p>
+          
+          <h2 className="font-['Fraunces'] font-light text-foreground leading-tight mb-8" style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}>
+            {t.projects}
+          </h2>
+
+          {/* 💡 매우 슬림해진 크롬 탭 래퍼 */}
+          <div className="relative flex items-end w-full border-b border-white/10 mt-8">
+            <div className="flex gap-1 md:gap-2 px-3 relative z-10">
+              {(['all', 'Design', 'Develop'] as const).map((tab) => {
+                const isActive = mainTab === tab;
+                return (
+                  <button
+                    key={tab}
+                    onClick={() => setMainTab(tab)}
+                    className={`
+                      relative px-5 py-1.5 md:px-7 md:py-2 font-['JetBrains_Mono'] text-xs tracking-widest uppercase transition-all duration-300
+                      rounded-t-[10px] 
+                      flex items-center justify-center
+                      ${isActive 
+                        ? "bg-[#141419] text-primary font-bold shadow-[0_-5px_15px_-3px_rgba(0,0,0,0.4)]" 
+                        : "bg-transparent text-white/40 hover:text-white hover:bg-white/5" 
+                      }
+                    `}
+                    // 💡 탭 자체를 아래로 1px 내려서 밑줄과 맞닿게 함
+                    //style={{ marginBottom: '0px' }} 
+                  >
+                    <span className="relative z-20">{tab === 'all' ? t.all : tab}</span>
+                    
+                    {/* 활성화된 탭의 양옆 곡선 마감 */}
+                    {isActive && (
+                      <>
+                        <div className="absolute -left-[8px] bottom-0 w-[8px] h-[8px] pointer-events-none">
+                           <svg viewBox="0 0 8 8" className="w-full h-full fill-[#141419]">
+                             <path d="M 0 8 A 8 8 0 0 0 8 0 L 8 8 Z" />
+                           </svg>
+                        </div>
+                        <div className="absolute -right-[8px] bottom-0 w-[8px] h-[8px] pointer-events-none">
+                           <svg viewBox="0 0 8 8" className="w-full h-full fill-[#141419]">
+                             <path d="M 8 8 A 8 8 0 0 1 0 0 L 0 8 Z" />
+                           </svg>
+                        </div>
+                        {/* 💡 핵심 수정: 가림막을 극도로 얇게(2px) 줄이고, 위치를 바닥 선에 정확히 밀착 */}
+                        <div className="absolute -bottom-[1px] left-0 w-full h-[0.1px] bg-[#050508] z-20"></div>
+                      </>
+                    )}
+                  </button>
+                )
+              })}
             </div>
           </div>
-
-        <div className="flex flex-col gap-24">
-          {groups.map((group) => {
-            const groupName = t.groups[group.groupKey];
-            const galleryItem = group.items.find(i => i.mediaType === "gallery");
-            const processItem = group.items.find(i => i.isProcess);
-            const standaloneLinkItem = group.items.find(i => i.link && !i.isProcess);
-            
-            const images = galleryItem?.galleryImages || [];
-
-            return (
-              <div key={group.groupKey} className="w-full">
-                <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-8 pb-4 border-b border-white/10 pr-8 md:pr-16">
-                  <span className="text-3xl">{group.emoji}</span>
-                  <h3 className="font-['Fraunces'] font-medium text-foreground text-2xl md:text-3xl mr-2">{groupName}</h3>
-                  
-                  {group.concept && (
-                    <span className="px-3 py-1 text-[10px] sm:text-xs font-['JetBrains_Mono'] tracking-widest text-primary border border-primary/50 bg-primary/10 rounded-full shadow-[0_0_8px_rgba(var(--primary-rgb),0.3)]">
-                        {group.concept}
-                    </span>
-                  )}
-
-                  {group.tools && group.tools.map((tool, idx) => (
-                    <span key={idx} className="px-3 py-1 text-[10px] sm:text-xs font-['JetBrains_Mono'] tracking-widest text-white/70 border border-white/20 bg-white/5 rounded-full">
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-
-                <HorizontalScrollContainer 
-                  className="flex overflow-x-auto gap-4 md:gap-6 pb-6 pr-8 md:pr-16 
-                  [&::-webkit-scrollbar]:h-2 
-                  [&::-webkit-scrollbar-track]:bg-white/5 [&::-webkit-scrollbar-track]:rounded-full
-                  [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/40
-                  transition-colors"
-                >
-                  
-                  {images.map((img, idx) => (
-                    <div 
-                      key={idx} 
-                      onClick={() => setLightbox({ images, index: idx })}
-                      className="relative w-[200px] md:w-[280px] aspect-[4/3] rounded-xl overflow-hidden cursor-zoom-in group bg-[#0a0a10] border border-white/5 flex-shrink-0"
-                    >
-                      <LoadingImage src={img} alt={`${groupName} ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                        <span className="opacity-0 group-hover:opacity-100 bg-black/60 text-white backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium transition-opacity shadow-lg">{t.viewLarge}</span>
-                      </div>
-                    </div>
-                  ))}
-
-                  {galleryItem?.videoLinks?.map((link, idx) => (
-                    <a key={idx} href={link} target="_blank" rel="noopener noreferrer" 
-                       className="relative w-[200px] md:w-[280px] aspect-[4/3] rounded-xl overflow-hidden group bg-[#0a0a10] border border-white/10 flex flex-col items-center justify-center gap-4 hover:border-primary/50 transition-colors flex-shrink-0">
-                      <div className="p-4 bg-white/10 rounded-full group-hover:scale-110 transition-transform">
-                        <ExternalLink size={24} className="text-white" />
-                      </div>
-                      <span className="font-medium text-white/90 text-sm md:text-base">Video {idx + 1}</span>
-                    </a>
-                  ))}
-
-                  {processItem && (
-                    <a href={processItem.link} target="_blank" rel="noopener noreferrer"
-                       className="relative w-[200px] md:w-[280px] aspect-[4/3] rounded-xl overflow-hidden group border border-primary/30 bg-primary/5 flex flex-col items-center justify-center gap-4 hover:border-primary hover:bg-primary/10 transition-all flex-shrink-0">
-                      <div className="p-4 bg-primary/20 rounded-full group-hover:scale-110 transition-transform">
-                        <ArrowUpRight size={24} className="text-primary" />
-                      </div>
-                      <span className="font-medium text-primary text-sm md:text-base">{t.viewProcess}</span>
-                    </a>
-                  )}
-
-                  {standaloneLinkItem && !galleryItem && (
-                    <a href={standaloneLinkItem.link} target="_blank" rel="noopener noreferrer"
-                      className="relative w-[200px] md:w-[280px] aspect-[4/3] rounded-xl overflow-hidden group bg-[#0a0a10] border border-white/10 flex flex-col items-center justify-center hover:border-primary/50 transition-colors flex-shrink-0">
-                      
-                      <div className="absolute inset-0 z-0">
-                        <LoadingImage src={standaloneLinkItem.thumb} alt={t.items[standaloneLinkItem.titleKey]} className="w-full h-full opacity-40 group-hover:opacity-20 transition-opacity" />
-                      </div>
-                      
-                      <div className="relative z-10 flex flex-col items-center gap-4">
-                        <div className="p-4 bg-white/10 rounded-full group-hover:scale-110 transition-transform backdrop-blur-md">
-                          <ExternalLink size={24} className="text-white" />
-                        </div>
-                        <span className="font-medium text-white/90 text-sm md:text-base">{t.items[standaloneLinkItem.titleKey]}</span>
-                      </div>
-                    </a>
-                  )}
-                </HorizontalScrollContainer>
-              </div>
-            );
-          })}
+          
+          {/* 하위 알약 필터 버튼들 */}
+          <div className="flex flex-wrap gap-2 md:gap-3 pt-5 px-3">
+            <button onClick={() => setActiveGroup("all")}
+              className={`font-['JetBrains_Mono'] text-xs tracking-widest uppercase px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${activeGroup === "all" ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105 font-semibold" : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/20 hover:text-white"}`}>
+              {t.all}
+            </button>
+            {filteredByMainTab.map((g) => {
+              const groupName = t.groups[g.groupKey];
+              return (
+                <button key={g.groupKey} onClick={() => setActiveGroup(groupName)}
+                  className={`font-['JetBrains_Mono'] text-xs tracking-widest uppercase px-6 py-3 rounded-full backdrop-blur-md transition-all duration-300 ${activeGroup === groupName ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-105 font-semibold" : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/20 hover:text-white"}`}>
+                  {g.emoji} {groupName} {g.concept ? `(${g.concept})` : ""}
+                </button>
+              );
+            })}
+          </div>
         </div>
+
+        {/* 카드형 인덱스(Grid) 레이아웃 */}
+        {displayGroups.length === 0 ? (
+          <div className="text-white/40 font-['JetBrains_Mono'] py-20 text-center">해당하는 카테고리의 프로젝트가 없습니다.</div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-4 px-3">
+            {displayGroups.map((group) => {
+              const groupName = t.groups[group.groupKey];
+              const mainGalleryItem = group.items.find(i => i.mediaType === "gallery");
+              const processItem = group.items.find(i => i.isProcess);
+              const allImages = mainGalleryItem?.galleryImages || [];
+              const coverImage = mainGalleryItem?.thumb || processItem?.thumb || "";
+
+              return (
+                <div key={group.groupKey} className="group flex flex-col gap-4">
+                  <div 
+                    onClick={() => allImages.length > 0 && setLightbox({ images: allImages, index: 0 })}
+                    className={`relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-[#0a0a10] border border-white/10 transition-all duration-500 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] ${allImages.length > 0 ? "cursor-pointer" : ""}`}
+                  >
+                    {coverImage && (
+                      <LoadingImage 
+                        src={coverImage} 
+                        alt={groupName} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100" 
+                      />
+                    )}
+                    
+                    {allImages.length > 0 && (
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                        <span className="bg-white text-black px-6 py-3 rounded-full font-bold text-sm shadow-xl flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                          {t.viewLarge} <span className="font-normal opacity-50">({allImages.length})</span>
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col gap-2 px-1">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-['Fraunces'] font-medium text-foreground text-xl md:text-2xl flex items-center gap-2">
+                        {group.emoji} {groupName}
+                      </h3>
+                      {processItem && (
+                        <a 
+                          href={processItem.link} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 text-xs font-['JetBrains_Mono'] text-primary hover:text-white transition-colors bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20"
+                        >
+                          {t.viewProcess} <ArrowUpRight size={14} />
+                        </a>
+                      )}
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-2 mt-1">
+                      {group.concept && (
+                        <span className="text-[10px] sm:text-xs font-['JetBrains_Mono'] tracking-widest text-white/50 bg-white/5 px-2 py-1 rounded-md border border-white/10">
+                          {group.concept}
+                        </span>
+                      )}
+                      {group.tools?.filter(t => t !== 'Design' && t !== 'Develop').map((tool, idx) => (
+                        <span key={idx} className="text-[10px] sm:text-xs font-['JetBrains_Mono'] tracking-widest text-white/50 bg-white/5 px-2 py-1 rounded-md border border-white/10">
+                          {tool}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
+      
+      {/* 라이트박스 모달 */}
       {lightbox && (
         <div 
           className="fixed inset-0 bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-8 transition-opacity" 
-          style={{ zIndex: 99999 }} // 💡 어떤 상황에서도 최상단으로 강제 고정
+          style={{ zIndex: 99999 }}
           onClick={() => setLightbox(null)}
         >
           <div className="relative w-full max-w-[95vw] h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-            
-            {/* 닫기 버튼 */}
             <button type="button" onClick={() => setLightbox(null)} className="absolute top-4 right-4 z-50 rounded-full bg-white/10 border border-white/20 p-3 text-white hover:bg-white/20 backdrop-blur-md transition-all cursor-pointer">
               <X size={24} />
             </button>
-            
-            {/* 이전 버튼 */}
             <button type="button" disabled={lightbox.index === 0} 
                     onClick={(e) => { e.stopPropagation(); setLightbox({ ...lightbox, index: lightbox.index - 1 }); }} 
                     className="absolute left-4 md:left-8 z-50 rounded-full bg-black/50 border border-white/20 p-4 text-white hover:bg-black/80 backdrop-blur-md transition-all disabled:opacity-0 disabled:cursor-not-allowed cursor-pointer">
               <ChevronLeft size={32} />
             </button>
-            
-            {/* 💡 핵심: LoadingImage 대신 기본 img 태그 사용으로 렌더링 꼬임 방지 */}
             <img 
               src={lightbox.images[lightbox.index]} 
               alt="Enlarged view" 
               onClick={(e) => { e.stopPropagation(); setLightbox(null); }}
               className="max-w-full max-h-[90vh] object-contain drop-shadow-2xl select-none cursor-zoom-out relative z-40" 
             />
-            
-            {/* 다음 버튼 */}
             <button type="button" disabled={lightbox.index >= lightbox.images.length - 1} 
                     onClick={(e) => { e.stopPropagation(); setLightbox({ ...lightbox, index: lightbox.index + 1 }); }} 
                     className="absolute right-4 md:right-8 z-50 rounded-full bg-black/50 border border-white/20 p-4 text-white hover:bg-black/80 backdrop-blur-md transition-all disabled:opacity-0 disabled:cursor-not-allowed cursor-pointer">
               <ChevronRight size={32} />
             </button>
-
-            {/* 인덱스 표시 */}
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 bg-black/50 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full font-['JetBrains_Mono'] text-white/80 text-sm pointer-events-none">
               {lightbox.index + 1} / {lightbox.images.length}
             </div>
@@ -963,7 +997,6 @@ function Works() {
     </section>
   );
 }
-
 // ─── Video Gallery ─────────────────────────────────────────────────────────────
 
 function VideoGallery() {
