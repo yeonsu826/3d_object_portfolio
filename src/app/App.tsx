@@ -498,8 +498,8 @@ const PORTFOLIO: PortfolioGroup[] = [
           `${import.meta.env.BASE_URL}images/dev/Geumsan/3.jpg`,
           `${import.meta.env.BASE_URL}images/dev/Geumsan/4.jpg`,
           `${import.meta.env.BASE_URL}images/dev/Geumsan/5.jpg`,
-          `${import.meta.env.BASE_URL}images/dev/Geumsan/6.jpg`,
-          `${import.meta.env.BASE_URL}images/dev/Geumsan/7.png`,
+          `${import.meta.env.BASE_URL}images/dev/Geumsan/6.png`,
+          `${import.meta.env.BASE_URL}images/dev/Geumsan/7.jpg`,
         ],
       },
     ],
@@ -918,35 +918,43 @@ function Works() {
           })}
         </div>
       </div>
-      
       {lightbox && (
-        <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-8 transition-opacity" onClick={() => setLightbox(null)}>
-          <div className="relative w-full max-w-[95vw] h-full flex items-center justify-center">
+        <div 
+          className="fixed inset-0 bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-8 transition-opacity" 
+          style={{ zIndex: 99999 }} // 💡 어떤 상황에서도 최상단으로 강제 고정
+          onClick={() => setLightbox(null)}
+        >
+          <div className="relative w-full max-w-[95vw] h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
             
-            <button type="button" onClick={() => setLightbox(null)} className="absolute top-4 right-4 z-20 rounded-full bg-white/10 border border-white/20 p-3 text-white hover:bg-white/20 backdrop-blur-md transition-all">
+            {/* 닫기 버튼 */}
+            <button type="button" onClick={() => setLightbox(null)} className="absolute top-4 right-4 z-50 rounded-full bg-white/10 border border-white/20 p-3 text-white hover:bg-white/20 backdrop-blur-md transition-all cursor-pointer">
               <X size={24} />
             </button>
             
+            {/* 이전 버튼 */}
             <button type="button" disabled={lightbox.index === 0} 
                     onClick={(e) => { e.stopPropagation(); setLightbox({ ...lightbox, index: lightbox.index - 1 }); }} 
-                    className="absolute left-4 md:left-8 z-20 rounded-full bg-black/50 border border-white/20 p-4 text-white hover:bg-black/80 backdrop-blur-md transition-all disabled:opacity-0 disabled:cursor-not-allowed">
+                    className="absolute left-4 md:left-8 z-50 rounded-full bg-black/50 border border-white/20 p-4 text-white hover:bg-black/80 backdrop-blur-md transition-all disabled:opacity-0 disabled:cursor-not-allowed cursor-pointer">
               <ChevronLeft size={32} />
             </button>
             
-            <LoadingImage 
+            {/* 💡 핵심: LoadingImage 대신 기본 img 태그 사용으로 렌더링 꼬임 방지 */}
+            <img 
               src={lightbox.images[lightbox.index]} 
               alt="Enlarged view" 
               onClick={(e) => { e.stopPropagation(); setLightbox(null); }}
-              className="max-w-full max-h-[90vh] object-contain drop-shadow-2xl select-none cursor-zoom-out" 
+              className="max-w-full max-h-[90vh] object-contain drop-shadow-2xl select-none cursor-zoom-out relative z-40" 
             />
             
+            {/* 다음 버튼 */}
             <button type="button" disabled={lightbox.index >= lightbox.images.length - 1} 
                     onClick={(e) => { e.stopPropagation(); setLightbox({ ...lightbox, index: lightbox.index + 1 }); }} 
-                    className="absolute right-4 md:right-8 z-20 rounded-full bg-black/50 border border-white/20 p-4 text-white hover:bg-black/80 backdrop-blur-md transition-all disabled:opacity-0 disabled:cursor-not-allowed">
+                    className="absolute right-4 md:right-8 z-50 rounded-full bg-black/50 border border-white/20 p-4 text-white hover:bg-black/80 backdrop-blur-md transition-all disabled:opacity-0 disabled:cursor-not-allowed cursor-pointer">
               <ChevronRight size={32} />
             </button>
 
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full font-['JetBrains_Mono'] text-white/80 text-sm pointer-events-none">
+            {/* 인덱스 표시 */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 bg-black/50 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full font-['JetBrains_Mono'] text-white/80 text-sm pointer-events-none">
               {lightbox.index + 1} / {lightbox.images.length}
             </div>
           </div>
