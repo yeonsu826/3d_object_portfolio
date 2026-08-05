@@ -515,7 +515,7 @@ const PORTFOLIO: PortfolioGroup[] = [
         id: "dev_work",
         titleKey: "devWork",
         descKey: "devWorkDesc",
-        thumb: `${import.meta.env.BASE_URL}images/dev/Work/1.jpg`,
+        thumb: `${import.meta.env.BASE_URL}images/dev/Work/12.jpg`,
         mediaType: "gallery",
         galleryImages: [
           `${import.meta.env.BASE_URL}images/dev/Work/1.jpg`,
