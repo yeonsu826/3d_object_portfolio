@@ -186,6 +186,21 @@ interface PortfolioGroup {
   items: PortfolioItem[];
 }
 
+const TOOLS = [
+  { name: "Develop" },
+  { name: "Design" },
+  { name: "Unity" },  
+  { name: "Unreal" },
+  { name: "Blender" },
+  { name: "Substance Painter" },
+];
+
+const TOOL_LOGOS: Record<string, string> = {
+  "Unity": `${import.meta.env.BASE_URL}images/icons/unity.svg`, // 환경 변수 경로 사용 시
+  "Unreal Engine": `${import.meta.env.BASE_URL}images/icons/unreal.svg`, // 또는 절대 경로 사용
+  "Blender": `${import.meta.env.BASE_URL}images/icons/blender.svg`,
+  "Substance Painter": `${import.meta.env.BASE_URL}images/icons/substance.svg`,
+};
 
 const PORTFOLIO: PortfolioGroup[] = [
   {
@@ -549,20 +564,14 @@ const PORTFOLIO: PortfolioGroup[] = [
 ];
 
 
-const TOOLS = [
-  { name: "Develop" },
-  { name: "Design" },
-  { name: "Unity" },  
-  { name: "Unreal" },
-  { name: "Blender" },
-  { name: "Substance Painter" },
-];
+
 
 const imageModules = import.meta.glob('/public/images/*/*.{png,jpg,jpeg}', { eager: true, query: '?url', import: 'default' });
 const INITIAL_IMAGES = Object.values(imageModules) as string[];
 
 const renderImageCountStatic = Object.keys(import.meta.glob('/public/images/{cafe,glasses,gamingroom,stage}/*.{png,jpg,jpeg}', { eager: true })).length;
 const videoCountStatic = 9;
+
 // ─── Nav ─────────────────────────────────────────────────────────────────────
 
 function Nav() {
@@ -571,10 +580,17 @@ function Nav() {
   const { lang, setLang, t } = useContext(LangContext);
   
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", fn);
-    return () => window.removeEventListener("scroll", fn);
+    const fn = (e) => {
+      // 이벤트 타겟이 window이거나 DOM 요소일 경우를 모두 처리
+      const scrollTop = e.target.scrollTop || window.scrollY || document.documentElement.scrollTop || 0;
+      setScrolled(scrollTop > 40);
+    };
+    
+    // 이벤트 리스너 맨 뒤에 'true'를 넣어서 스크롤 이벤트를 강제로 가로챔
+    window.addEventListener("scroll", fn, true);
+    return () => window.removeEventListener("scroll", fn, true);
   }, []);
+
 // 언어 변경 토글 UI (여백 및 대칭 정밀 조정)
   const LanguageToggle = () => (
     <div 
@@ -594,14 +610,22 @@ function Nav() {
     </div>
   );
 
+
+
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/90 backdrop-blur-md border-b border-border" : ""}`}>
+    <header 
+      // 2. bg-background/90 대신 bg-black/90으로 확실한 색상 지정
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled 
+          ? "bg-black/90 backdrop-blur-md border-b border-white/10" 
+          : "bg-transparent border-b border-transparent" 
+      }`}
+    >
       <nav className="max-w-[1400px] mx-auto px-8 py-5 flex items-center justify-between">
         <Link 
           to="/" 
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="font-['Fraunces'] text-xl font-light tracking-tight text-foreground select-none cursor-pointer transition-opacity hover:opacity-70" 
-          style={{ background: "none", border: "none" }}
+          className="font-['Fraunces'] text-xl font-light tracking-tight text-white select-none cursor-pointer transition-opacity hover:opacity-70" 
         >
           JEONG YEON SU<span className="text-primary">.</span>
         </Link>
@@ -947,11 +971,29 @@ function Works() {
                           {group.concept}
                         </span>
                       )}
-                      {group.tools?.filter(t => t !== 'Design' && t !== 'Develop').map((tool, idx) => (
-                        <span key={idx} className="text-[10px] sm:text-xs font-['JetBrains_Mono'] tracking-widest text-white/50 bg-white/5 px-2 py-1 rounded-md border border-white/10">
-                          {tool}
-                        </span>
-                      ))}
+                      {group.tools && group.tools.length > 0 && (
+                        <div className="flex flex-wrap gap-2 px-1">
+                          {group.tools.map((tool, i) => (
+                            <span 
+                              key={i} 
+                              // 👇 flex와 items-center를 주어 아이콘과 텍스트의 높이를 맞춥니다.
+                              className="flex items-center gap-1.5 font-['JetBrains_Mono'] text-[10px] tracking-wider text-white/60 bg-white/5 border border-white/10 px-2.5 py-1 rounded-md cursor-default hover:text-white/90 hover:bg-white/10 transition-colors"
+                            >
+                              {/* TOOL_LOGOS 객체에 등록된 툴이라면 SVG 이미지를 보여줍니다 */}
+                              {TOOL_LOGOS[tool] && (
+                                <img 
+                                  src={TOOL_LOGOS[tool]} 
+                                  alt={tool} 
+                                  className="w-3.5 h-3.5 object-contain" 
+                                  // SVG가 어두워서 안 보이면 아래 주석을 풀어 색상을 반전시킵니다.
+                                  // style={{ filter: "invert(1) brightness(0.8)" }}
+                                />
+                              )}
+                              {tool}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1012,8 +1054,7 @@ function VideoGallery() {
     { id: "1211907153", type: "landscape", tools: ["Unity", "C#", "Particle Effect"] },
     { id: "1211907155", type: "landscape", tools: ["Unity", "C#", "Particle Effect"] },
   ];
-
-  const { t } = useContext(LangContext);
+const { t } = useContext(LangContext);
   if (vimeoVideos.length === 0) return null;
 
   const portraitVideos = vimeoVideos.filter(video => video.type === "portrait");
@@ -1049,11 +1090,24 @@ function VideoGallery() {
           </span>
         </div>
       </a>
-
-      {video.tools && video.tools.length > 0 && (
+{video.tools && video.tools.length > 0 && (
         <div className="flex flex-wrap gap-2 px-1">
           {video.tools.map((tool, i) => (
-            <span key={i} className="font-['JetBrains_Mono'] text-[10px] tracking-wider text-white/60 bg-white/5 border border-white/10 px-2.5 py-1 rounded-md cursor-default hover:text-white/90 hover:bg-white/10 transition-colors">
+            <span 
+              key={i} 
+              // flex와 items-center를 추가해 로고와 텍스트의 수직 중앙을 맞춥니다.
+              className="flex items-center gap-1.5 font-['JetBrains_Mono'] text-[10px] tracking-wider text-white/60 bg-white/5 border border-white/10 px-2.5 py-1 rounded-md cursor-default hover:text-white/90 hover:bg-white/10 transition-colors"
+            >
+              {/* TOOL_LOGOS에 이 툴의 이름이 등록되어 있다면 이미지를 띄웁니다 */}
+              {TOOL_LOGOS[tool] && (
+                <img 
+                  src={TOOL_LOGOS[tool]} 
+                  alt={tool} 
+                  className="w-3.5 h-3.5 object-contain" 
+                  // 로고 색상이 너무 어두워서 안 보이면 아래 주석을 풀어 색상을 반전시키세요.
+                  // style={{ filter: "invert(1) brightness(0.8)" }}
+                />
+              )}
               {tool}
             </span>
           ))}
