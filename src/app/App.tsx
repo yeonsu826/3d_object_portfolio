@@ -38,6 +38,7 @@ const TRANSLATIONS = {
     location: "Seoul, KR",
     groups: {
       glasses: "안경 프로젝트",
+      jinu: "케데헌 진우 만들기 프로젝트",
       cafe: "카페 프로젝트",
       gamingroom: "게이밍룸 프로젝트",
       stage: "무대 디자인 프로젝트",
@@ -52,6 +53,8 @@ const TRANSLATIONS = {
     items: {
       glassesResult: "안경 결과 렌더링",
       glassesDesc: "안경 프로젝트 결과 이미지와 영상",
+      jinuResult: "진우 결과 렌더링",
+      jinuDesc: "케데헌 진우 만들기 프로젝트 이미지 갤러리",
       glassesProcess: "안경 제작 과정",
       glassesProcessDesc: "제작 과정 설명 페이지",
       cafeResult: "카페 결과 렌더링",
@@ -107,6 +110,7 @@ const TRANSLATIONS = {
     location: "Seoul, KR",
     groups: {
       glasses: "Glasses Project",
+      jinu: "KDH Jinu Character Project",
       cafe: "Cafe Project",
       gamingroom: "Gaming Room Project",
       stage: "Stage Design Project",
@@ -121,6 +125,8 @@ const TRANSLATIONS = {
     items: {
       glassesResult: "Glasses Renderings",
       glassesDesc: "Result images and videos of the glasses project",
+      jinuResult: "Jinu Renderings",
+      jinuDesc: "KPop Demon Hunters Jinu character project gallery",
       glassesProcess: "Glasses Process",
       glassesProcessDesc: "Process explanation page",
       cafeResult: "Cafe Renderings",
@@ -203,6 +209,45 @@ const TOOL_LOGOS: Record<string, string> = {
 };
 
 const PORTFOLIO: PortfolioGroup[] = [
+  {
+    groupKey: "jinu",
+    tools: ["Design", "Blender", "Substance Painter"],
+    emoji: "🎸",
+    items: [
+      {
+        id: "jinu_result_gallery",
+        titleKey: "jinuResult",
+        descKey: "jinuDesc",
+        thumb: `${import.meta.env.BASE_URL}jinu/14.png`,
+        mediaType: "gallery",
+        galleryImages: [
+          `${import.meta.env.BASE_URL}jinu/1.png`,
+          `${import.meta.env.BASE_URL}jinu/2.png`,
+          `${import.meta.env.BASE_URL}jinu/3.png`,
+          `${import.meta.env.BASE_URL}jinu/4.png`,
+          `${import.meta.env.BASE_URL}jinu/5.png`,
+          `${import.meta.env.BASE_URL}jinu/6.png`,
+          `${import.meta.env.BASE_URL}jinu/7.png`,
+          `${import.meta.env.BASE_URL}jinu/8.png`,
+          `${import.meta.env.BASE_URL}jinu/9.png`,
+          `${import.meta.env.BASE_URL}jinu/10.png`,
+          `${import.meta.env.BASE_URL}jinu/11.png`,
+          `${import.meta.env.BASE_URL}jinu/12.png`,
+          `${import.meta.env.BASE_URL}jinu/13.png`,
+          `${import.meta.env.BASE_URL}jinu/14.png`,
+          `${import.meta.env.BASE_URL}jinu/15.png`,
+          `${import.meta.env.BASE_URL}jinu/16.png`,
+          `${import.meta.env.BASE_URL}jinu/17.png`,
+          `${import.meta.env.BASE_URL}jinu/18.png`,
+          `${import.meta.env.BASE_URL}jinu/19.png`,
+          `${import.meta.env.BASE_URL}jinu/20.png`,
+          `${import.meta.env.BASE_URL}jinu/21.png`,
+          `${import.meta.env.BASE_URL}jinu/22.png`,
+          `${import.meta.env.BASE_URL}jinu/23.png`,
+        ],
+      },
+    ],
+  },
   {
     groupKey: "glasses",
     emoji: "👓",
@@ -1043,6 +1088,7 @@ function Works() {
 
 function VideoGallery() {
   const vimeoVideos: { id: string; type: string; tools?: string[] }[] = [
+    { id: "1220354350", type: "portrait", tools: ["Blender", "Unreal Engine", "Substance Painter"] },
     { id: "1211900105", type: "portrait", tools: ["Blender", "Unreal Engine", "Substance Painter"] },
     { id: "1211900103", type: "portrait", tools: ["Blender", "Unreal Engine", "Substance Painter"] }, 
     { id: "1211900047", type: "portrait", tools: ["Blender", "Unreal Engine", "Substance Painter"] }, 
