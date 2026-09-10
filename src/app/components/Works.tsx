@@ -7,7 +7,7 @@ import LoadingImage from "./LoadingImage";
 import ToolTags from "./ToolTags";
 
 export default function Works() {
-  const [mainTab, setMainTab] = useState<"all" | "Design" | "Develop">("all");
+  const [mainTab, setMainTab] = useState<"all" | "Design" | "Develop">("Develop");
   const [activeGroup, setActiveGroup] = useState("all");
   const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
   const { t } = useLang();
@@ -39,7 +39,7 @@ export default function Works() {
 
           <div className="relative flex items-end w-full border-b border-white/10 mt-8">
             <div className="flex gap-1 md:gap-2 px-3 relative z-10">
-              {(["all", "Design", "Develop"] as const).map((tab) => {
+              {(["all", "Develop", "Design"] as const).map((tab) => {
                 const isActive = mainTab === tab;
                 return (
                   <button
