@@ -122,9 +122,26 @@ export default function Works() {
                   <div
                     onClick={() => allImages.length > 0 && setLightbox({ images: allImages, index: 0 })}
                     className={`relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-[#0a0a10] border border-white/10 transition-all duration-500 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] ${
-                      allImages.length > 0 ? "cursor-pointer" : ""
+                      allImages.length > 0 || linkItem ? "cursor-pointer" : ""
                     }`}
                   >
+                    {linkItem && allImages.length === 0 && (
+                      <a
+                        href={linkItem.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${groupName} ${
+                          linkItem.linkLabel === "github"
+                            ? t.viewGithub
+                            : linkItem.linkLabel === "site"
+                              ? t.viewSite
+                              : linkItem.linkLabel === "play"
+                                ? t.playGame
+                                : t.viewProcess
+                        }`}
+                        className="absolute inset-0 z-10"
+                      />
+                    )}
                     {coverImage && (
                       <LoadingImage
                         src={coverImage}
