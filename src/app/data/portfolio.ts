@@ -159,7 +159,7 @@ export const PORTFOLIO: PortfolioGroup[] = [
     items: [
       {
         id: "dev_pet_chew",
-        thumb: asset("images/dev/PetChew/1.jpg"),
+        thumb: asset("images/dev/PetChew/chap-chew.png"),
         link: "https://github.com/yeonsu826/Pet-Chew",
         linkLabel: "github",
       },
