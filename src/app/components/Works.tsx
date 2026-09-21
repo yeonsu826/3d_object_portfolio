@@ -138,6 +138,7 @@ export default function Works() {
               const linkItem = group.items.find((item) => item.link);
               const allImages = mainGalleryItem?.galleryImages ?? [];
               const coverImage = mainGalleryItem?.thumb || linkItem?.thumb || "";
+              const coverFit = (mainGalleryItem || linkItem)?.thumbFit ?? "cover";
 
               return (
                 <article key={group.groupKey} className="group overflow-hidden rounded-[1.5rem] bg-[#0d0d13] border border-white/10 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
@@ -168,7 +169,8 @@ export default function Works() {
                       <LoadingImage
                         src={coverImage}
                         alt={groupName}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03] opacity-90 group-hover:opacity-100"
+                        className="w-full h-full transition-transform duration-700 group-hover:scale-[1.03] opacity-90 group-hover:opacity-100"
+                        imageClassName={coverFit === "contain" ? "object-contain" : "object-cover"}
                       />
                     )}
                     {allImages.length > 0 && (

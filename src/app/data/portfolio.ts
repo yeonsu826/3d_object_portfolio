@@ -8,6 +8,7 @@ const numbered = (dir: string, count: number, ext: string, start = 1) =>
 export interface PortfolioItem {
   id: string;
   thumb: string;
+  thumbFit?: "cover" | "contain";
   galleryImages?: string[];
   isProcess?: boolean;
   link?: string;
@@ -146,6 +147,7 @@ export const PORTFOLIO: PortfolioGroup[] = [
       {
         id: "dev_unity_webgl",
         thumb: asset("images/dev/UnityWebGL/1.png"),
+        thumbFit: "contain",
         link: asset("unity-webgl-game/index.html"),
         linkLabel: "play",
       },

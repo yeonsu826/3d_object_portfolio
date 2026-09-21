@@ -58,7 +58,7 @@ export const TRANSLATIONS = {
       devKakaoMcpGroup: "Kakao MCP",
       devManittoGroup: "Manitto",
       devUnityWebglGroup: "Unity WebGL 게임",
-      devPetChewGroup: "Pet-Chew",
+      devPetChewGroup: "Chap-Chew",
     },
     groupDescriptions: {
       glasses: "안경 제품의 형태와 소재를 설계하고, 사실적인 렌더와 제작 과정을 완성한 3D 프로젝트입니다.",
@@ -76,7 +76,7 @@ export const TRANSLATIONS = {
       devKakaoMcpGroup: "카카오 버스 정보를 AI 도구에서 활용할 수 있도록 연결한 MCP 서버입니다.",
       devManittoGroup: "쉽고 즐겁게 마니또를 만들고 공유할 수 있는 웹 서비스입니다.",
       devUnityWebglGroup: "브라우저에서 바로 플레이할 수 있도록 빌드한 Unity WebGL 게임입니다.",
-      devPetChewGroup: "AI와 Unity를 활용해 개발 중인 고양이 테마 게임 프로젝트입니다.",
+      devPetChewGroup: "식습관 개선 얼굴인식 게임입니다.",
     },
   },
   en: {
@@ -138,7 +138,7 @@ export const TRANSLATIONS = {
       devKakaoMcpGroup: "Kakao MCP",
       devManittoGroup: "Manitto",
       devUnityWebglGroup: "Unity WebGL Game",
-      devPetChewGroup: "Pet-Chew",
+      devPetChewGroup: "Chap-Chew",
     },
     groupDescriptions: {
       glasses: "A 3D product project covering eyewear form, materials, final renders, and the full production process.",
@@ -156,7 +156,7 @@ export const TRANSLATIONS = {
       devKakaoMcpGroup: "An MCP server that makes Kakao bus information accessible to AI tools.",
       devManittoGroup: "A web service for creating and sharing Secret Santa groups quickly and playfully.",
       devUnityWebglGroup: "A Unity WebGL game built to be played directly in the browser.",
-      devPetChewGroup: "A cat-themed game in progress, developed with Unity and AI-assisted features.",
+      devPetChewGroup: "A face-recognition game designed to help improve eating habits.",
     },
   },
 } as const;
