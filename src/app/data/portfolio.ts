@@ -11,6 +11,7 @@ export interface PortfolioItem {
   galleryImages?: string[];
   isProcess?: boolean;
   link?: string;
+  linkLabel?: "github" | "site" | "play";
 }
 
 export interface PortfolioGroup {
@@ -108,6 +109,45 @@ export const PORTFOLIO: PortfolioGroup[] = [
         id: "stage_result_gallery",
         thumb: asset("images/stage/1.jpeg"),
         galleryImages: numbered("images/stage", 10, "jpeg"),
+      },
+    ],
+  },
+  {
+    groupKey: "devKakaoMcpGroup",
+    tools: ["Develop", "AI", "MCP"],
+    emoji: "🤖",
+    items: [
+      {
+        id: "dev_kakao_mcp",
+        thumb: asset("images/dev/KakaoMCP/1.png"),
+        link: "https://github.com/yeonsu826/busram-mcp",
+        linkLabel: "github",
+      },
+    ],
+  },
+  {
+    groupKey: "devManittoGroup",
+    tools: ["Develop", "AI", "Web"],
+    emoji: "💝",
+    items: [
+      {
+        id: "dev_manitto",
+        thumb: asset("images/dev/Manitto/1.png"),
+        link: "https://manitto.site/",
+        linkLabel: "site",
+      },
+    ],
+  },
+  {
+    groupKey: "devUnityWebglGroup",
+    tools: ["Develop", "Unity", "WebGL"],
+    emoji: "🕹️",
+    items: [
+      {
+        id: "dev_unity_webgl",
+        thumb: asset("images/dev/UnityWebGL/1.png"),
+        link: asset("unity-webgl-game/index.html"),
+        linkLabel: "play",
       },
     ],
   },

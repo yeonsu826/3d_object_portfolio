@@ -113,9 +113,9 @@ export default function Works() {
             {displayGroups.map((group) => {
               const groupName = t.groups[group.groupKey];
               const mainGalleryItem = group.items.find((item) => item.galleryImages?.length);
-              const processItem = group.items.find((item) => item.isProcess);
+              const linkItem = group.items.find((item) => item.link);
               const allImages = mainGalleryItem?.galleryImages ?? [];
-              const coverImage = mainGalleryItem?.thumb || processItem?.thumb || "";
+              const coverImage = mainGalleryItem?.thumb || linkItem?.thumb || "";
 
               return (
                 <div key={group.groupKey} className="group flex flex-col gap-4">
@@ -146,14 +146,21 @@ export default function Works() {
                       <h3 className="font-['Fraunces'] font-medium text-foreground text-xl md:text-2xl flex items-center gap-2">
                         {group.emoji} {groupName}
                       </h3>
-                      {processItem && (
+                      {linkItem && (
                         <a
-                          href={processItem.link}
+                          href={linkItem.link}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center gap-1 text-xs font-['JetBrains_Mono'] text-primary hover:text-white transition-colors bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20"
                         >
-                          {t.viewProcess} <ArrowUpRight size={14} />
+                          {linkItem.linkLabel === "github"
+                            ? t.viewGithub
+                            : linkItem.linkLabel === "site"
+                              ? t.viewSite
+                              : linkItem.linkLabel === "play"
+                                ? t.playGame
+                              : t.viewProcess}{" "}
+                          <ArrowUpRight size={14} />
                         </a>
                       )}
                     </div>
