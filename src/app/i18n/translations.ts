@@ -50,6 +50,7 @@ export const TRANSLATIONS = {
       devKakaoMcpGroup: "Kakao MCP",
       devManittoGroup: "Manitto",
       devUnityWebglGroup: "Unity WebGL 게임",
+      devPetChewGroup: "Pet-Chew",
     },
   },
   en: {
@@ -103,6 +104,7 @@ export const TRANSLATIONS = {
       devKakaoMcpGroup: "Kakao MCP",
       devManittoGroup: "Manitto",
       devUnityWebglGroup: "Unity WebGL Game",
+      devPetChewGroup: "Pet-Chew",
     },
   },
 } as const;

@@ -152,6 +152,20 @@ export const PORTFOLIO: PortfolioGroup[] = [
     ],
   },
   {
+    groupKey: "devPetChewGroup",
+    concept: "WIP",
+    tools: ["Develop", "Unity", "AI"],
+    emoji: "🐈‍⬛",
+    items: [
+      {
+        id: "dev_pet_chew",
+        thumb: asset("images/dev/PetChew/1.jpg"),
+        link: "https://github.com/yeonsu826/Pet-Chew",
+        linkLabel: "github",
+      },
+    ],
+  },
+  {
     groupKey: "devAIGameGroup",
     tools: ["Develop", "Unity", "C#"],
     emoji: "🎮",
