@@ -350,22 +350,7 @@ Please change the parent <Route path="${I}"> to <Route path="${I==="/"?"*":`${I}
 \r
 #### 앱 화면\r
 \r
-![마니또 앱 화면](public/images/app_1.png)
-
-### 개발 안내
-
-Next.js, React, TypeScript, Tailwind CSS로 만들었으며, Supabase로 로그인과 데이터 저장을 처리합니다. Supabase 연결 없이도 로컬 데모를 체험할 수 있습니다.
-
-Node.js 22.18 이상에서 실행할 수 있습니다.
-
-\`\`\`bash
-npm install
-npm run dev
-\`\`\`
-
-실행 후 [localhost:3000](http://localhost:3000)에서 확인합니다. 실제 서비스 데이터를 사용하려면 \`.env.example\`을 참고해 \`.env.local\`에 Supabase 연결 정보를 설정합니다.
-
-기본 검증은 \`npm test\`, \`npm run typecheck\`, 배포 빌드는 \`npm run build\`로 실행합니다.\r
+![마니또 앱 화면](public/images/app_1.png)\r
 `,L0=`# Pet-Chew (ChapChew)\r
 \r
 > 스마트폰 전면 카메라로 아이의 씹는 움직임을 인식하고, 캐릭터와 함께 천천히 오래 씹는 습관을 만들어 가는 AR 식습관 개선 앱\r
