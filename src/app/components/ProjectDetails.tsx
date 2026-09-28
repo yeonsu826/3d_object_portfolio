@@ -29,6 +29,7 @@ function Readme({ text, images }: { text: string; images: string[] }) {
     if (block.startsWith("# ")) return <h3 key={index} className="text-3xl font-semibold text-white">{block.slice(2)}</h3>;
     if (block.startsWith("## ")) return <h4 key={index} className="pt-4 text-xl font-medium text-primary">{block.slice(3)}</h4>;
     if (block.startsWith("### ")) return <h5 key={index} className="pt-2 text-base font-semibold text-white">{block.slice(4)}</h5>;
+    if (block.startsWith("#### ")) return <h6 key={index} className="pt-2 text-sm font-semibold text-white">{block.slice(5)}</h6>;
     if (block.startsWith("|")) {
       const rows = block.split(/\r?\n/).map(line => line.trim().replace(/^\||\|$/g, "").split("|").map(cell => cell.trim()));
       if (rows.length > 1 && rows[1].every(cell => /^:?-+:?$/.test(cell))) {
