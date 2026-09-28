@@ -12,7 +12,7 @@ export interface PortfolioItem {
   galleryImages?: string[];
   isProcess?: boolean;
   link?: string;
-  linkLabel?: "github" | "site" | "play";
+  linkLabel?: "github" | "site" | "play" | "video";
 }
 
 export interface PortfolioGroup {
@@ -114,6 +114,21 @@ export const PORTFOLIO: PortfolioGroup[] = [
     ],
   },
   {
+    groupKey: "devPraynoteGroup",
+    tools: ["Develop", "App"],
+    emoji: "🌊",
+    items: [
+      {
+        id: "dev_praynote",
+        thumb: asset("images/dev/Praynote/app-preview-01.png"),
+        thumbFit: "contain",
+        galleryImages: [asset("images/dev/Praynote/app-preview-01.png")],
+        link: "https://github.com/yeonsu826/praynote",
+        linkLabel: "github",
+      },
+    ],
+  },
+  {
     groupKey: "devKakaoMcpGroup",
     tools: ["Develop", "AI", "MCP"],
     emoji: "🤖",
@@ -188,6 +203,8 @@ export const PORTFOLIO: PortfolioGroup[] = [
         id: "dev_aivideoletter",
         thumb: asset("images/dev/AIVideoletter/1.png"),
         galleryImages: numbered("images/dev/AIVideoletter", 17, "png"),
+        link: "https://drive.google.com/file/d/1lTUtNlEJCq6MeJ7NayXVOUlt3zRmcbmW/view?usp=drive_link",
+        linkLabel: "video",
       },
     ],
   },

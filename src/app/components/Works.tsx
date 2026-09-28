@@ -160,6 +160,8 @@ export default function Works() {
                               ? t.viewSite
                               : linkItem.linkLabel === "play"
                                 ? t.playGame
+                                : linkItem.linkLabel === "video"
+                                  ? t.viewVideo
                                 : t.viewProcess
                         }`}
                         className="absolute inset-0 z-10"
@@ -204,6 +206,8 @@ export default function Works() {
                               ? t.viewSite
                               : linkItem.linkLabel === "play"
                                 ? t.playGame
+                              : linkItem.linkLabel === "video"
+                                ? t.viewVideo
                               : t.viewProcess}{" "}
                           <ArrowUpRight size={14} />
                         </a>
