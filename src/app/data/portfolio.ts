@@ -10,6 +10,7 @@ export interface PortfolioItem {
   thumb: string;
   thumbFit?: "cover" | "contain";
   galleryImages?: string[];
+  videos?: { src: string; label: string }[];
   isProcess?: boolean;
   link?: string;
   linkLabel?: "github" | "site" | "play" | "video";
@@ -120,9 +121,16 @@ export const PORTFOLIO: PortfolioGroup[] = [
     items: [
       {
         id: "dev_praynote",
+        videos: [
+          { src: asset("videos/praynote/step2.mp4"), label: "Step 2" },
+          { src: asset("videos/praynote/step3.mp4"), label: "Step 3" },
+        ],
         thumb: asset("images/dev/Praynote/app-preview-01.png"),
         thumbFit: "contain",
-        galleryImages: [asset("images/dev/Praynote/app-preview-01.png")],
+        galleryImages: [
+          asset("images/dev/Praynote/app-preview-01.png"),
+          asset("images/dev/Praynote/app-preview-02.png"),
+        ],
         link: "https://github.com/yeonsu826/praynote",
         linkLabel: "github",
       },

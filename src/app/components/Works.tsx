@@ -137,6 +137,7 @@ export default function Works() {
               const mainGalleryItem = group.items.find((item) => item.galleryImages?.length);
               const linkItem = group.items.find((item) => item.link);
               const allImages = mainGalleryItem?.galleryImages ?? [];
+              const videos = group.items.flatMap((item) => item.videos ?? []);
               const coverImage = mainGalleryItem?.thumb || linkItem?.thumb || "";
               const coverFit = (mainGalleryItem || linkItem)?.thumbFit ?? "cover";
 
@@ -224,6 +225,32 @@ export default function Works() {
                       )}
                       <ToolTags tools={group.tools} />
                     </div>
+                    {videos.length > 0 && (
+                      <details className="border-t border-white/10 pt-4">
+                        <summary className="cursor-pointer text-sm text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary">
+                          {t.viewVideo} ({videos.length})
+                        </summary>
+                        <div className="mt-4 grid gap-5">
+                          {videos.map((video) => (
+                            <figure key={video.src}>
+                              <figcaption className="mb-2 text-xs text-white/60">
+                                {groupName} · {video.label}
+                              </figcaption>
+                              <video
+                                controls
+                                playsInline
+                                preload="none"
+                                aria-label={`${groupName} ${video.label}`}
+                                className="w-full max-h-[65vh] rounded-xl bg-black object-contain"
+                              >
+                                <source src={video.src} type="video/mp4" />
+                                <a href={video.src}>{t.viewVideo} · {video.label}</a>
+                              </video>
+                            </figure>
+                          ))}
+                        </div>
+                      </details>
+                    )}
                     {allImages.length > 0 && (
                       <button
                         type="button"
