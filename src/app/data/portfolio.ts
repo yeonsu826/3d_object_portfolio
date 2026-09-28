@@ -1,4 +1,7 @@
 import type { GroupKey } from "../i18n/translations";
+import praynoteReadme from "./praynote/README.md?raw";
+import manittoReadme from "./manitto/README.md?raw";
+import petChewReadme from "./pet-chew/README.md?raw";
 
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
@@ -19,6 +22,7 @@ export interface PortfolioItem {
 export interface PortfolioGroup {
   groupKey: GroupKey;
   concept?: string;
+  readme?: string;
   tools?: string[];
   emoji: string;
     items: PortfolioItem[];
@@ -116,7 +120,8 @@ export const PORTFOLIO: PortfolioGroup[] = [
   },
   {
     groupKey: "devPraynoteGroup",
-    tools: ["Develop", "App"],
+    readme: praynoteReadme,
+    tools: ["Develop", "React Native", "Expo", "Supabase"],
     emoji: "🌊",
     items: [
       {
@@ -131,8 +136,6 @@ export const PORTFOLIO: PortfolioGroup[] = [
           asset("images/dev/Praynote/app-preview-01.png"),
           asset("images/dev/Praynote/app-preview-02.png"),
         ],
-        link: "https://github.com/yeonsu826/praynote",
-        linkLabel: "github",
       },
     ],
   },
@@ -151,12 +154,18 @@ export const PORTFOLIO: PortfolioGroup[] = [
   },
   {
     groupKey: "devManittoGroup",
-    tools: ["Develop", "AI", "Web"],
+    readme: manittoReadme,
+    tools: ["Develop", "Next.js", "React", "TypeScript", "Tailwind CSS", "Supabase"],
     emoji: "💝",
     items: [
       {
         id: "dev_manitto",
-        thumb: asset("images/dev/Manitto/1.png"),
+        thumb: asset("images/dev/Manitto/web_1.png"),
+        thumbFit: "contain",
+        galleryImages: [
+          asset("images/dev/Manitto/web_1.png"),
+          asset("images/dev/Manitto/app_1.png"),
+        ],
         link: "https://manitto.site/",
         linkLabel: "site",
       },
@@ -178,15 +187,16 @@ export const PORTFOLIO: PortfolioGroup[] = [
   },
   {
     groupKey: "devPetChewGroup",
+    readme: petChewReadme,
     concept: "WIP",
-    tools: ["Develop", "Unity", "AI"],
+    tools: ["Develop", "Unity", "AR Foundation", "C#"],
     emoji: "🐈‍⬛",
     items: [
       {
         id: "dev_pet_chew",
         thumb: asset("images/dev/PetChew/chap-chew.png"),
-        link: "https://github.com/yeonsu826/Pet-Chew",
-        linkLabel: "github",
+        thumbFit: "contain",
+        galleryImages: [asset("images/dev/PetChew/chap-chew.png")],
       },
     ],
   },

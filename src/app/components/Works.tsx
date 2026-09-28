@@ -5,6 +5,7 @@ import { PORTFOLIO } from "../data/portfolio";
 import Lightbox from "./Lightbox";
 import LoadingImage from "./LoadingImage";
 import ToolTags from "./ToolTags";
+import ProjectDetails from "./ProjectDetails";
 
 export default function Works() {
   const [mainTab, setMainTab] = useState<"all" | "Design" | "Develop">("Develop");
@@ -225,7 +226,10 @@ export default function Works() {
                       )}
                       <ToolTags tools={group.tools} />
                     </div>
-                    {videos.length > 0 && (
+                    {group.readme && (
+                      <ProjectDetails title={groupName} readme={group.readme} images={allImages} videos={videos} />
+                    )}
+                    {videos.length > 0 && !group.readme && (
                       <details className="border-t border-white/10 pt-4">
                         <summary className="cursor-pointer text-sm text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary">
                           {t.viewVideo} ({videos.length})
