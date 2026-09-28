@@ -214,13 +214,35 @@ Please change the parent <Route path="${I}"> to <Route path="${I==="/"?"*":`${I}
 
 은혜의 바다는 기독교 신앙생활을 위한 묵상 기록·공동 기도 앱입니다. 오늘의 기도와 마음에 남은 말씀, 삶에 적용하고 싶은 내용을 적고 잠시 휴대폰을 내려놓아 묵상합니다. 혼자 쌓아가는 기록은 ‘나의 바다’로, 공동체와 함께하는 기도는 ‘등대’로 표현했습니다.
 
-## 앱 미리보기
+## 문제
+
+은혜의 바다는 **기록한 말씀을 실제 묵상으로 이어가고, 그 시간을 꾸준히 돌아볼 수 있게 하려는 고민**에서 출발한 서비스입니다. 다음과 같은 상황을 해결하고자 했습니다.
+
+- **기록에서 멈추는 묵상** — 기도와 말씀을 적어도 다른 화면으로 넘어가다 보면, 내용을 천천히 돌아보고 삶에 적용할 시간이 줄어들 수 있습니다.
+- **쌓인 기록을 돌아보기 어려움** — 날짜별 메모만으로는 언제 어떤 말씀을 묵상했고 얼마나 꾸준히 이어왔는지 한눈에 파악하기 어렵습니다.
+- **공동체 기도와 개인 기록의 분리 필요** — 함께 기도할 제목은 나누고 싶지만, 개인의 깊은 고민이 담긴 묵상까지 공개하고 싶지는 않을 수 있습니다.
+- **민감한 기록을 맡기는 부담** — 신앙과 일상에 관한 글을 저장할 때는 누가 볼 수 있는지, 어떻게 보호하고 삭제할 수 있는지가 분명해야 합니다.
+
+## 문제해결 방법
+
+기능을 **기록 → 화면을 내려놓고 묵상 → 돌아보기 → 함께 기도하기**의 흐름으로 연결했습니다.
+
+- **기록을 행동으로 연결** — 기도·말씀·적용을 작성한 뒤 바로 묵상 타이머를 시작하도록 구성했습니다. 휴대폰을 뒤집어 내려놓은 시간을 측정해 화면에서 벗어나 묵상할 수 있게 했습니다.
+- **꾸준함을 물결로 표현** — 묵상 완료를 달력과 바다의 물결에 반영하고, 날짜를 선택하면 당시 기록을 읽을 수 있게 했습니다. 글을 저장한 날과 묵상을 완료한 날도 구분했습니다.
+- **공유할 내용은 직접 선택** — 개인 묵상은 비공개로 두고, 공동체인 ‘등대’에 직접 올린 기도제목만 회원들과 나누도록 했습니다. 공동체 참여는 묵상 본문 대신 완료 기록으로 집계합니다.
+- **보호와 관리 기능을 함께 제공** — 이메일 인증, 서버 접근 권한 확인, 개인 묵상 본문 암호화를 적용하고 계정 삭제와 신고·차단 기능을 마련했습니다. 암호화와 공유의 범위도 이용자에게 안내합니다.
+
+## 결과
+
+위의 흐름을 담은 묵상 기록·공동 기도 앱을 구현했습니다. 아래는 구현된 화면과 사용법, 개인정보 보호 방식입니다.
+
+### 앱 미리보기
 
 ![은혜의 바다 앱 화면 모음 1](docs/images/app-preview-01.png)
 
 ![은혜의 바다 앱 화면 모음 2](docs/images/app-preview-02.png)
 
-## 어떤 서비스인가요?
+### 어떤 서비스인가요?
 
 - **나의 바다** — 날짜별 기록과 묵상 완료를 달력과 물결로 돌아봅니다.
 - **묵상 기록** — 기도·말씀·적용을 작성하고, 성경 구절을 찾아 기록에 활용합니다.
@@ -228,13 +250,13 @@ Please change the parent <Route path="${I}"> to <Route path="${I==="/"?"*":`${I}
 - **등대** — 공동체를 만들거나 초대로 참여해 기도제목을 나누고 함께 중보기도합니다.
 - **등대 랭킹** — 공동체의 주간 묵상·중보기도 참여를 확인합니다. 개인 묵상 본문은 공개하지 않습니다.
 
-## 이렇게 사용해요
+### 이렇게 사용해요
 
-### 1. 가입하고 시작하기
+#### 1. 가입하고 시작하기
 
 본인의 이메일로 가입하고 인증을 마친 뒤 로그인합니다. 만 14세 이상 이용할 수 있으며, 하단 **가이드**에서 이미지와 영상으로 앱 사용 흐름을 확인할 수 있습니다.
 
-### 2. 오늘의 묵상 기록하기
+#### 2. 오늘의 묵상 기록하기
 
 **묵상 기록**에서 기도, 말씀, 적용 중 한 가지 이상을 적습니다. 묵상 시간을 정한 뒤 **저장하고 묵상 시작**을 누릅니다.
 
@@ -242,21 +264,21 @@ Please change the parent <Route path="${I}"> to <Route path="${I==="/"?"*":`${I}
 
 타이머를 완료하면 오늘의 바다에 물이 채워집니다. 타이머를 중간에 닫아도 이미 저장한 글은 남습니다. 기록과 완료 상태는 저장 완료 여부를 확인해 주세요.
 
-### 3. 나의 바다 돌아보기
+#### 3. 나의 바다 돌아보기
 
 **나의 바다**에서 날짜를 선택해 지난 기도와 말씀, 적용을 읽습니다. 기록을 남긴 날과 묵상을 완료한 날을 확인하며 신앙생활의 흐름을 돌아볼 수 있습니다.
 
-### 4. 등대에서 함께 기도하기
+#### 4. 등대에서 함께 기도하기
 
 **등대**에서 공동체를 만들거나 초대 코드·링크로 참여합니다. 소속된 등대에 기도제목을 올리고, 다른 회원의 기도제목에 반응하거나 중보기도 타이머를 사용할 수 있습니다.
 
 개인 묵상 기록은 등대에 자동으로 공유되지 않습니다. 직접 올린 기도제목만 해당 등대 회원에게 공개됩니다. **등대 랭킹**은 개인 묵상과 해당 등대 중보기도의 완료 기록을 합산해 주간 참여를 보여줍니다.
 
-### 5. 설정과 계정 관리
+#### 5. 설정과 계정 관리
 
 설정에서 개인정보처리방침, 이용약관, 광고 관련 선택, 이용 문의와 계정 삭제 기능을 확인할 수 있습니다. 공동체의 부적절한 게시물은 게시물 메뉴에서 신고하거나 작성자를 차단할 수 있습니다.
 
-## 기록과 개인정보는 어떻게 보호하나요?
+### 기록과 개인정보는 어떻게 보호하나요?
 
 기도와 묵상에는 개인적인 신앙과 민감한 내용이 담길 수 있어, 개인 기록과 공동체에 공유하는 글의 접근 범위를 구분했습니다.
 
@@ -270,13 +292,13 @@ Please change the parent <Route path="${I}"> to <Route path="${I==="/"?"*":`${I}
 
 자세한 처리 범위와 보관·삭제 기준은 앱 내 개인정보처리방침에서 확인할 수 있습니다. 다른 사람의 개인정보나 민감한 내용은 동의 없이 공유하지 마세요.
 
-## 어떻게 구현했나요?
+### 어떻게 구현했나요?
 
 화면은 **React Native와 Expo**로 만들고, **Supabase**로 회원 인증과 기록 저장, 공동체 데이터 관리를 구현했습니다. 기도와 묵상의 흐름을 달력·물결·등대로 표현하고, 휴대폰 센서를 활용해 화면을 내려놓는 행동을 묵상 타이머와 연결했습니다.
 
 개인 기록과 공동체 공유 기능을 구분하고 서버에서 접근 권한을 확인하도록 구성했습니다. 공동체 참여도는 본문 대신 완료 기록으로 집계합니다.
 
-## 광고와 문의
+### 광고와 문의
 
 현재 광고는 동의한 이용자에게 제공하는 테스트 광고이며, 광고 제거 구매 기능은 판매 준비 중입니다. 광고를 거부해도 묵상 기능을 이용할 수 있습니다.
 
@@ -287,7 +309,22 @@ Please change the parent <Route path="${I}"> to <Route path="${I==="/"?"*":`${I}
 
 친구와 동료에게 평소 전하지 못했던 마음을 익명으로 보내는 마니또 웹 서비스입니다. 학교, 동아리, 직장 등 함께하는 그룹 안에서 하트와 비밀 메시지를 주고받으며 서로의 마음을 알아갈 수 있습니다.
 
-## 서비스 소개
+## 문제
+
+학교, 동아리, 직장처럼 자주 만나는 사이에서도 고마움이나 호감을 직접 표현하기는 쉽지 않습니다. 상대의 반응이 걱정되거나 관계가 어색해질까 망설이다 보면, 전하고 싶었던 마음이 말없이 지나가기도 합니다.
+
+또한 함께하는 그룹이 있어도 평소 친한 사람을 중심으로 대화하기 쉬워, 다른 구성원의 좋은 점을 발견하고 표현할 계기가 필요합니다. 이 서비스는 **마음을 표현하는 부담을 줄이고, 서로에게 관심을 전할 수 있는 기회를 만들자**는 문제의식에서 출발했습니다.
+
+## 문제해결 방법
+
+- **익명으로 표현의 부담 줄이기** — 보낸 사람의 이름을 공개하지 않고 하트와 메시지를 전달해, 평소 꺼내기 어려웠던 마음을 표현할 수 있도록 했습니다.
+- **하트부터 가볍게 시작하기** — 처음부터 긴 글을 쓰지 않아도 하트로 마음을 전할 수 있습니다. 상대에게 하트가 100개 쌓일 때마다 메시지 1글자를 쓸 수 있게 해, 관심이 짧은 편지로 이어지도록 구성했습니다.
+- **칭찬을 선택해 마음 구체화하기** — 상대를 좋아하는 이유를 선택할 수 있게 해, 무엇을 표현할지 고민하는 사람도 상대의 좋은 점을 전할 수 있도록 했습니다.
+- **그룹과 라운드로 함께할 계기 만들기** — 초대받은 구성원이 같은 기간에 참여하고, 라운드가 끝나면 받은 메시지와 결과를 확인하도록 했습니다. 함께 활동하고 서로의 마음을 돌아보는 흐름을 만들고자 했습니다.
+
+## 결과
+
+### 서비스 소개
 
 - **우리만의 그룹** — 그룹을 만들고 초대 링크로 함께할 사람들을 모읍니다.
 - **익명 하트** — 마음을 전하고 싶은 상대에게 하트를 보냅니다. 하트는 횟수 제한 없이 보낼 수 있습니다.
@@ -296,7 +333,7 @@ Please change the parent <Route path="${I}"> to <Route path="${I==="/"?"*":`${I}
 - **우편함과 결과** — 받은 메시지는 라운드가 끝나면 열어볼 수 있고, 익명으로 집계된 하트와 칭찬도 확인할 수 있습니다.
 - **그룹 랭킹** — 같은 유형의 그룹들이 주고받은 하트를 비교해 볼 수 있습니다.
 
-## 이용 흐름
+### 이용 흐름
 
 1. 가입·로그인 후 그룹을 만들거나 초대 링크로 참가합니다.
 2. 참가자가 모이면 관리자가 라운드를 시작합니다.
@@ -305,17 +342,17 @@ Please change the parent <Route path="${I}"> to <Route path="${I==="/"?"*":`${I}
 
 참가는 라운드 시작 전에 가능하며, 메시지를 보낸 사람의 이름은 공개되지 않습니다. 모바일에서 편하게 이용할 수 있도록 구성했습니다.
 
-## 화면 미리보기
+### 화면 미리보기
 
-### 웹 화면\r
+#### 웹 화면\r
 \r
 ![마니또 웹 화면](public/images/web_1.png)\r
 \r
-### 앱 화면\r
+#### 앱 화면\r
 \r
 ![마니또 앱 화면](public/images/app_1.png)
 
-## 개발 안내
+### 개발 안내
 
 Next.js, React, TypeScript, Tailwind CSS로 만들었으며, Supabase로 로그인과 데이터 저장을 처리합니다. Supabase 연결 없이도 로컬 데모를 체험할 수 있습니다.
 
@@ -331,13 +368,49 @@ npm run dev
 기본 검증은 \`npm test\`, \`npm run typecheck\`, 배포 빌드는 \`npm run build\`로 실행합니다.\r
 `,L0=`# Pet-Chew (ChapChew)\r
 \r
-> 스마트폰 전면 카메라로 사용자의 씹는 움직임을 인식하고, 캐릭터와 함께 올바른 식습관을 만들어 가는 AR 식사 습관 앱\r
+> 스마트폰 전면 카메라로 아이의 씹는 움직임을 인식하고, 캐릭터와 함께 천천히 오래 씹는 습관을 만들어 가는 AR 식습관 개선 앱\r
 \r
-Pet-Chew는 식사 중 입과 턱의 움직임을 측정하여 씹기 횟수를 기록하는 Unity 기반 모바일 프로젝트입니다. 사용자별 입 움직임을 먼저 캘리브레이션한 뒤, 실시간 얼굴 추적 결과를 캐릭터 애니메이션과 씹기 카운트에 반영합니다. 식사가 끝나면 한입별 기록과 목표 달성 정도를 리포트로 확인할 수 있습니다.\r
+Pet-Chew는 음식을 충분히 씹지 않고 삼키는 아이들이 올바른 식습관을 기를 수 있도록 돕는 Unity 기반 모바일 프로젝트입니다. 아이의 입과 턱 움직임을 측정해 씹기 횟수를 기록하고, 실시간 얼굴 추적 결과를 캐릭터 애니메이션과 씹기 카운트에 반영합니다. 식사가 끝나면 한입별 기록과 목표 달성 정도를 리포트로 확인할 수 있습니다.\r
 \r
 > 저장소 이름은 **Pet-Chew**, Unity Player Settings의 제품명은 **ChapChew**입니다.\r
 \r
-## 실행 화면
+## 문제\r
+\r
+아이들은 음식을 충분히 오래 씹어 먹어야 하지만, 정해진 횟수만큼 씹지 않고 빠르게 삼키는 경우가 많습니다. 이러한 식사 습관은 아이 스스로 인지하거나 고치기 어렵고, 보호자가 식사할 때마다 씹는 횟수를 직접 세어 주는 것도 현실적으로 어렵습니다.\r
+\r
+단순히 “천천히 먹어”, “오래 씹어”라고 반복해서 알려주는 것만으로는 아이가 식사에 흥미를 느끼거나 올바른 습관을 꾸준히 유지하기 어렵습니다. 그래서 아이가 캐릭터와 함께 식사하며 자신의 씹기 횟수를 자연스럽게 확인하고, 식사 과정을 놀이처럼 경험할 수 있는 식습관 개선 앱을 기획했습니다.\r
+\r
+이 서비스를 통해 해결하고자 한 문제는 다음과 같습니다.\r
+\r
+- 아이가 음식을 충분히 씹지 않고 빠르게 삼키는 식습관\r
+- 자신의 씹기 횟수와 식사 속도를 아이 스스로 인지하기 어려운 문제\r
+- 보호자가 매번 옆에서 씹는 횟수를 확인해야 하는 불편함\r
+- 반복적인 훈육만으로는 올바른 식습관을 지속하기 어려운 문제\r
+- 식사 결과를 객관적인 기록으로 확인하기 어려운 문제\r
+\r
+## 문제 해결 방법\r
+\r
+### 1. 스마트폰 기반 얼굴·턱 추적\r
+\r
+Unity AR Foundation과 스마트폰 전면 카메라를 사용해 얼굴 메시를 추적했습니다. 얼굴 메시의 위턱과 아래턱 사이 거리를 실시간으로 계산하여 별도 센서 없이 입의 열림과 닫힘 움직임을 측정합니다. 카메라 영상 대신 얼굴 와이어를 표시하여 사용자가 얼굴 인식 상태를 바로 확인할 수 있도록 구성했습니다.\r
+\r
+### 2. 사용자별 캘리브레이션\r
+\r
+모든 사용자에게 같은 기준값을 적용하면 입 크기와 씹는 방식의 차이 때문에 오인식이 발생할 수 있습니다. 본격적인 측정 전에 얼굴 위치, 한입 동작, 씹기 동작을 단계별로 측정하고 사용자의 입을 다문 상태와 벌린 상태를 기준으로 개인화된 임계값을 생성했습니다. 저장된 프로필은 다음 실행에서도 재사용하며 필요할 때 다시 측정할 수 있습니다.\r
+\r
+### 3. 한 번의 씹기 동작을 사이클로 판정\r
+\r
+턱이 열림 임계값을 넘는 순간만 세지 않고, 충분히 열린 뒤 닫힘 임계값 아래로 돌아오는 전체 사이클을 완료했을 때 한 번의 씹기로 판정합니다. 열림과 닫힘에 서로 다른 기준을 적용해 경계값 부근의 작은 떨림이 여러 번 카운트되는 현상을 줄였습니다.\r
+\r
+### 4. 캐릭터를 활용한 실시간 피드백\r
+\r
+측정된 턱 움직임을 캐릭터의 입 애니메이션과 동기화하고, 먹기·씹기 애니메이션과 효과음을 함께 재생합니다. 현재 한입에서 목표까지 남은 횟수와 누적 기록도 HUD로 제공하여 사용자가 식사 흐름을 유지하면서 자연스럽게 목표를 확인할 수 있게 했습니다.\r
+\r
+### 5. 한입 단위 기록과 식사 리포트\r
+\r
+전체 씹기 횟수만 저장하지 않고 각 한입의 씹기 횟수를 배열로 기록했습니다. 식사 종료 후 목표선과 한입별 기록을 그래프로 비교하고, 초반과 후반의 평균 변화를 분석해 “후반으로 갈수록 덜 씹는지”와 같은 식사 습관을 문장으로 안내합니다.\r
+\r
+## 결과\r
 
 <p align="center">
   <img src="docs/images/chap-chew.png" width="100%" alt="ChapChew 실행 화면: 시작, 목표 설정, 얼굴 측정, 식사 기록 및 리포트" />
@@ -346,7 +419,9 @@ Pet-Chew는 식사 중 입과 턱의 움직임을 측정하여 씹기 횟수를 
   <sub>시작 · 씹기 목표 설정 · 얼굴 및 입 움직임 측정 · 실시간 식사 기록 · 식사 리포트</sub>
 </p>
 \r
-## 주요 기능\r
+아이에게 맞는 씹기 목표를 설정하고, 개인별 입 움직임을 측정한 뒤 실제 식사 중 씹기 횟수를 확인할 수 있는 모바일 AR 프로토타입을 완성했습니다. 측정 결과는 한입 단위로 저장되며 식사 종료 후 그래프와 습관 분석으로 제공됩니다.\r
+\r
+### 구현 결과\r
 \r
 - **씹기 목표 설정**: 1, 10, 50, 100 단위로 목표 횟수를 조절하고 기기에 저장합니다.\r
 - **개인 맞춤 캘리브레이션**: 사용자의 평상시 입 모양과 씹는 움직임을 측정해 개인별 판정 기준을 생성합니다.\r
@@ -357,7 +432,7 @@ Pet-Chew는 식사 중 입과 턱의 움직임을 측정하여 씹기 횟수를 
 - **식사 리포트**: 한입별 씹기 횟수를 막대·꺾은선 그래프로 표시하고 초반/후반 식사 패턴을 분석합니다.\r
 - **로컬 데이터 저장**: 목표 횟수, 캘리브레이션 프로필, 최근 식사 기록을 \`PlayerPrefs\`에 저장합니다.\r
 \r
-## 앱 흐름\r
+### 사용자 흐름\r
 \r
 \`\`\`text\r
 시작 화면\r
@@ -391,7 +466,7 @@ AR 얼굴 동기화 및 식사 측정\r
 | Input | Input System \`1.19.0\` |\r
 | 최소 Android API | API 30 (Android 11) |\r
 \r
-## 씹기 인식 방식\r
+## 핵심 인식 로직\r
 \r
 1. AR 얼굴 메시에서 위턱과 아래턱 사이의 거리를 측정합니다.\r
 2. 캘리브레이션 과정에서 사용자의 입을 다문 상태와 씹는 상태의 범위를 저장합니다.\r
@@ -457,7 +532,7 @@ For more information, see https://radix-ui.com/primitives/docs/components/${l.do
 
 `).replace(/<p\s+align="center">\s*<sub>([^<]*)<\/sub>\s*<\/p>/g,`$1
 
-`).trim().split(/\r?\n\s*\r?\n/).map((s,d)=>{const f=s.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);if(f){const m=f[2].split("/").pop(),g=l.find(y=>y.split("/").pop()===m);return g?c.jsx("img",{src:g,alt:f[1],loading:"lazy",className:"h-auto w-full rounded-lg"},d):c.jsx("p",{children:f[1]},d)}if(s.startsWith("# "))return c.jsx("h3",{className:"text-3xl font-semibold text-white",children:s.slice(2)},d);if(s.startsWith("## "))return c.jsx("h4",{className:"pt-4 text-xl font-medium text-primary",children:s.slice(3)},d);if(s.startsWith("### "))return c.jsx("h5",{className:"pt-2 text-base font-semibold text-white",children:s.slice(4)},d);if(s.startsWith("|")){const m=s.split(/\r?\n/).map(g=>g.trim().replace(/^\||\|$/g,"").split("|").map(y=>y.trim()));if(m.length>1&&m[1].every(g=>/^:?-+:?$/.test(g)))return c.jsx("div",{className:"overflow-x-auto rounded-lg border border-white/15",children:c.jsxs("table",{className:"w-full min-w-[400px] text-left text-sm",children:[c.jsx("thead",{className:"bg-white/5",children:c.jsx("tr",{children:m[0].map((g,y)=>c.jsx("th",{scope:"col",className:"px-4 py-3 font-semibold text-white",children:c.jsx(ar,{text:g})},y))})}),c.jsx("tbody",{children:m.slice(2).map((g,y)=>c.jsx("tr",{className:"border-t border-white/10",children:g.map((x,w)=>c.jsx("td",{className:"px-4 py-3",children:c.jsx(ar,{text:x})},w))},y))})]})},d)}return s.startsWith("```")?c.jsx("pre",{className:"overflow-x-auto rounded-lg bg-black/40 p-4",children:c.jsx("code",{children:s.replace(/^```[^\n]*\r?\n/,"").replace(/\r?\n```$/,"")})},d):s.startsWith("> ")?c.jsx("blockquote",{className:"border-l-2 border-primary pl-4 italic",children:c.jsx(ar,{text:s.replace(/^> /gm,"")})},d):/^\d+\. /.test(s)?c.jsx("ol",{className:"list-decimal space-y-3 pl-5",children:s.split(/\r?\n/).map((m,g)=>c.jsx("li",{children:c.jsx(ar,{text:m.replace(/^\d+\. /,"")})},g))},d):s.startsWith("- ")?c.jsx("ul",{className:"list-disc space-y-3 pl-5",children:s.split(/\r?\n/).map((m,g)=>c.jsx("li",{children:c.jsx(ar,{text:m.slice(2)})},g))},d):c.jsx("p",{children:c.jsx(ar,{text:s})},d)})}function O1({title:r,readme:l,images:i,videos:s}){const{lang:d}=Et(),f=d==="ko"?{open:"설명 보기",description:"설명",images:"이미지",videos:"영상",close:"닫기",tabs:"프로젝트 상세"}:{open:"View details",description:"README (Korean)",images:"Images",videos:"Videos",close:"Close",tabs:"Project details"},m="rounded-lg px-4 py-2 text-sm text-white/60 data-[state=active]:bg-primary data-[state=active]:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary";return c.jsxs(d1,{children:[c.jsx(f1,{asChild:!0,children:c.jsx("button",{type:"button",className:"rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-primary hover:bg-primary/20",children:f.open})}),c.jsxs(p1,{children:[c.jsx(m1,{className:"fixed inset-0 z-[100000] bg-black/80 backdrop-blur-sm"}),c.jsxs(h1,{"aria-describedby":void 0,className:"fixed left-1/2 top-1/2 z-[100001] flex max-h-[90dvh] w-[calc(100%-2rem)] max-w-4xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#0d0d13] text-white shadow-2xl",children:[c.jsxs("header",{className:"flex items-center justify-between gap-4 border-b border-white/10 px-5 py-4 sm:px-8",children:[c.jsx(g1,{className:"text-xl font-semibold",children:r}),c.jsx(v1,{"aria-label":f.close,className:"rounded-full p-2 hover:bg-white/10",children:c.jsx(no,{size:22})})]}),c.jsxs(A1,{defaultValue:"description",className:"flex min-h-0 flex-col",children:[c.jsxs(D1,{"aria-label":f.tabs,className:"flex flex-wrap gap-2 border-b border-white/10 px-5 py-3 sm:px-8",children:[c.jsx(qa,{value:"description",className:m,children:f.description}),c.jsxs(qa,{value:"images",className:m,children:[f.images," (",i.length,")"]}),s.length>0&&c.jsxs(qa,{value:"videos",className:m,children:[f.videos," (",s.length,")"]})]}),c.jsxs("div",{className:"overflow-y-auto overscroll-contain p-5 sm:p-8",children:[c.jsx(Za,{value:"description",className:"space-y-5 text-sm leading-7 text-white/75",children:c.jsx(M1,{text:l,images:i})}),c.jsx(Za,{value:"images",className:"space-y-6",children:i.map((g,y)=>c.jsx("img",{src:g,alt:`${r} ${f.images} ${y+1}`,className:"h-auto w-full rounded-lg"},g))}),c.jsx(Za,{value:"videos",className:"space-y-6",children:s.map(g=>c.jsxs("figure",{children:[c.jsx("figcaption",{className:"mb-3 text-sm text-white/70",children:g.label}),c.jsx("video",{controls:!0,playsInline:!0,preload:"metadata","aria-label":`${r} ${g.label}`,className:"max-h-[60vh] w-full rounded-lg bg-black",children:c.jsx("source",{src:g.src,type:"video/mp4"})})]},g.src))})]})]})]})]})]})}function F1(){const[r,l]=h.useState("Develop"),[i,s]=h.useState("all"),[d,f]=h.useState(null),{t:m}=Et(),g=ur.filter(w=>{var _;return r==="all"?!0:(_=w.tools)==null?void 0:_.includes(r)}),y=i==="all"?g:g.filter(w=>w.groupKey===i),x=[{id:"all",label:m.categoryAll,icon:Zv,count:ur.length},{id:"Develop",label:m.categoryDevelop,icon:Vv,count:ur.filter(w=>{var _;return(_=w.tools)==null?void 0:_.includes("Develop")}).length},{id:"Design",label:m.categoryDesign,icon:Av,count:ur.filter(w=>{var _;return(_=w.tools)==null?void 0:_.includes("Design")}).length}];return h.useEffect(()=>{s("all")},[r]),c.jsxs("section",{id:"works",className:"scroll-mt-20 bg-background pt-16 pb-32",children:[c.jsxs("div",{className:"max-w-[1400px] mx-auto px-5 sm:px-8 md:px-16",children:[c.jsxs("div",{className:"mb-12 relative",children:[c.jsx("span",{className:"font-['JetBrains_Mono'] text-[10px] md:text-xs tracking-[0.28em] text-primary uppercase",children:m.projectsEyebrow}),c.jsx("h2",{className:"font-['Fraunces'] font-light text-foreground leading-tight mt-3 mb-4",style:{fontSize:"clamp(2.5rem, 5vw, 4.5rem)"},children:m.projects}),c.jsxs("div",{className:"flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10",children:[c.jsx("p",{className:"max-w-2xl text-base md:text-lg leading-relaxed text-white/60",children:m.projectsIntro}),c.jsxs("span",{className:"font-['JetBrains_Mono'] text-xs tracking-wider text-white/40 whitespace-nowrap",children:[g.length," ",m.projectCount]})]}),c.jsx("div",{className:"grid grid-cols-1 sm:grid-cols-3 gap-2 p-2 rounded-2xl bg-white/[0.04] border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]",children:x.map(w=>{const _=r===w.id,S=w.icon;return c.jsxs("button",{type:"button",onClick:()=>l(w.id),"aria-pressed":_,className:`relative min-h-16 px-4 py-3 rounded-xl flex items-center gap-3 text-left transition-all duration-300 ${_?"bg-primary text-black shadow-[0_10px_30px_rgba(212,168,83,0.22)]":"bg-[#111117] text-white/60 border border-white/[0.06] hover:text-white hover:bg-white/10 hover:border-white/15"}`,children:[c.jsx("span",{className:`grid place-items-center w-9 h-9 rounded-lg ${_?"bg-black/10":"bg-white/5"}`,children:c.jsx(S,{size:18,strokeWidth:2})}),c.jsxs("span",{className:"flex-1",children:[c.jsx("span",{className:"block text-sm sm:text-[15px] font-semibold",children:w.label}),c.jsxs("span",{className:`block mt-0.5 font-['JetBrains_Mono'] text-[10px] tracking-wider ${_?"text-black/60":"text-white/35"}`,children:[w.count," ",m.projectCount]})]}),c.jsx("span",{className:`w-2 h-2 rounded-full ${_?"bg-black":"bg-white/15"}`})]},w.id)})}),c.jsxs("div",{className:"pt-7",children:[c.jsx("p",{className:"mb-3 font-['JetBrains_Mono'] text-[10px] tracking-[0.2em] uppercase text-white/40",children:m.projectFilter}),c.jsxs("div",{className:"flex flex-wrap gap-2 pb-3",children:[c.jsx("button",{type:"button",onClick:()=>s("all"),className:`font-['JetBrains_Mono'] text-xs tracking-wider px-5 py-3 rounded-xl transition-all duration-300 ${i==="all"?"bg-white text-black shadow-lg font-semibold":"bg-white/[0.04] text-white/60 border border-white/10 hover:bg-white/10 hover:text-white"}`,children:m.all}),g.map(w=>{const _=m.groups[w.groupKey];return c.jsxs("button",{type:"button",onClick:()=>s(w.groupKey),className:`font-['JetBrains_Mono'] text-xs tracking-wide px-5 py-3 rounded-xl transition-all duration-300 ${i===w.groupKey?"bg-white text-black shadow-lg font-semibold":"bg-white/[0.04] text-white/60 border border-white/10 hover:bg-white/10 hover:text-white"}`,children:[w.emoji," ",_," ",w.concept?`(${w.concept})`:""]},w.groupKey)})]})]})]}),y.length===0?c.jsx("div",{className:"text-white/40 font-['JetBrains_Mono'] py-20 text-center",children:m.emptyProjects}):c.jsx("div",{className:"grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 pt-4",children:y.map(w=>{var O,B;const _=m.groups[w.groupKey],S=w.items.find(U=>{var Q;return(Q=U.galleryImages)==null?void 0:Q.length}),T=w.items.find(U=>U.link),L=(S==null?void 0:S.galleryImages)??[],E=w.items.flatMap(U=>U.videos??[]),P=(S==null?void 0:S.thumb)||(T==null?void 0:T.thumb)||"",I=((O=S||T)==null?void 0:O.thumbFit)??"cover";return c.jsxs("article",{className:"group overflow-hidden rounded-[1.5rem] bg-[#0d0d13] border border-white/10 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(0,0,0,0.35)]",children:[c.jsxs("div",{onClick:()=>L.length>0&&f({images:L,index:0}),className:`relative w-full aspect-[16/10] overflow-hidden bg-[#0a0a10] ${L.length>0||T?"cursor-pointer":""}`,children:[T&&L.length===0&&c.jsx("a",{href:T.link,target:"_blank",rel:"noopener noreferrer","aria-label":`${_} ${T.linkLabel==="github"?m.viewGithub:T.linkLabel==="site"?m.viewSite:T.linkLabel==="play"?m.playGame:T.linkLabel==="video"?m.viewVideo:m.viewProcess}`,className:"absolute inset-0 z-10"}),P&&c.jsx(Of,{src:P,alt:_,className:"w-full h-full transition-transform duration-700 group-hover:scale-[1.03] opacity-90 group-hover:opacity-100",imageClassName:I==="contain"?"object-contain":"object-cover"}),L.length>0&&c.jsx("div",{className:"absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]",children:c.jsxs("span",{className:"bg-white text-black px-6 py-3 rounded-full font-bold text-sm shadow-xl flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500",children:[m.viewLarge," ",c.jsxs("span",{className:"font-normal opacity-50",children:["(",L.length,")"]})]})}),c.jsx("div",{className:"absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0d0d13] to-transparent pointer-events-none"}),c.jsx("span",{className:"absolute left-5 top-5 z-20 font-['JetBrains_Mono'] text-[10px] tracking-[0.18em] uppercase text-white/80 bg-black/60 backdrop-blur-md border border-white/15 px-3 py-1.5 rounded-full",children:(B=w.tools)!=null&&B.includes("Develop")?"Development":"3D Art"})]}),c.jsxs("div",{className:"flex flex-col gap-4 px-5 pb-6 sm:px-7 sm:pb-7 -mt-3 relative z-10",children:[c.jsxs("div",{className:"flex items-start justify-between gap-4",children:[c.jsxs("h3",{className:"font-['Fraunces'] font-medium text-foreground text-2xl md:text-[1.75rem] leading-tight flex items-center gap-2",children:[w.emoji," ",_]}),T&&c.jsxs("a",{href:T.link,target:"_blank",rel:"noopener noreferrer",className:"shrink-0 flex items-center gap-1 text-[10px] sm:text-xs font-['JetBrains_Mono'] text-primary hover:text-black hover:bg-primary transition-colors bg-primary/10 px-3 py-2 rounded-full border border-primary/20",children:[T.linkLabel==="github"?m.viewGithub:T.linkLabel==="site"?m.viewSite:T.linkLabel==="play"?m.playGame:T.linkLabel==="video"?m.viewVideo:m.viewProcess," ",c.jsx(os,{size:14})]})]}),c.jsx("p",{className:"text-sm sm:text-[15px] leading-6 text-white/58 min-h-12",children:m.groupDescriptions[w.groupKey]}),c.jsxs("div",{className:"flex flex-wrap items-center gap-2",children:[w.concept&&c.jsx("span",{className:"text-[10px] sm:text-xs font-['JetBrains_Mono'] tracking-widest text-white/50 bg-white/5 px-2 py-1 rounded-md border border-white/10",children:w.concept}),c.jsx(Ff,{tools:w.tools})]}),w.readme&&c.jsx(O1,{title:_,readme:w.readme,images:L,videos:E}),E.length>0&&!w.readme&&c.jsxs("details",{className:"border-t border-white/10 pt-4",children:[c.jsxs("summary",{className:"cursor-pointer text-sm text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary",children:[m.viewVideo," (",E.length,")"]}),c.jsx("div",{className:"mt-4 grid gap-5",children:E.map(U=>c.jsxs("figure",{children:[c.jsxs("figcaption",{className:"mb-2 text-xs text-white/60",children:[_," · ",U.label]}),c.jsxs("video",{controls:!0,playsInline:!0,preload:"none","aria-label":`${_} ${U.label}`,className:"w-full max-h-[65vh] rounded-xl bg-black object-contain",children:[c.jsx("source",{src:U.src,type:"video/mp4"}),c.jsxs("a",{href:U.src,children:[m.viewVideo," · ",U.label]})]})]},U.src))})]}),L.length>0&&c.jsxs("button",{type:"button",onClick:()=>f({images:L,index:0}),className:"mt-1 flex items-center justify-between w-full pt-4 border-t border-white/10 text-xs font-['JetBrains_Mono'] tracking-wider text-white/50 hover:text-primary transition-colors",children:[c.jsxs("span",{className:"flex items-center gap-2",children:[c.jsx(ty,{size:15})," ",L.length," ",m.imageCount]}),c.jsxs("span",{className:"flex items-center gap-1",children:[m.viewLarge," ",c.jsx(os,{size:14})]})]})]})]},w.groupKey)})})]}),d&&c.jsx(Mf,{images:d.images,index:d.index,onClose:()=>f(null),onChange:w=>f({...d,index:w})})]})}function nf({children:r,className:l}){const i=h.useRef(null);return h.useEffect(()=>{const s=i.current;if(!s)return;const d=f=>{f.deltaY!==0&&(f.preventDefault(),s.scrollLeft+=f.deltaY)};return s.addEventListener("wheel",d,{passive:!1}),()=>s.removeEventListener("wheel",d)},[]),c.jsx("div",{ref:i,className:l,children:r})}const rf=`flex overflow-x-auto gap-6 pb-8 pr-8 md:pr-16 items-start
+`).trim().split(/\r?\n\s*\r?\n/).map((s,d)=>{const f=s.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);if(f){const m=f[2].split("/").pop(),g=l.find(y=>y.split("/").pop()===m);return g?c.jsx("img",{src:g,alt:f[1],loading:"lazy",className:"h-auto w-full rounded-lg"},d):c.jsx("p",{children:f[1]},d)}if(s.startsWith("# "))return c.jsx("h3",{className:"text-3xl font-semibold text-white",children:s.slice(2)},d);if(s.startsWith("## "))return c.jsx("h4",{className:"pt-4 text-xl font-medium text-primary",children:s.slice(3)},d);if(s.startsWith("### "))return c.jsx("h5",{className:"pt-2 text-base font-semibold text-white",children:s.slice(4)},d);if(s.startsWith("#### "))return c.jsx("h6",{className:"pt-2 text-sm font-semibold text-white",children:s.slice(5)},d);if(s.startsWith("|")){const m=s.split(/\r?\n/).map(g=>g.trim().replace(/^\||\|$/g,"").split("|").map(y=>y.trim()));if(m.length>1&&m[1].every(g=>/^:?-+:?$/.test(g)))return c.jsx("div",{className:"overflow-x-auto rounded-lg border border-white/15",children:c.jsxs("table",{className:"w-full min-w-[400px] text-left text-sm",children:[c.jsx("thead",{className:"bg-white/5",children:c.jsx("tr",{children:m[0].map((g,y)=>c.jsx("th",{scope:"col",className:"px-4 py-3 font-semibold text-white",children:c.jsx(ar,{text:g})},y))})}),c.jsx("tbody",{children:m.slice(2).map((g,y)=>c.jsx("tr",{className:"border-t border-white/10",children:g.map((x,w)=>c.jsx("td",{className:"px-4 py-3",children:c.jsx(ar,{text:x})},w))},y))})]})},d)}return s.startsWith("```")?c.jsx("pre",{className:"overflow-x-auto rounded-lg bg-black/40 p-4",children:c.jsx("code",{children:s.replace(/^```[^\n]*\r?\n/,"").replace(/\r?\n```$/,"")})},d):s.startsWith("> ")?c.jsx("blockquote",{className:"border-l-2 border-primary pl-4 italic",children:c.jsx(ar,{text:s.replace(/^> /gm,"")})},d):/^\d+\. /.test(s)?c.jsx("ol",{className:"list-decimal space-y-3 pl-5",children:s.split(/\r?\n/).map((m,g)=>c.jsx("li",{children:c.jsx(ar,{text:m.replace(/^\d+\. /,"")})},g))},d):s.startsWith("- ")?c.jsx("ul",{className:"list-disc space-y-3 pl-5",children:s.split(/\r?\n/).map((m,g)=>c.jsx("li",{children:c.jsx(ar,{text:m.slice(2)})},g))},d):c.jsx("p",{children:c.jsx(ar,{text:s})},d)})}function O1({title:r,readme:l,images:i,videos:s}){const{lang:d}=Et(),f=d==="ko"?{open:"설명 보기",description:"설명",images:"이미지",videos:"영상",close:"닫기",tabs:"프로젝트 상세"}:{open:"View details",description:"README (Korean)",images:"Images",videos:"Videos",close:"Close",tabs:"Project details"},m="rounded-lg px-4 py-2 text-sm text-white/60 data-[state=active]:bg-primary data-[state=active]:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary";return c.jsxs(d1,{children:[c.jsx(f1,{asChild:!0,children:c.jsx("button",{type:"button",className:"rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-primary hover:bg-primary/20",children:f.open})}),c.jsxs(p1,{children:[c.jsx(m1,{className:"fixed inset-0 z-[100000] bg-black/80 backdrop-blur-sm"}),c.jsxs(h1,{"aria-describedby":void 0,className:"fixed left-1/2 top-1/2 z-[100001] flex max-h-[90dvh] w-[calc(100%-2rem)] max-w-4xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#0d0d13] text-white shadow-2xl",children:[c.jsxs("header",{className:"flex items-center justify-between gap-4 border-b border-white/10 px-5 py-4 sm:px-8",children:[c.jsx(g1,{className:"text-xl font-semibold",children:r}),c.jsx(v1,{"aria-label":f.close,className:"rounded-full p-2 hover:bg-white/10",children:c.jsx(no,{size:22})})]}),c.jsxs(A1,{defaultValue:"description",className:"flex min-h-0 flex-col",children:[c.jsxs(D1,{"aria-label":f.tabs,className:"flex flex-wrap gap-2 border-b border-white/10 px-5 py-3 sm:px-8",children:[c.jsx(qa,{value:"description",className:m,children:f.description}),c.jsxs(qa,{value:"images",className:m,children:[f.images," (",i.length,")"]}),s.length>0&&c.jsxs(qa,{value:"videos",className:m,children:[f.videos," (",s.length,")"]})]}),c.jsxs("div",{className:"overflow-y-auto overscroll-contain p-5 sm:p-8",children:[c.jsx(Za,{value:"description",className:"space-y-5 text-sm leading-7 text-white/75",children:c.jsx(M1,{text:l,images:i})}),c.jsx(Za,{value:"images",className:"space-y-6",children:i.map((g,y)=>c.jsx("img",{src:g,alt:`${r} ${f.images} ${y+1}`,className:"h-auto w-full rounded-lg"},g))}),c.jsx(Za,{value:"videos",className:"space-y-6",children:s.map(g=>c.jsxs("figure",{children:[c.jsx("figcaption",{className:"mb-3 text-sm text-white/70",children:g.label}),c.jsx("video",{controls:!0,playsInline:!0,preload:"metadata","aria-label":`${r} ${g.label}`,className:"max-h-[60vh] w-full rounded-lg bg-black",children:c.jsx("source",{src:g.src,type:"video/mp4"})})]},g.src))})]})]})]})]})]})}function F1(){const[r,l]=h.useState("Develop"),[i,s]=h.useState("all"),[d,f]=h.useState(null),{t:m}=Et(),g=ur.filter(w=>{var _;return r==="all"?!0:(_=w.tools)==null?void 0:_.includes(r)}),y=i==="all"?g:g.filter(w=>w.groupKey===i),x=[{id:"all",label:m.categoryAll,icon:Zv,count:ur.length},{id:"Develop",label:m.categoryDevelop,icon:Vv,count:ur.filter(w=>{var _;return(_=w.tools)==null?void 0:_.includes("Develop")}).length},{id:"Design",label:m.categoryDesign,icon:Av,count:ur.filter(w=>{var _;return(_=w.tools)==null?void 0:_.includes("Design")}).length}];return h.useEffect(()=>{s("all")},[r]),c.jsxs("section",{id:"works",className:"scroll-mt-20 bg-background pt-16 pb-32",children:[c.jsxs("div",{className:"max-w-[1400px] mx-auto px-5 sm:px-8 md:px-16",children:[c.jsxs("div",{className:"mb-12 relative",children:[c.jsx("span",{className:"font-['JetBrains_Mono'] text-[10px] md:text-xs tracking-[0.28em] text-primary uppercase",children:m.projectsEyebrow}),c.jsx("h2",{className:"font-['Fraunces'] font-light text-foreground leading-tight mt-3 mb-4",style:{fontSize:"clamp(2.5rem, 5vw, 4.5rem)"},children:m.projects}),c.jsxs("div",{className:"flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10",children:[c.jsx("p",{className:"max-w-2xl text-base md:text-lg leading-relaxed text-white/60",children:m.projectsIntro}),c.jsxs("span",{className:"font-['JetBrains_Mono'] text-xs tracking-wider text-white/40 whitespace-nowrap",children:[g.length," ",m.projectCount]})]}),c.jsx("div",{className:"grid grid-cols-1 sm:grid-cols-3 gap-2 p-2 rounded-2xl bg-white/[0.04] border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]",children:x.map(w=>{const _=r===w.id,S=w.icon;return c.jsxs("button",{type:"button",onClick:()=>l(w.id),"aria-pressed":_,className:`relative min-h-16 px-4 py-3 rounded-xl flex items-center gap-3 text-left transition-all duration-300 ${_?"bg-primary text-black shadow-[0_10px_30px_rgba(212,168,83,0.22)]":"bg-[#111117] text-white/60 border border-white/[0.06] hover:text-white hover:bg-white/10 hover:border-white/15"}`,children:[c.jsx("span",{className:`grid place-items-center w-9 h-9 rounded-lg ${_?"bg-black/10":"bg-white/5"}`,children:c.jsx(S,{size:18,strokeWidth:2})}),c.jsxs("span",{className:"flex-1",children:[c.jsx("span",{className:"block text-sm sm:text-[15px] font-semibold",children:w.label}),c.jsxs("span",{className:`block mt-0.5 font-['JetBrains_Mono'] text-[10px] tracking-wider ${_?"text-black/60":"text-white/35"}`,children:[w.count," ",m.projectCount]})]}),c.jsx("span",{className:`w-2 h-2 rounded-full ${_?"bg-black":"bg-white/15"}`})]},w.id)})}),c.jsxs("div",{className:"pt-7",children:[c.jsx("p",{className:"mb-3 font-['JetBrains_Mono'] text-[10px] tracking-[0.2em] uppercase text-white/40",children:m.projectFilter}),c.jsxs("div",{className:"flex flex-wrap gap-2 pb-3",children:[c.jsx("button",{type:"button",onClick:()=>s("all"),className:`font-['JetBrains_Mono'] text-xs tracking-wider px-5 py-3 rounded-xl transition-all duration-300 ${i==="all"?"bg-white text-black shadow-lg font-semibold":"bg-white/[0.04] text-white/60 border border-white/10 hover:bg-white/10 hover:text-white"}`,children:m.all}),g.map(w=>{const _=m.groups[w.groupKey];return c.jsxs("button",{type:"button",onClick:()=>s(w.groupKey),className:`font-['JetBrains_Mono'] text-xs tracking-wide px-5 py-3 rounded-xl transition-all duration-300 ${i===w.groupKey?"bg-white text-black shadow-lg font-semibold":"bg-white/[0.04] text-white/60 border border-white/10 hover:bg-white/10 hover:text-white"}`,children:[w.emoji," ",_," ",w.concept?`(${w.concept})`:""]},w.groupKey)})]})]})]}),y.length===0?c.jsx("div",{className:"text-white/40 font-['JetBrains_Mono'] py-20 text-center",children:m.emptyProjects}):c.jsx("div",{className:"grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 pt-4",children:y.map(w=>{var O,B;const _=m.groups[w.groupKey],S=w.items.find(U=>{var Q;return(Q=U.galleryImages)==null?void 0:Q.length}),T=w.items.find(U=>U.link),L=(S==null?void 0:S.galleryImages)??[],E=w.items.flatMap(U=>U.videos??[]),P=(S==null?void 0:S.thumb)||(T==null?void 0:T.thumb)||"",I=((O=S||T)==null?void 0:O.thumbFit)??"cover";return c.jsxs("article",{className:"group overflow-hidden rounded-[1.5rem] bg-[#0d0d13] border border-white/10 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(0,0,0,0.35)]",children:[c.jsxs("div",{onClick:()=>L.length>0&&f({images:L,index:0}),className:`relative w-full aspect-[16/10] overflow-hidden bg-[#0a0a10] ${L.length>0||T?"cursor-pointer":""}`,children:[T&&L.length===0&&c.jsx("a",{href:T.link,target:"_blank",rel:"noopener noreferrer","aria-label":`${_} ${T.linkLabel==="github"?m.viewGithub:T.linkLabel==="site"?m.viewSite:T.linkLabel==="play"?m.playGame:T.linkLabel==="video"?m.viewVideo:m.viewProcess}`,className:"absolute inset-0 z-10"}),P&&c.jsx(Of,{src:P,alt:_,className:"w-full h-full transition-transform duration-700 group-hover:scale-[1.03] opacity-90 group-hover:opacity-100",imageClassName:I==="contain"?"object-contain":"object-cover"}),L.length>0&&c.jsx("div",{className:"absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]",children:c.jsxs("span",{className:"bg-white text-black px-6 py-3 rounded-full font-bold text-sm shadow-xl flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500",children:[m.viewLarge," ",c.jsxs("span",{className:"font-normal opacity-50",children:["(",L.length,")"]})]})}),c.jsx("div",{className:"absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0d0d13] to-transparent pointer-events-none"}),c.jsx("span",{className:"absolute left-5 top-5 z-20 font-['JetBrains_Mono'] text-[10px] tracking-[0.18em] uppercase text-white/80 bg-black/60 backdrop-blur-md border border-white/15 px-3 py-1.5 rounded-full",children:(B=w.tools)!=null&&B.includes("Develop")?"Development":"3D Art"})]}),c.jsxs("div",{className:"flex flex-col gap-4 px-5 pb-6 sm:px-7 sm:pb-7 -mt-3 relative z-10",children:[c.jsxs("div",{className:"flex items-start justify-between gap-4",children:[c.jsxs("h3",{className:"font-['Fraunces'] font-medium text-foreground text-2xl md:text-[1.75rem] leading-tight flex items-center gap-2",children:[w.emoji," ",_]}),T&&c.jsxs("a",{href:T.link,target:"_blank",rel:"noopener noreferrer",className:"shrink-0 flex items-center gap-1 text-[10px] sm:text-xs font-['JetBrains_Mono'] text-primary hover:text-black hover:bg-primary transition-colors bg-primary/10 px-3 py-2 rounded-full border border-primary/20",children:[T.linkLabel==="github"?m.viewGithub:T.linkLabel==="site"?m.viewSite:T.linkLabel==="play"?m.playGame:T.linkLabel==="video"?m.viewVideo:m.viewProcess," ",c.jsx(os,{size:14})]})]}),c.jsx("p",{className:"text-sm sm:text-[15px] leading-6 text-white/58 min-h-12",children:m.groupDescriptions[w.groupKey]}),c.jsxs("div",{className:"flex flex-wrap items-center gap-2",children:[w.concept&&c.jsx("span",{className:"text-[10px] sm:text-xs font-['JetBrains_Mono'] tracking-widest text-white/50 bg-white/5 px-2 py-1 rounded-md border border-white/10",children:w.concept}),c.jsx(Ff,{tools:w.tools})]}),w.readme&&c.jsx(O1,{title:_,readme:w.readme,images:L,videos:E}),E.length>0&&!w.readme&&c.jsxs("details",{className:"border-t border-white/10 pt-4",children:[c.jsxs("summary",{className:"cursor-pointer text-sm text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary",children:[m.viewVideo," (",E.length,")"]}),c.jsx("div",{className:"mt-4 grid gap-5",children:E.map(U=>c.jsxs("figure",{children:[c.jsxs("figcaption",{className:"mb-2 text-xs text-white/60",children:[_," · ",U.label]}),c.jsxs("video",{controls:!0,playsInline:!0,preload:"none","aria-label":`${_} ${U.label}`,className:"w-full max-h-[65vh] rounded-xl bg-black object-contain",children:[c.jsx("source",{src:U.src,type:"video/mp4"}),c.jsxs("a",{href:U.src,children:[m.viewVideo," · ",U.label]})]})]},U.src))})]}),L.length>0&&c.jsxs("button",{type:"button",onClick:()=>f({images:L,index:0}),className:"mt-1 flex items-center justify-between w-full pt-4 border-t border-white/10 text-xs font-['JetBrains_Mono'] tracking-wider text-white/50 hover:text-primary transition-colors",children:[c.jsxs("span",{className:"flex items-center gap-2",children:[c.jsx(ty,{size:15})," ",L.length," ",m.imageCount]}),c.jsxs("span",{className:"flex items-center gap-1",children:[m.viewLarge," ",c.jsx(os,{size:14})]})]})]})]},w.groupKey)})})]}),d&&c.jsx(Mf,{images:d.images,index:d.index,onClose:()=>f(null),onChange:w=>f({...d,index:w})})]})}function nf({children:r,className:l}){const i=h.useRef(null);return h.useEffect(()=>{const s=i.current;if(!s)return;const d=f=>{f.deltaY!==0&&(f.preventDefault(),s.scrollLeft+=f.deltaY)};return s.addEventListener("wheel",d,{passive:!1}),()=>s.removeEventListener("wheel",d)},[]),c.jsx("div",{ref:i,className:l,children:r})}const rf=`flex overflow-x-auto gap-6 pb-8 pr-8 md:pr-16 items-start
   [&::-webkit-scrollbar]:h-1
   [&::-webkit-scrollbar-track]:bg-transparent
   [&::-webkit-scrollbar-thumb]:bg-white/20 hover:[&::-webkit-scrollbar-thumb]:bg-white/40
