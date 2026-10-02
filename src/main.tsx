@@ -4,8 +4,6 @@ import ReactDOM from 'react-dom/client';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 
 import App from './app/App';
-import Resume from './Resume/Resume'; 
-import CoverLetterPage from './Resume/CoverLetter'; 
 import DevArchive from './Dev/DevArchive'; 
 import ScrollToTop from './app/components/ScrollToTop'
 
@@ -15,8 +13,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/resume" element={<Resume />} />
-        <Route path="/coverletter" element={<CoverLetterPage />} />
         <Route path="/dev-archive" element={<DevArchive />} />
       </Routes>
     </HashRouter>

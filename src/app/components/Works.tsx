@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowUpRight, Box, Code2, Grid2X2, Images } from "lucide-react";
+import { ArrowUpRight, Box, Check, Code2, Grid2X2, Images, UserRound } from "lucide-react";
 import { useLang } from "../context/LangContext";
 import { PORTFOLIO } from "../data/portfolio";
 import Lightbox from "./Lightbox";
@@ -8,13 +8,15 @@ import ToolTags from "./ToolTags";
 import ProjectDetails from "./ProjectDetails";
 
 export default function Works() {
-  const [mainTab, setMainTab] = useState<"all" | "Design" | "Develop">("Develop");
+  const [mainTab, setMainTab] = useState<"all" | "Solo" | "Design" | "Develop">("Develop");
   const [activeGroup, setActiveGroup] = useState<"all" | (typeof PORTFOLIO)[number]["groupKey"]>("all");
   const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
   const { t } = useLang();
 
   const filteredByMainTab = PORTFOLIO.filter((group) => {
     if (mainTab === "all") return true;
+    if (mainTab === "Solo") return group.soloDevelopment;
+    if (mainTab === "Develop") return group.tools?.includes("Develop") && !group.soloDevelopment;
     return group.tools?.includes(mainTab);
   });
 
@@ -26,10 +28,16 @@ export default function Works() {
   const mainTabs = [
     { id: "all" as const, label: t.categoryAll, icon: Grid2X2, count: PORTFOLIO.length },
     {
+      id: "Solo" as const,
+      label: t.categorySolo,
+      icon: UserRound,
+      count: PORTFOLIO.filter((group) => group.soloDevelopment).length,
+    },
+    {
       id: "Develop" as const,
       label: t.categoryDevelop,
       icon: Code2,
-      count: PORTFOLIO.filter((group) => group.tools?.includes("Develop")).length,
+      count: PORTFOLIO.filter((group) => group.tools?.includes("Develop") && !group.soloDevelopment).length,
     },
     {
       id: "Design" as const,
@@ -63,7 +71,12 @@ export default function Works() {
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 p-2 rounded-2xl bg-white/[0.04] border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+          <div className="rounded-2xl border border-primary/30 bg-white/[0.04] p-4 sm:p-5">
+            <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
+              <p id="project-category-label" className="text-base font-semibold text-white">{t.projectCategory}</p>
+              <p className="text-sm text-white/65">{t.projectCategoryHint}</p>
+            </div>
+            <div role="group" aria-labelledby="project-category-label" className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
               {mainTabs.map((tab) => {
                 const isActive = mainTab === tab.id;
                 const Icon = tab.icon;
@@ -73,25 +86,31 @@ export default function Works() {
                     type="button"
                     onClick={() => setMainTab(tab.id)}
                     aria-pressed={isActive}
-                    className={`relative min-h-16 px-4 py-3 rounded-xl flex items-center gap-3 text-left transition-all duration-300 ${
+                    className={`relative min-h-24 px-4 py-4 rounded-xl border-2 flex items-center gap-3 text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background ${
                       isActive
-                        ? "bg-primary text-black shadow-[0_10px_30px_rgba(212,168,83,0.22)]"
-                        : "bg-[#111117] text-white/60 border border-white/[0.06] hover:text-white hover:bg-white/10 hover:border-white/15"
+                        ? "bg-primary border-primary text-black shadow-[0_10px_30px_rgba(212,168,83,0.22)]"
+                        : "bg-[#15151c] text-white border-white/25 hover:bg-primary/10 hover:border-primary/70"
                     }`}
                   >
-                    <span className={`grid place-items-center w-9 h-9 rounded-lg ${isActive ? "bg-black/10" : "bg-white/5"}`}>
-                      <Icon size={18} strokeWidth={2} />
+                    <span className={`grid shrink-0 place-items-center w-11 h-11 rounded-xl ${isActive ? "bg-black/10" : "bg-primary/10 text-primary"}`}>
+                      <Icon size={24} strokeWidth={2} aria-hidden="true" />
                     </span>
                     <span className="flex-1">
-                      <span className="block text-sm sm:text-[15px] font-semibold">{tab.label}</span>
-                      <span className={`block mt-0.5 font-['JetBrains_Mono'] text-[10px] tracking-wider ${isActive ? "text-black/60" : "text-white/35"}`}>
+                      <span className="block text-lg font-semibold">{tab.label}</span>
+                      <span className={`block mt-1 text-xs ${isActive ? "text-black/75" : "text-white/65"}`}>
                         {tab.count} {t.projectCount}
                       </span>
                     </span>
-                    <span className={`w-2 h-2 rounded-full ${isActive ? "bg-black" : "bg-white/15"}`} />
+                    {isActive && (
+                      <span className="flex shrink-0 flex-col items-center gap-1 text-[10px] font-semibold">
+                        <Check size={18} strokeWidth={3} aria-hidden="true" />
+                        {t.categorySelected}
+                      </span>
+                    )}
                   </button>
                 );
               })}
+            </div>
           </div>
 
           <div className="pt-7">
@@ -186,7 +205,7 @@ export default function Works() {
                     )}
                     <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0d0d13] to-transparent pointer-events-none" />
                     <span className="absolute left-5 top-5 z-20 font-['JetBrains_Mono'] text-[10px] tracking-[0.18em] uppercase text-white/80 bg-black/60 backdrop-blur-md border border-white/15 px-3 py-1.5 rounded-full">
-                      {group.tools?.includes("Develop") ? "Development" : "3D Art"}
+                      {group.soloDevelopment ? t.categorySolo : group.tools?.includes("Develop") ? "Development" : "3D Art"}
                     </span>
                   </div>
 

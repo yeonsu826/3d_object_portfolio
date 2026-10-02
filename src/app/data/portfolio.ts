@@ -1,5 +1,5 @@
 import type { GroupKey } from "../i18n/translations";
-import praynoteReadme from "./praynote/README.md?raw";
+import graceseaReadme from "./gracesea/README.md?raw";
 import manittoReadme from "./manitto/README.md?raw";
 import petChewReadme from "./pet-chew/README.md?raw";
 
@@ -21,6 +21,7 @@ export interface PortfolioItem {
 
 export interface PortfolioGroup {
   groupKey: GroupKey;
+  soloDevelopment?: boolean;
   concept?: string;
   readme?: string;
   tools?: string[];
@@ -120,40 +121,33 @@ export const PORTFOLIO: PortfolioGroup[] = [
   },
   {
     groupKey: "devPraynoteGroup",
-    readme: praynoteReadme,
+    soloDevelopment: true,
+    readme: graceseaReadme,
     tools: ["Develop", "React Native", "Expo", "Supabase"],
     emoji: "🌊",
     items: [
       {
         id: "dev_praynote",
         videos: [
-          { src: asset("videos/praynote/step2.mp4"), label: "Step 2" },
-          { src: asset("videos/praynote/step3.mp4"), label: "Step 3" },
+          { src: asset("videos/gracesea/step2.mp4"), label: "Step 2" },
+          { src: asset("videos/gracesea/step3.mp4"), label: "Step 3" },
         ],
-        thumb: asset("images/dev/Praynote/app-preview-01.png"),
+        thumb: asset("images/dev/gracesea/app-preview-01.png"),
         thumbFit: "contain",
         galleryImages: [
-          asset("images/dev/Praynote/app-preview-01.png"),
-          asset("images/dev/Praynote/app-preview-02.png"),
+          asset("images/dev/gracesea/app-preview-01.png"),
+          asset("images/dev/gracesea/app-preview-02.png"),
+          asset("images/dev/gracesea/icon_1.png"),
+          asset("images/dev/gracesea/icon_2.png"),
+          asset("images/dev/gracesea/icon_blue.png"),
+          asset("images/dev/gracesea/icon_white.png"),
         ],
-      },
-    ],
-  },
-  {
-    groupKey: "devKakaoMcpGroup",
-    tools: ["Develop", "AI", "MCP"],
-    emoji: "🤖",
-    items: [
-      {
-        id: "dev_kakao_mcp",
-        thumb: asset("images/dev/KakaoMCP/1.png"),
-        link: "https://github.com/yeonsu826/busram-mcp",
-        linkLabel: "github",
       },
     ],
   },
   {
     groupKey: "devManittoGroup",
+    soloDevelopment: true,
     readme: manittoReadme,
     tools: ["Develop", "Next.js", "React", "TypeScript", "Tailwind CSS", "Supabase"],
     emoji: "💝",
@@ -173,6 +167,7 @@ export const PORTFOLIO: PortfolioGroup[] = [
   },
   {
     groupKey: "devUnityWebglGroup",
+    soloDevelopment: true,
     tools: ["Develop", "Unity", "WebGL"],
     emoji: "🕹️",
     items: [
@@ -187,6 +182,7 @@ export const PORTFOLIO: PortfolioGroup[] = [
   },
   {
     groupKey: "devPetChewGroup",
+    soloDevelopment: true,
     readme: petChewReadme,
     concept: "WIP",
     tools: ["Develop", "Unity", "AR Foundation", "C#"],

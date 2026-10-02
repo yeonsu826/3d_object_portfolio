@@ -20,11 +20,29 @@ function Readme({ text, images }: { text: string; images: string[] }) {
     .replace(/<p\s+align="center">\s*<img\s+src="([^"]+)"\s+width="100%"\s+alt="([^"]*)"\s*\/>\s*<\/p>/g, "![$2]($1)\n\n")
     .replace(/<p\s+align="center">\s*<sub>([^<]*)<\/sub>\s*<\/p>/g, "$1\n\n");
   return normalized.trim().split(/\r?\n\s*\r?\n/).map((block, index) => {
+    const imageLines = block.split(/\r?\n/).map(line => line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/));
+    if (imageLines.length > 1 && imageLines.every(match => match && /icon/i.test(match[2].split("/").pop() ?? ""))) {
+      return (
+        <div key={index} className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+          {imageLines.map((match, logoIndex) => {
+            if (!match) return null;
+            const filename = match[2].split("/").pop();
+            const src = images.find(path => path.split("/").pop() === filename);
+            return src ? (
+              <div key={logoIndex} className="overflow-hidden rounded-2xl border border-white/15 bg-white/5 p-2">
+                <img src={src} alt={match[1]} loading="lazy" className="aspect-square w-full rounded-xl object-contain" />
+              </div>
+            ) : <p key={logoIndex}>{match[1]}</p>;
+          })}
+        </div>
+      );
+    }
     const image = block.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
     if (image) {
       const filename = image[2].split("/").pop();
       const src = images.find(path => path.split("/").pop() === filename);
-      return src ? <img key={index} src={src} alt={image[1]} loading="lazy" className="h-auto w-full rounded-lg" /> : <p key={index}>{image[1]}</p>;
+      const isAppIcon = /icon/i.test(filename ?? "");
+      return src ? <img key={index} src={src} alt={image[1]} loading="lazy" className={isAppIcon ? "mx-auto h-auto w-40 rounded-3xl sm:w-48" : "h-auto w-full rounded-lg"} /> : <p key={index}>{image[1]}</p>;
     }
     if (block.startsWith("# ")) return <h3 key={index} className="text-3xl font-semibold text-white">{block.slice(2)}</h3>;
     if (block.startsWith("## ")) return <h4 key={index} className="pt-4 text-xl font-medium text-primary">{block.slice(3)}</h4>;
@@ -51,6 +69,8 @@ export default function ProjectDetails({ title, readme, images, videos }: {
   videos: { src: string; label: string }[];
 }) {
   const { lang } = useLang();
+  const logoImages = images.filter(src => /icon/i.test(src.split("/").pop() ?? ""));
+  const previewImages = images.filter(src => !/icon/i.test(src.split("/").pop() ?? ""));
   const labels = lang === "ko"
     ? { open: "설명 보기", description: "설명", images: "이미지", videos: "영상", close: "닫기", tabs: "프로젝트 상세" }
     : { open: "View details", description: "README (Korean)", images: "Images", videos: "Videos", close: "Close", tabs: "Project details" };
@@ -75,7 +95,18 @@ export default function ProjectDetails({ title, readme, images, videos }: {
             </Tabs.List>
             <div className="overflow-y-auto overscroll-contain p-5 sm:p-8">
               <Tabs.Content value="description" className="space-y-5 text-sm leading-7 text-white/75"><Readme text={readme} images={images} /></Tabs.Content>
-              <Tabs.Content value="images" className="space-y-6">{images.map((src, index) => <img key={src} src={src} alt={`${title} ${labels.images} ${index + 1}`} className="h-auto w-full rounded-lg" />)}</Tabs.Content>
+              <Tabs.Content value="images" className="space-y-6">
+                {logoImages.length > 0 && (
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+                    {logoImages.map((src, index) => (
+                      <div key={src} className="overflow-hidden rounded-2xl border border-white/15 bg-white/5 p-2">
+                        <img src={src} alt={`${title} ${lang === "ko" ? "로고" : "logo"} ${index + 1}`} loading="lazy" className="aspect-square w-full rounded-xl object-contain" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {previewImages.map((src, index) => <img key={src} src={src} alt={`${title} ${labels.images} ${index + 1}`} className="h-auto w-full rounded-lg" />)}
+              </Tabs.Content>
               <Tabs.Content value="videos" className="space-y-6">{videos.map(video => <figure key={video.src}><figcaption className="mb-3 text-sm text-white/70">{video.label}</figcaption><video controls playsInline preload="metadata" aria-label={`${title} ${video.label}`} className="max-h-[60vh] w-full rounded-lg bg-black"><source src={video.src} type="video/mp4" /></video></figure>)}</Tabs.Content>
             </div>
           </Tabs.Root>
