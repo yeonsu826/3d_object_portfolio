@@ -129,14 +129,16 @@ export const PORTFOLIO: PortfolioGroup[] = [
       {
         id: "dev_praynote",
         videos: [
-          { src: asset("videos/gracesea/step2.mp4"), label: "Step 2" },
-          { src: asset("videos/gracesea/step3.mp4"), label: "Step 3" },
+          { src: asset("videos/gracesea/guide-01.mp4"), label: "오늘의 기록과 묵상" },
+          { src: asset("videos/gracesea/guide-02.mp4"), label: "등대에서 함께 기도하기" },
+          { src: asset("videos/gracesea/guide-03.mp4"), label: "커뮤니티 중보기도" },
         ],
         thumb: asset("images/dev/gracesea/app-preview-01.png"),
         thumbFit: "contain",
         galleryImages: [
           asset("images/dev/gracesea/app-preview-01.png"),
           asset("images/dev/gracesea/app-preview-02.png"),
+          asset("images/dev/gracesea/guide-00.png"),
           asset("images/dev/gracesea/icon_1.png"),
           asset("images/dev/gracesea/icon_2.png"),
           asset("images/dev/gracesea/icon_blue.png"),

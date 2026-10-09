@@ -7,8 +7,12 @@ import LoadingImage from "./LoadingImage";
 import ToolTags from "./ToolTags";
 import ProjectDetails from "./ProjectDetails";
 
-export default function Works() {
-  const [mainTab, setMainTab] = useState<"all" | "Solo" | "Design" | "Develop">("Develop");
+export type ProjectCategory = "all" | "Solo" | "Design" | "Develop";
+
+export default function Works({ mainTab, onCategoryChange }: {
+  mainTab: ProjectCategory;
+  onCategoryChange: (category: ProjectCategory) => void;
+}) {
   const [activeGroup, setActiveGroup] = useState<"all" | (typeof PORTFOLIO)[number]["groupKey"]>("all");
   const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
   const { t } = useLang();
@@ -59,6 +63,8 @@ export default function Works() {
             {t.projectsEyebrow}
           </span>
           <h2
+            id="projects-heading"
+            tabIndex={-1}
             className="font-['Fraunces'] font-light text-foreground leading-tight mt-3 mb-4"
             style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}
           >
@@ -84,7 +90,7 @@ export default function Works() {
                   <button
                     key={tab.id}
                     type="button"
-                    onClick={() => setMainTab(tab.id)}
+                    onClick={() => onCategoryChange(tab.id)}
                     aria-pressed={isActive}
                     className={`relative min-h-24 px-4 py-4 rounded-xl border-2 flex items-center gap-3 text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background ${
                       isActive

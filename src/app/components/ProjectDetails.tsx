@@ -5,20 +5,25 @@ import { useLang } from "../context/LangContext";
 
 // Render the formatting used by the supplied README as escaped React content.
 function InlineText({ text }: { text: string }) {
-  return text.split(/(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\(https?:\/\/[^)]+\))/g).map((part, index) => {
+  return text.split(/(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\((?:https?:\/\/|\/(?!\/))[^)]+\))/g).map((part, index) => {
     if (part.startsWith("**") && part.endsWith("**")) return <strong key={index} className="font-semibold text-white">{part.slice(2, -2)}</strong>;
     if (part.startsWith("`") && part.endsWith("`")) return <code key={index} className="rounded bg-white/10 px-1.5 py-0.5 text-primary">{part.slice(1, -1)}</code>;
-    const link = part.match(/^\[([^\]]+)\]\((https?:\/\/[^)]+)\)$/);
+    const link = part.match(/^\[([^\]]+)\]\(((?:https?:\/\/|\/(?!\/))[^)]+)\)$/);
     if (link) return <a key={index} href={link[2]} target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-4">{link[1]}</a>;
     return part;
   });
 }
 
-function Readme({ text, images }: { text: string; images: string[] }) {
+function Readme({ text, images, videos }: { text: string; images: string[]; videos: { src: string; label: string }[] }) {
   // Normalize the README's image/caption wrappers without rendering raw HTML.
   const normalized = text
     .replace(/<p\s+align="center">\s*<img\s+src="([^"]+)"\s+width="100%"\s+alt="([^"]*)"\s*\/>\s*<\/p>/g, "![$2]($1)\n\n")
-    .replace(/<p\s+align="center">\s*<sub>([^<]*)<\/sub>\s*<\/p>/g, "$1\n\n");
+    .replace(/<p\s+align="center">\s*<sub>([^<]*)<\/sub>\s*<\/p>/g, "$1\n\n")
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (original, label, path: string) => {
+      const filename = path.split("/").pop();
+      const src = [...images, ...videos.map(video => video.src)].find(asset => asset.split("/").pop() === filename);
+      return src ? `[${label}](${src})` : original;
+    });
   return normalized.trim().split(/\r?\n\s*\r?\n/).map((block, index) => {
     const imageLines = block.split(/\r?\n/).map(line => line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/));
     if (imageLines.length > 1 && imageLines.every(match => match && /icon/i.test(match[2].split("/").pop() ?? ""))) {
@@ -94,7 +99,7 @@ export default function ProjectDetails({ title, readme, images, videos }: {
               {videos.length > 0 && <Tabs.Trigger value="videos" className={tabClass}>{labels.videos} ({videos.length})</Tabs.Trigger>}
             </Tabs.List>
             <div className="overflow-y-auto overscroll-contain p-5 sm:p-8">
-              <Tabs.Content value="description" className="space-y-5 text-sm leading-7 text-white/75"><Readme text={readme} images={images} /></Tabs.Content>
+              <Tabs.Content value="description" className="space-y-5 text-sm leading-7 text-white/75"><Readme text={readme} images={images} videos={videos} /></Tabs.Content>
               <Tabs.Content value="images" className="space-y-6">
                 {logoImages.length > 0 && (
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
