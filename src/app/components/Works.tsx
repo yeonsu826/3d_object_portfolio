@@ -6,6 +6,7 @@ import Lightbox from "./Lightbox";
 import LoadingImage from "./LoadingImage";
 import ToolTags from "./ToolTags";
 import ProjectDetails from "./ProjectDetails";
+import { Link } from "react-router-dom";
 
 export type ProjectCategory = "all" | "Solo" | "Design" | "Develop";
 
@@ -15,7 +16,7 @@ export default function Works({ mainTab, onCategoryChange }: {
 }) {
   const [activeGroup, setActiveGroup] = useState<"all" | (typeof PORTFOLIO)[number]["groupKey"]>("all");
   const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
-  const { t } = useLang();
+  const { t, lang } = useLang();
 
   const filteredByMainTab = PORTFOLIO.filter((group) => {
     if (mainTab === "all") return true;
@@ -251,7 +252,10 @@ export default function Works({ mainTab, onCategoryChange }: {
                       )}
                       <ToolTags tools={group.tools} />
                     </div>
-                    {group.readme && (
+                    {group.groupKey === 'devPraynoteGroup' && (
+                      <Link to="/gracesea" className="flex items-center justify-between rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-primary hover:bg-primary/20">{lang === 'en' ? 'Explore project' : '프로젝트 소개 보기'}<ArrowUpRight size={18} /></Link>
+                    )}
+                    {group.readme && group.groupKey !== 'devPraynoteGroup' && (
                       <ProjectDetails title={groupName} readme={group.readme} images={allImages} videos={videos} />
                     )}
                     {videos.length > 0 && !group.readme && (

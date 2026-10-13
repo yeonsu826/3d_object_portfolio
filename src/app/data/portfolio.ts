@@ -138,9 +138,10 @@ export const PORTFOLIO: PortfolioGroup[] = [
         galleryImages: [
           asset("images/dev/gracesea/app-preview-01.png"),
           asset("images/dev/gracesea/app-preview-02.png"),
-          asset("images/dev/gracesea/guide-00.png"),
-          asset("images/dev/gracesea/icon_1.png"),
-          asset("images/dev/gracesea/icon_2.png"),
+          asset("videos/gracesea/guide-00.png"),
+          asset("images/dev/gracesea/gracesea_1.png"),
+          asset("images/dev/gracesea/icon_3.png"),
+          asset("images/dev/gracesea/icon_4.png"),
           asset("images/dev/gracesea/icon_blue.png"),
           asset("images/dev/gracesea/icon_white.png"),
         ],
